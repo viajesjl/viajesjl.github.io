@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>China 2013 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    .foto-inline-wrap { margin: 1rem 0; }
+    .foto-inline-wrap img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+    .foto-placeholder { width: 100%; height: 220px; background: var(--paper-dark); border: 2px dashed var(--accent-light); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem; }
+    .foto-placeholder .fp-icon { font-size: 2rem; opacity: 0.35; }
+    .foto-placeholder .fp-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    .foto-placeholder .fp-file { font-size: 0.72rem; color: var(--accent-light); font-family: monospace; margin-top: 0.1rem; }
+    .foto-caption { font-size: 0.72rem; color: var(--muted); font-style: italic; padding: 0.3rem 0.5rem; background: rgba(10,31,61,0.04); text-align: center; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; pointer-events: none; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-asia">🌏 Asia</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">China 2013</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇨🇳 China · 14 noches</div>
+  <h1 class="hero-title">China</h1>
+  <div class="hero-date">28 Agosto – 12 Septiembre 2013 · 16 días</div>
+  <div class="hero-pills">
+    <span class="pill">Pekín · Beijing</span>
+    <span class="pill">Muralla China · Mutianyu</span>
+    <span class="pill">Ópera de Pekín</span>
+    <span class="pill">Xi'an · Guerreros de Terracota</span>
+    <span class="pill">Luoyang · Grutas Longmen</span>
+    <span class="pill">Yangshuo · Río Li</span>
+    <span class="pill">Guilin · Arrozales de Longsheng</span>
+    <span class="pill">Hangzhou · Lago Oeste</span>
+    <span class="pill">Suzhou</span>
+    <span class="pill">Shanghái · Tren Maglev</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Viaje</a>
+  <a href="#dia2">Día 2 · Beijing</a>
+  <a href="#dia3">Día 3 · Muralla China</a>
+  <a href="#dia4">Día 4 · Templos · Ópera</a>
+  <a href="#dia5">Día 5 · Xi'an</a>
+  <a href="#dia6">Día 6 · Luoyang</a>
+  <a href="#dia7">Día 7 · Guerreros Terracota</a>
+  <a href="#dia8">Día 8 · Yangshuo</a>
+  <a href="#dia9">Día 9 · Guilin · Río Li</a>
+  <a href="#dia10">Día 10 · Longsheng · Arrozales</a>
+  <a href="#dia11">Día 11 · Hangzhou</a>
+  <a href="#dia12">Día 12 · Hangzhou · Lago Oeste</a>
+  <a href="#dia13">Día 13 · Shanghai</a>
+  <a href="#dia14">Día 14 · Suzhou</a>
+  <a href="#dia15">Día 15 · Shanghai</a>
+  <a href="#dia16">Día 16 · Vuelta BCN</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">🇨🇳 Consejos prácticos — China 2013</div>
+    <p><strong>Moneda:</strong> Yuan (CNY / RMB) · <strong>Vuelo:</strong> Swiss Air · BCN→ZRH→PEK / SHA→ZRH→BCN · <strong>Metro:</strong> Muy eficiente en Beijing, Xi'an y Shanghai · <strong>Taxis:</strong> A veces no quieren coger turistas; negociar precio antes o usar rickshaw · <strong>Trenes de alta velocidad:</strong> Llegar 45 min. antes · Pasar control de seguridad con 30 min. de antelación · Comprar tickets en taquillas con la frase en chino preparada · <strong>Cambio de dinero:</strong> Solo en Bank of China (única entidad que cambia divisas a extranjeros) · <strong>Internet:</strong> Google, Facebook y muchos servicios occidentales bloqueados en China</p>
+  </div>
+
+  <!-- ═══ DÍA 1 — VIAJE ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Barcelona → Zúrich → Pekín</h2>
+        <div class="day-subtitle">Miércoles 28 de Agosto · BCN 09:45h → ZRH 11:40h → PEK 00:05h (+1)</div>
+      </div>
+    </div>
+    <div class="transport">
+      <strong>Vuelo BCN → ZRH:</strong> Swiss Air · Salida 09:45h (salida al aeropuerto T1 a las 07:30h) · Llegada 11:40h<br>
+      <strong>Vuelo ZRH → PEK:</strong> Swiss Air · Salida 13:20h · Llegada 00:05h (día siguiente · hora española 23:15h)
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — BEIJING ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Pekín — Tiananmen · Ciudad Prohibida · Torres</h2>
+        <div class="day-subtitle">Jueves 29 de Agosto · Llegada 05:15h · Terminal 3 · 3 noches en Beijing</div>
+      </div>
+    </div>
+    
+    <div class="transport">
+      <strong>Del aeropuerto al hotel:</strong> Airport Express Railway T3 (salida 07:00h, cada 10 min, 26 yuanes) → bajarse en Dongzhimen → Línea 2 azul circular en sentido agujas del reloj → 5ª estación Chongwenmen → Salida A, a la derecha<br>
+      <strong>Del hotel a Tiananmen:</strong> Metro 1 parada a Qianmen en la misma línea 2 (evita 2 km caminando)
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · 3 noches · Pekín</div>
+      <h4>NOVOTEL Beijing Xin Qiao</h4>
+      <p>1 Chong Wen Men Xi Da Jie · Frente a la salida A del metro · Dejar maletas en recepción al llegar</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plaza Tiananmen · De norte a sur · Libre o 20 yuanes Qian Men</div>
+      <h3>Plaza Tiananmen — Puerta de Qian Men a Ciudad Prohibida</h3>
+      <p><strong>Puerta de Qian Men</strong> (8:30–16:30h, 20 yuanes): dividida en dos partes: al norte el Zhengyangmen con vistas a la plaza y el museo de historia de Beijing; enfrente la Torre de la Flecha (Jian Lou, 40 m), del reinado del emperador Yongle (s. XV). <strong>Mausoleo de Mao</strong> (8:30–11:30h, gratuito): cuerpo embalsamado. Dejar bolsos y cámaras en un edificio a la derecha (60 yuanes). <strong>Monumento a los Héroes del Pueblo:</strong> obelisco de 37 m erigido en 1958. <strong>Gran Salón del Pueblo</strong> (9–15h, 30 yuanes): sede del gobierno, 24 salas con los nombres de las provincias, estrella roja en el techo. <strong>Puerta de Tiananmen</strong> (8:30–16:30h, 15 yuanes): conserva el retrato de Mao de 6×4,5 m.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 Ciudad Prohibida · 8:30–17:00h · 60 yuanes · 1.000×750 m · ~2 horas</div>
+      <h3>Ciudad Prohibida — Gugong</h3>
+      <p>Construida en 1420, donde gobernaron 24 emperadores durante 500 años hasta 1912. Abierta al público en 1949. Recorrido de sur a norte: <strong>Puerta Wu Men</strong> (el emperador asistía a ceremonias de año nuevo desde el balcón) → <strong>5 puentes de mármol</strong> (símbolo de las 5 virtudes del confucionismo) → <strong>Puerta de la Suprema Armonía</strong> (leones chinos guardianes) → <strong>Calzada de mármol con dragones</strong> (reservada para el carruaje imperial) → calderas de bronce → reloj de sol imperial → <strong>Salón de la Suprema Armonía</strong> (el más grande, donde se coronaba al emperador) → Salón de la Armonía Media → Salón de la Armonía Preservada → <strong>Salida por la Puerta del Guerrero Divino</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🥁 Metro línea 2 · Bajarse en Guloudajie · Torre del Tambor 9–17h · 20 yuanes · Torre de la Campana 9–17h · 15 yuanes</div>
+      <h3>Torre del Tambor + Torre de la Campana</h3>
+      <p><strong>Torre del Tambor:</strong> 47 m de altura, color rojo con tejado verde. Tambores en escaleras empinadas (quedaba 1 de los 24 originales). Tocan 5 minutos cada media hora, última vez a las 17h. Grandes vistas desde la terraza. <strong>Torre de la Campana:</strong> la actual es de 1747; la campana dejó de sonar en 1924 pero se conserva la campana de bronce de 20 m.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌙 Lotus Lane · Lago Qian Hai · Restaurantes y bares con música en directo</div>
+      <h3>Lotus Lane — Barrio del Lago Hou Hai</h3>
+      <p>Continuar por abajo y a la derecha desde las torres. La calle desemboca en el lago Qian Hai. Zona llena de restaurantes de cocina tradicional e internacional inspirados en arquitectura china. Bares de copas, terrazas, música en directo alrededor del pequeño lago. De noche es aún mejor con las luces multicolor.</p>
+    </div>
+
+     <!-- FOTO DÍA 2 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia2.jpg" alt="Ciudad Prohibida Pekín" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">Lotuslane</div>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — MURALLA CHINA ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Muralla China — Mutianyu · Estadio Olímpico · Wangfujing</h2>
+        <div class="day-subtitle">Viernes 30 de Agosto · Excursión contratada en hotel · 470 yuanes/persona · Todo incluido</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏟️ Antes de la muralla · Panorámica exterior</div>
+      <h3>Estadio Olímpico "Nido de Pájaro" + Cubo de Agua</h3>
+      <p>Panorámica del Estadio Olímpico: cubierto por una membrana transparente, 330 m de largo, 220 m de ancho y 69 m de altura. Junto a él el edificio destinado a la piscina olímpica (el "Cubo de Agua"), una gran burbuja cuadrada. Visita a una fábrica donde trabajan el Jade.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 Mutianyu · 90 km al norte de Beijing · Entrada 50 yuanes · Telecabina/tobogán 80 yuanes i/v · 1 km de recorrido</div>
+      <h3>Gran Muralla China — Tramo Mutianyu 慕田峪</h3>
+      <p>Tramo menos visitado y muy bien conservado. El telecabina deja en la torre 7 y se puede caminar hasta la 14. Coger la cabina para llegar arriba y tirar hacia la izquierda. Recorrer sus torres y trepar sus empinados desniveles. Después de 2h en la muralla, comida con menú chino en restaurante de la zona. A continuación, visita al Tea House Dr. T para presenciar la ceremonia del té.</p>
+    </div>
+
+    <!-- FOTO DÍA 3 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia3.jpg" alt="Muralla China Mutianyu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia3.jpg</span></div>
+      <div class="foto-caption">Muralla China · Tramo de Mutianyu</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌃 Metro · Bajarse en Chongwenmen · Mercado nocturno · Iglesia de San José</div>
+      <h3>Calle Wangfujing — Mercado Nocturno</h3>
+      <p>Mercado nocturno con brochetas exóticas en la Wanfujin Snack Street. Fácil de localizar por el gran arco decorado con farolillos rojos. Ver de lejos la Iglesia de San José (ocupa antigua residencia jesuita desde 1655).</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — TEMPLOS Y ÓPERA ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Templo del Cielo · Templo de los Lamas · Palacio de Verano · Ópera de Pekín</h2>
+        <div class="day-subtitle">Sábado 31 de Agosto · A las 18:45h imprescindible estar en el teatro</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Metro línea 5 · 2 estaciones · Tiantan Dong Men · 35 yuanes · Parque 6–20h · Edificios 8:30–18h · +2 horas</div>
+      <h3>Templo del Cielo — Tiantan</h3>
+      <p>Ir a primera hora. Tres edificios principales: <strong>Salón de Oración por la Buena Cosecha</strong> (edificio circular de 30 m de diámetro y 38 m de altura sobre 3 terrazas de mármol blanco, 28 pilares de madera, sin ninguna viga — si te sitúas en el centro y susurras se oye nítidamente alrededor). <strong>Altar Circular del Cielo</strong> (3 plataformas de mármol al aire libre con 9 peldaños cada una — el 9 es el número de los emperadores; se considera el centro del mundo). <strong>Bóveda Imperial del Cielo</strong> (donde los emperadores rendían homenaje a sus antepasados). El recinto tiene más de 60.000 árboles, el más famoso de más de 500 años y el mítico ciprés de los 9 dragones.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕌 Metro línea 2 · 7 paradas · Yonghegong · 30 yuanes · 9:00–16:30h · Incienso característico</div>
+      <h3>Templo de los Lamas — Yonghe Gong</h3>
+      <p>Uno de los monumentos budistas más importantes de Beijing. Del siglo XVII; en 1744 se convirtió en monasterio. Multitud de salones, cada uno con uno o varios budas que representan cosas distintas (longevidad, pasado, presente, futuro, medicina…). <strong>El último salón contiene el buda más grande del mundo reconocido por el Libro Guinness.</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 Línea 2 → Zizhimen → Línea 4 → Xiyuan (salida C2) · Media entrada 30 yuanes · Completa 60 yuanes · 6:30–20h</div>
+      <h3>Palacio de Verano — Yiheyuan</h3>
+      <p>Comer en el McDonald's al salir del metro. <strong>Ruta desde Entrada Oeste:</strong> Subir hasta el <strong>Barco de Mármol</strong> (símbolo de la corrupción de la emperatriz Cixi) → coger barco (10 yuanes) que cruza el <strong>Lago Kunming</strong> (3/4 del palacio, excavado por 100.000 trabajadores) → <strong>Puente de los 17 Arcos</strong> → Isla del Lago Sur (Templo del Rey Dragón) → museo con figuras de jade antes de la puerta oeste. El <strong>Gran Corredor</strong> (más de 14.000 pinturas con escenas de la historia de China) fue construido para que la emperatriz paseara sin sol. Subir a la <strong>Colina de la Longevidad</strong> para ver la Pagoda del Buda y las magníficas vistas del palacio.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎭 Línea 4 · 16 paradas · Caishikou · Liyuan Theatre · 1,3 km andando · Estar antes de 18:45h · Comienza 19:30h</div>
+      <h3>Ópera de Pekín — Beijing Liyuan Theatre</h3>
+      <p>Qianmen Jianguo Hotel, 175 Yongan Road. Entradas reservadas. Obra "Beijing Opera Highlights Show", 180 yuanes (Red Zone, filas 1-2 o 5-6, con servicio de té y snacks en mesa). Dura hasta las 20:45h. Traducción en inglés con subtítulos.</p>
+    </div>
+
+<!-- FOTO DÍA 4 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia4.jpg" alt="Templo del Cielo Pekín" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia4.jpg</span></div>
+      <div class="foto-caption">Ópera de Pekín — Beijing Liyuan Theatre</div>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — XI'AN ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Xi'an — Torre de la Campana · Torre del Tambor · Gran Pagoda del Ganso Salvaje</h2>
+        <div class="day-subtitle">Domingo 1 de Septiembre · Vuelo Beijing → Xi'an (salida 10:15h T3) · Llegada 12:25h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo:</strong> Air China · Salida 10:15h Terminal 3 · Llegada 12:25h Xianyang International Airport T2<br>
+      <strong>Bus aeropuerto:</strong> Passenger Service Center · Andén 5 T2 · Cada 30 min · 26 yuanes · Bajarse en la 2ª parada (Torre de la Campana) · Taxi al hotel: 13 yuanes
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Xi'an</div>
+      <h4>Ibis Xi'an Heping Gate</h4>
+      <p>59 Heping Road · 西安宜必思和平门 · Comer en el hotel el bocadillo del avión</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔔 Xi'an · 8:30–20:00h · 40 yuanes (incluye las 2 torres) · Centro geográfico de la ciudad</div>
+      <h3>Torre de la Campana 钟楼</h3>
+      <p>Triple cubierta de color verde, emplazada en este lugar desde 1582 y restaurada en 1739. Base cuadrada de 37 metros. Marca el centro geográfico de Xi'an: desde aquí parten las cuatro arterias principales (Xi, Dong, Nan y Bei Dajie). Alberga la gran campana Jingyung de la dinastía Tang. Los chinos pagan para tocarla y pedir deseos de felicidad. <strong>Cada hora concierto de 20 minutos</strong> con todo tipo de campanas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🥁 Xi'an · 450 m girando a la izquierda · Drum Tower 1380 · Pequeño museo del tambor</div>
+      <h3>Torre del Tambor 鼓楼 — Gulou</h3>
+      <p>Del año 1380. El gigantesco timbal avisaba del cierre de las puertas de las murallas al crepúsculo. Pequeño museo dedicado al tambor con exhibición de percusión de 20 min (los tambores retumban en todo el edificio). Cada tambor representa aspectos de la vida diaria. El mítico tambor se guarda en el interior.</p>
+    </div>
+
+    <!-- FOTO DÍA 5 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia5.jpg" alt="Xi'an Torre de la Campana" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia5.jpg</span></div>
+      <div class="foto-caption">Xi'an · Torre de la Campana y Torre del Tambor</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦢 Taxi 19 yuanes · 7 pisos · 64 m · Espectáculo de fuentes 21:00h</div>
+      <h3>Gran Pagoda del Ganso Salvaje 大雁塔 + Fuente Musical</h3>
+      <p>Edificio escalonado de 7 pisos y 64 m construido en 648 durante la dinastía Tang para albergar manuscritos budistas (sutras) traídos de la India por el monje Xuan Zang. Ver la pagoda por fuera y seguir hacia los jardines. <strong>Fuente Musical de la Plaza Norte</strong> (la más grande de Asia, 110.000 m²): espectáculo a las 21:00h (30 min). Horario L-V: 12:00 y 21:00 / S-D-Fest.: 12:00, 14:00, 16:00, 18:00, 21:00. Cenar en un Burger King al lado del lago antes del espectáculo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — LUOYANG / GRUTAS LONGMEN ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Excursión a Luoyang — Grutas de Longmen · Barrio Musulmán</h2>
+        <div class="day-subtitle">Lunes 2 de Septiembre · Tren G656 Xi'an Norte → Longmen 10:05–11:41h · Regreso G836 18:46–20:27h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ida:</strong> Taxi (~13 yuanes) a la Torre de la Campana → Metro línea 2 → 10 estaciones → North Railway Station (北客站) → Tren G656 Xi'an Norte → Longmen 10:05–11:41h (175 yuanes 2ª clase) → Taxi a las grutas (~40 yuanes)<br>
+      <strong>Vuelta:</strong> Tren G836/G837 Guangzhou Sur → Xi'an Norte 18:46–20:27h · Llegar al menos 45 min. antes
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗿 14 km al sur de Luoyang · 120 yuanes · En verano hasta las 23h · 1 km de extensión · 2.000 grutas · 100.000 estatuas</div>
+      <h3>Grutas de Longmen 龙门石窟 — Patrimonio UNESCO</h3>
+      <p>Iniciadas por los gobernantes budistas de la dinastía Wei del Norte (386-534 d.C.) tras trasladar la capital a Luoyang. <strong>Gruta de Fengxian:</strong> la mayor de todas, en la parte más elevada. Estatua central de 17 m del <strong>Buda Vairocana</strong> (encargado por la emperatriz Wu Zetian), con la enigmática sonrisa de la Mona Lisa. A principios del s. XX, muchas efigies fueron decapitadas por coleccionistas sin escrúpulos y muchas acabaron en museos occidentales. <strong>Recorrido en U:</strong> entrada arriba a la derecha → seguir el sendero por la montaña → cruzar el puente → orilla opuesta del río Yi con grutas más antiguas y menos turísticas → mirador con vista total. Visitar también la tumba del poeta Bai Juyi y el templo Xiangshan. Comer en un restaurante chino al salir.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕌 Xi'an · A menos de 10 min de la Torre de la Campana · Noche</div>
+      <h3>Gran Mezquita + Barrio Musulmán 大清真寺</h3>
+      <p>Recorrer el barrio musulmán de noche. Lleno de puestecillos de estilo árabe con toque chino. Todo el recinto de la mezquita está en mal estado. Los restaurantes cierran antes que en Beijing.</p>
+    </div>
+
+    <!-- FOTO DÍA 6 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia6.jpg" alt="Grutas de Longmen Luoyang" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia6.jpg</span></div>
+      <div class="foto-caption">Gran Mezquita + Barrio Musulmán</div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 7 — GUERREROS DE TERRACOTA + MURALLAS ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Guerreros de Terracota · Templo 8 Inmortales · Murallas de Xi'an</h2>
+        <div class="day-subtitle">Martes 3 de Septiembre · Taxi ida y vuelta · 200+200 yuanes · Guerreros 150 yuanes</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">💰 Al salir por la mañana</div>
+      <p>Desayunar sobre las 07:30h e ir a cambiar dinero al Bank of China (la única entidad financiera que cambia divisas a los extranjeros). Llevar agua y polos de melocotón al complejo — hará mucho calor.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚔️ 150 yuanes · Patrimonio UNESCO 1987 · Pabellón 1 el más grande · Llevar agua</div>
+      <h3>Ejército de Terracota — Mausoleo del Emperador Qin Shi Huang</h3>
+      <p>En 247 a.C. el rey Qin Shi Huang inició la conquista de los 7 reinos vecinos, unificó China y se autoproclamó primer emperador. Ordenó construir a más de 700.000 artesanos un ejército de terracota para protegerle eternamente. Descubierto en 1974 por unos agricultores que excavaban un pozo. <strong>Recorrido:</strong> Exhibition Hall (exposición sobre la historia) → Cinema (película en 360° sobre la historia) → <strong>Pabellón 1</strong> (el mayor, con trabajos arqueológicos activos en la parte trasera) → Pabellón 2 (fosos, corredores, estatuas reconstruidas) → Museo (carruaje tirado por cuatro caballos con su pigmentación original). Las estatuas expuestas representan solo el 20% del total descubierto. Tras la exposición al aire, los colores originales se pierden en 5 horas, por lo que se ha pospuesto seguir desenterrando hasta encontrar técnica de conservación.</p>
+    </div>
+
+    <!-- FOTO DÍA 7 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia7.jpg" alt="Guerreros de Terracota Xi'an" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia7.jpg</span></div>
+      <div class="foto-caption">Ejército de Terracota · 7.000 guerreros del primer emperador Qin</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Wudao Shizi Dongjie y Beihuoxiang · 5 yuanes · 9–17:30h · Frente al mercado de antigüedades</div>
+      <h3>Templo de los 8 Inmortales 八仙庙</h3>
+      <p>Los Ocho Inmortales son deidades de la mitología china que nacieron durante las dinastías Tang o Song. Dentro del templo está el Puente de Yu Xian: debajo de su arco hay una pequeña campana. Si la haces sonar tirando una moneda, estarás predestinado a tener una relación con el taoísmo y tu existencia será pacífica y afortunada.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 Xi'an · 75 yuanes · 12 m de altura · 14 km de perímetro · Construidas en 1370</div>
+      <h3>Murallas de Xi'an</h3>
+      <p>Las murallas más antiguas y mejor conservadas de China. Construidas por Hongwu en 1370 sobre los cimientos del Palacio imperial Tang. Forma rectangular con cuatro puertas dirigidas a los puntos cardinales. Muy bonitas de noche. Andar hasta la Puerta Este, bajar de la muralla e ir al hotel andando.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 8 — XIAN → YANGSHUO ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Xi'an → Yangshuo — Espectáculo Liu Sanjie</h2>
+        <div class="day-subtitle">Miércoles 4 de Septiembre · Vuelo 12:25h T3 → Guilin (1h50) · Taxi al hotel 300 yuanes / 80 km</div>
+      </div>
+    </div>
+   
+    <div class="transport">
+      <strong>Vuelo:</strong> Taxi al aeropuerto T3 a las 08:30h (180 yuanes, ~45 min) · Vuelo salida 12:25h · Llegada Guilin Liangjiang International Airport (30 km al oeste de la ciudad)<br>
+      <strong>Del aeropuerto a Yangshuo:</strong> Taxi 300 yuanes / 80 km / 1h55<br>
+      <strong>Al llegar:</strong> Reservar en hotel River View Hotel (11 Binjiang Rd): espectáculo nocturno "Impressions" (144 yuanes) y pesca nocturna con cormoranes para el día siguiente
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Yangshuo</div>
+      <h4>River View Hotel</h4>
+      <p>11 Binjiang Road · Yangshuo · También: contratar en la oficina de viajes del aeropuerto excursión arrozales Longsheng para el día 10 (700 yuanes) y guía privado para Guilin el día 9 (200 yuanes)</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏔️ Yangshuo · 300.000 hab · Valle entre 10 picos montañosos · West Street</div>
+      <h3>Yangshuo 阳朔 — Exploración del pueblo</h3>
+      <p>Pequeño pueblo encajonado entre formaciones kársticas repartidas en arrozales. Posibilidades: mountain bike, navegar por el río Li, cuevas con estalactitas, bambú rafting, pesca con cormoranes. <strong>West Street:</strong> calle pavimentada con bloques de piedra, casas de estilo chino reconvertidas en cafés, hoteles, tiendas de artesanía, pintura, caligrafía, academias de kung-fu.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎭 144 yuanes · Cada día a las 20h · 90 min · 600 figurantes · 4 km de Yangshuo</div>
+      <h3>Espectáculo Liu Sanjie — "Impressions"</h3>
+      <p>Espectáculo dirigido por Zhang Yimou (director de la ceremonia inaugural de los Juegos Olímpicos de 2008). Más de 600 figurantes entre las montañas kársticas del río Li. Combina agua, luz, sonido, vestuario, coreografía, animales y niños. Vestimentas típicas y cantos de la región.</p>
+    </div>
+
+    <!-- FOTO DÍA 8 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia8.jpg" alt="Yangshuo río Li formaciones kársticas" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia8.jpg</span></div>
+      <div class="foto-caption">Espectáculo Liu Sanjie — "Impressions</div>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — GUILIN Y RÍO LI ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Guilin — Reed Flute Cave · Pico Solitario · Colina del Elefante · Crucero Río Li</h2>
+        <div class="day-subtitle">Jueves 5 de Septiembre · Bus a Guilin 28 yuanes · Guía con chofer a las 10:20h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪨 Reed Flute Cave · 90 yuanes · 9,6 km al noroeste · ~1h visita · Llevar bambas (suelo resbaladizo)</div>
+      <h3>Cueva de la Flauta del Junco 芦笛岩 — Reed Flute Cave</h3>
+      <p>Túneles en el monte Guangming con estalactitas y estalagmitas iluminadas con luces de neón. Atracción de Guilin desde hace más de 1.200 años. La cueva tiene 180 millones de años. Más de 70 inscripciones en tinta desde el año 792 d.C. (dinastía Tang). El <strong>Palacio de Cristal del Rey Dragón</strong> sirvió de refugio para más de 1.000 personas durante la invasión japonesa de 1940. La guía lleva una barra de luz de metal que activa la iluminación al pasar de una cueva a otra.</p>
+    </div>
+
+     <!-- FOTO DÍA 9 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia9.jpg" alt="Río Li Guilin China" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia9.jpg</span></div>
+      <div class="foto-caption">Cueva de la Flauta del Junco 芦笛岩 — Reed Flute Cave</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗻 6 km · 14 min · 152 m de altura · 65–75 yuanes · 8:00–18:30h · Subida pronunciada</div>
+      <h3>Pico Duxiu Feng — Pico de la Belleza Solitaria 独秀峰</h3>
+      <p>152 m al norte del Palacio Jingjiang. Escalinata hasta la cumbre con buenas vistas de la ciudad. Al pie, el <strong>Palacio Jingjiang del Príncipe</strong> (Wang Cheng): construido en 1372 por el sobrino del emperador Ming Zhou Shouqian. Actualmente Universidad de Magisterio de Guangxi. Muralla con 4 puertas como la Ciudad Prohibida; alojó a 14 príncipes Ming. Ver también <strong>Fubo Shan</strong> (colina de contención de las olas) desde la cima y <strong>Qixing Gongyuan</strong> (Parque de las 7 estrellas) de lejos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐘 Xiangbi Shan · Lancha embarcadero sin señalizar 40 yuanes · Símbolo de la ciudad</div>
+      <h3>Colina de la Trompa de Elefante — Xiangbi Shan</h3>
+      <p>Situada en la confluencia del Río Li y el Río de las Adelfas, parece un elefante bebiendo agua del río (50 m de altura). Con luna llena, la caverna se parece a una luna flotando sobre el agua. Encima de la colina: pagoda lamaísta de la dinastía Ming (13,6 m), llamada "la pagoda del florero". El elefante cargando el florero simboliza la paz y la felicidad.</p>
+    </div>
+
+    <!-- FOTO DÍA 9a -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia9a.jpg" alt="Río Li Guilin China" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia9.jpg</span></div>
+      <div class="foto-caption">Colina de la Trompa de Elefante — Xiangbi Shan</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛶 Embarcadero Yangdi · Bus 7 yuanes a Yangdi · Bamboo boat 370 yuanes hasta Xing Ping · El paisaje de los billetes de 20</div>
+      <h3>Navegación por el Río Li — De Yangdi a Xingping</h3>
+      <p>El punto del embarcadero está representado en la parte posterior de los billetes de 20 yuanes. Alquilar una bamboo boat hasta las afueras de Xing Ping (370 yuanes la balsa, capacidad 6-7 personas). Antes de Xingping: el <strong>Chico Devoto de Guanyin</strong> y la <strong>Colina de la Pintura de los Nueve Caballos</strong> (saliente que representa caballos salvajes, aunque la mayoría solo ve 7). En Xingping: los paisajes más impresionantes del río. Buses locales a Yangshuo ~45 min, 8 yuanes (salen cuando se llenan · último a las 20:00h).</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — TERRAZAS DE ARROZ LONGSHENG ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Terrazas de Arroz de Longsheng — Aldea Yao · Ping'an · Pesca nocturna</h2>
+        <div class="day-subtitle">Viernes 6 de Septiembre · Excursión contratada hotel · 07:30h · 700 yuanes · 88 km / 2h20 a Ping'an</div>
+      </div>
+    </div>
+
+    <!-- FOTO DÍA 10 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia10.jpg" alt="Terrazas de arroz Longsheng Espina del Dragón" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia10.jpg</span></div>
+      <div class="foto-caption">Terrazas de arroz Longji · "Espina del Dragón" · Más de 700 años de ingeniería</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎎 Parada en Huang Luo · Minoría étnica Yao · Espectáculo 60 yuanes · 50 min</div>
+      <h3>Aldea de Huang Luo — Minoría Yao</h3>
+      <p>Hogar de la minoría étnica Yao, junto al río y rodeada de montañas y bosques. Para las mujeres Yao el pelo es símbolo de riqueza: solo se lo cortan una vez en la vida al cumplir los 16 años, de modo que no es raro encontrar mujeres con melenas de hasta 2 metros recogidas sobre la cabeza. Pasear por la aldea y los puestos callejeros (pañuelos y pashminas de colores). Esta etnia es famosa por sus magníficos bordadores, tejedores y tintoreros.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌾 Longji Titian · Terrazas de la Espina del Dragón · Mirador 1 "Music from Paradise" · Aldea Ping'an</div>
+      <h3>Terrazas de Arroz de Longsheng 龙胜梯田 — Espina del Dragón</h3>
+      <p>Grandiosa obra de ingeniería de más de 700 años. Las montañas modeladas en forma de terrazas permiten la irrigación mediante un sistema de canales desarrollado por la etnia Zhuang. A finales de julio los arrozales muestran su verde más intenso. Comer en restaurante local de la excursión y probar el <strong>arroz cocinado en bambú</strong>, la especialidad local. Subir hasta el Mirador 1 "Music from Paradise" para unas vistas impresionantes de todos los arrozales escalonados.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎣 Yangshuo · Noche · Pesca nocturna con cormoranes</div>
+      <h3>Pesca Nocturna con Cormoranes</h3>
+      <p>Excursión reservada previamente en el hotel. Técnica ancestral de pesca del río Li. Cenar en el restaurante del hotel (recomendable pescado a la cerveza) y pasear por la West Street.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 11 — YANGSHUO → HANGZHOU ═══ -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Yangshuo → Hangzhou — Impressions West Lake</h2>
+        <div class="day-subtitle">Sábado 7 de Septiembre · Vuelo 12:55h → Hangzhou Xiaoshan 14:40h T-A</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Del hotel:</strong> Microbús contratado a las 10h (75 yuanes) al aeropuerto · Vuelo 12:55h → Hangzhou 14:40h<br>
+      <strong>Del aeropuerto a Hangzhou:</strong> Bus 20 yuanes (lado Norte, salida 5) → 1h hasta la estación de trenes · Bajarse en la 2ª parada · Taxi al hotel 40 yuanes
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Hangzhou · Llegada ~17:30h</div>
+      <h4>Huachen International Hotel 杭州华辰国际饭店</h4>
+      <p>25 Pinghai Road, Shangcheng · Entradas del "Impression of West Lake" reservadas por mail (260 yuanes)</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎭 Show 19:45h · Al lado del Mausoleo (parada Yue Fei's Temple) · +300 actores · Dirigido por Zhang Yimou</div>
+      <h3>Impressions West Lake 印象西湖</h3>
+      <p>Espectáculo sobre el Lago Yue (Yue Lake). Dirigido por Zhang Yimou. Música de Kitaro, canción tema "The Rain of West Lake". Más de 300 actores con vestidos tradicionales se deslizan sobre el lago iluminados por colores especiales. Volver al hotel andando rodeando el lago (3,6 km por arriba).</p>
+    </div>
+
+    <!-- FOTO DÍA 11 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia11.jpg" alt="Terrazas de arroz Longsheng Espina del Dragón" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia10.jpg</span></div>
+      <div class="foto-caption">Impressions West Lake 印象西湖</div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 12 — HANGZHOU ═══ -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Hangzhou — Fei Lai Feng · Templo Lingyin · Tumba Yue Fei · Lago Oeste</h2>
+        <div class="day-subtitle">Domingo 8 de Septiembre · Taxi 20 yuanes al inicio</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪨 Fei Lai Feng · 50 yuanes + 30 yuanes Templo Lingyin · Teleférico 45 yuanes · 7:30–18:15h</div>
+      <h3>Fei Lai Feng — El Pico que Voló Hasta Aquí</h3>
+      <p>209 m de altura, piedra caliza pura. El monje indio Huili creyó hace 1.600 años que el pico había volado desde la India por su forma. Las cuevas albergan ~330 estatuas de piedra del s. X al XIV, incluyendo el famoso <strong>Buda Riente</strong> sentado en el acantilado. <strong>Templo Lingyin</strong> (fundado en 326): uno de los 10 templos budistas más famosos de China. Restaurado en 1974. La Gran Sala del Gran Héroe tiene una estatua de Buda de 24,8 m tallada en 24 secciones de madera de alcanfor y cubierta con pan de oro. La <strong>Sala de los 500 Arhats</strong> tiene 500 estatuas de bronce, todas distintas. <strong>Pico Norte:</strong> punto más alto de la ciudad y mirador sobre el Lago Oeste (funicular).</p>
+    </div>
+
+    <!-- FOTO DÍA 12 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia12.jpg" alt="Lago Oeste Hangzhou Xi Hu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia12.jpg</span></div>
+      <div class="foto-caption">Lago Oeste (Xi Hu) · Hangzhou · Dique Su y pagodas</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚔️ Yuewang Temple · 25 yuanes · 7:00–17:30h · Bus Y9</div>
+      <h3>Yue Fei Mu — Tumba del General Yue Fei</h3>
+      <p>Tumba del general Song Yue Fei (1103-1142), héroe nacional por luchar contra los Jin. Acusado falsamente y ejecutado. El emperador Gao Zong lo exoneró en 1163 y ordenó enterrarle en este mausoleo. Gran estatua del general con sus palabras: "devolvednos las montañas y los ríos". La tradición dictaba que los turistas escupieran sobre las estatuas de hierro de Qin Hui y su esposa (ahora prohibido).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚤 Barco 40 yuanes / 30 min · 8 km² · Andando la vuelta entera: 4h · Dique Su 2,7 km / 34 min andando</div>
+      <h3>Lago Oeste 西湖 — West Lake</h3>
+      <p>Coger un barco para ir al otro extremo (40 yuanes, 30 min). Una de las maravillas paisajísticas de China (8 km²). <strong>Dique Su</strong> (2,7 km, 6 puentes de piedra, nombrado por el poeta Song Su Dongpo): empieza al sur en Nan Shan Rd y acaba al norte en Bei Shan Rd. <strong>Jardín Huagang</strong>, los <strong>3 estanques reflejando la luna</strong> (3 pagodas sobre las aguas), e <strong>isla Xiaoying</strong> (4 estanques con pabellones de 1611). Ver también de lejos la <strong>Pagoda de las Seis Armonías</strong> (Liuhe Ta, forma octogonal, 59,89 m) y la <strong>Leifeng Pagoda</strong> (reconstruida en 2002, 1.400 toneladas de acero y cobre). Volver al hotel 3 km rodeando el lago. Comprar regalos.</p>
+    </div>
+
+ <!-- FOTO DÍA 12a -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia12a.jpg" alt="Lago Oeste Hangzhou Xi Hu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia12.jpg</span></div>
+      <div class="foto-caption">Lago Oeste (Xi Hu) - Pagoda de las Seis Armonías (Liuhe Ta) </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 13 — HANGZHOU → SHANGHAI ═══ -->
+  <section class="day-section" id="dia13">
+    <div class="day-header">
+      <div class="day-number">13</div>
+      <div class="day-info">
+        <h2>Hangzhou → Shanghai — Pudong · People's Square · Bund · Crucero Huangpu</h2>
+        <div class="day-subtitle">Lunes 9 de Septiembre · Tren G7306 Hangzhou → Shanghai Hongqiao 09:00–10:05h</div>
+      </div>
+    </div>
+   
+    <div class="transport">
+      <strong>Tren:</strong> Taxi al hotel para ir a Hangzhou Railway Station (13 yuanes) · Tren G7306 09:00–10:05h<br>
+      <strong>A pie del hotel:</strong> Metro línea 2 → 10 estaciones → Nanjing Road East (salida 3) → 400 m por Henan Middle Road → Hotel Shanghai Fish Inn Bund, 369 Middle Henan Rd<br>
+      <strong>A Pudong:</strong> Metro línea 2 (Lujiazui, salida 1) · 2 estaciones desde el hotel
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Shanghai</div>
+      <h4>Shanghai Fish Inn Bund</h4>
+      <p>369 Middle Henan Road · Cambiar euros en un Bank of China al lado del hotel</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏙️ Pudong · Shanghai World Financial Center · 8:00–23:00h · Planta 94: 150 yuanes</div>
+      <h3>Pudong — Shanghai WFC + Torre Jin Mao + Oriental Pearl TV</h3>
+      <p><strong>Shanghai World Financial Center</strong> (el "abrebotellas"): 492 m, el más alto de Shanghai. 3 plantas visitables: planta 94 (423 m, bar panorámico), planta 97 (439 m, techo abierto), planta 100 (474 m, mirador principal con partes de cristal en el suelo). Ascensor a 10 m/s. <strong>Torre Jin Mao</strong> (ver por fuera): 420,5 m, forma de tronco de bambú. Hotel Grand Hyatt entre pisos 56-87. <strong>Torre Oriental Pearl TV</strong>: 468 m, icono de Pudong (1995), segunda esfera 100 yuanes (incluye Museo de Historia), esfera superior giratoria a 263 m.</p>
+    </div>
+
+     <!-- FOTO DÍA 13 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia13.jpg" alt="El Bund Shanghai Pudong de noche" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia13.jpg</span></div>
+      <div class="foto-caption">El Bund · Shanghái · El "Wall Street de Oriente"</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ People's Square · Metro línea verde · Museo de Shanghai gratis · 9:00–17:00h</div>
+      <h3>People's Square — Plaza del Pueblo 人民广场</h3>
+      <p>Centro administrativo de Shanghai. Durante el colonialismo británico fue el hipódromo. <strong>Museo de Shanghai</strong> (gratuito, más de 120.000 piezas de 8.000 años de historia). <strong>Gran Teatro de Shanghai</strong> y <strong>Auditorio</strong>. <strong>Renmin Park:</strong> pequeño oasis con jubilados jugando al backgammon.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌃 Metro línea 10 · Yuyuan · 2 km de paseo · De noche iluminado</div>
+      <h3>El Bund 外滩 — Paseo nocturno</h3>
+      <p>Paseo de 2 km por la orilla oeste del río Huangpu, frente a Pudong. La arquitectura de finales del s. XIX y principios del XX (puerto franco británico) evoca una ciudad europea clásica. "Wall Street de Oriente". Edificios principales: <strong>Aduana</strong> (1927, reloj inglés), <strong>Charging Bull</strong> (copia del Ranging Bull de Wall Street), <strong>Estación Meteorológica</strong> (48,8 m, antes faro), <strong>Monumento a los Héroes</strong> (3 pilares de 60 m, guerra del Opio, 1994) y <strong>Peace Hotel</strong> (1930, tejado verde, el más emblemático).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚢 75 yuanes · 50 min · Crucero · Salida 21:30h · Muelle 900 m desde el Bund por Zhongshan East Rd</div>
+      <h3>Crucero por el Río Huangpu</h3>
+      <p>El río Huangpu separa Shanghai en dos partes y confluye con el Yangtsé en la ciudad. Sus 400 m de anchura en el tramo más importante separan el Bund (Shanghai colonial) de Pudong (ultramoderno). El recorrido sigue la forma de U del río hacia el norte.</p>
+    </div>
+
+    <!-- FOTO DÍA 13a -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia13a.jpg" alt="El Bund Shanghai Pudong de noche" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia13.jpg</span></div>
+      <div class="foto-caption">El Bund · Crucero por el Río Huangpu"</div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 14 — SUZHOU ═══ -->
+  <section class="day-section" id="dia14">
+    <div class="day-header">
+      <div class="day-number">14</div>
+      <div class="day-info">
+        <h2>Suzhou — Pan Men · Templo de Confucio · Jardín del Administrador Humilde</h2>
+        <div class="day-subtitle">Martes 10 de Septiembre · Tren G7006 Shanghai → Suzhou 09:00–09:25h · 25 min · 100 km</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🏮 Suzhou · La Venecia del Norte</div>
+      <p>10 millones de habitantes. Capital de la cultura Wu. Fundada hace 2.500 años, fue capital del rey Helu de Wu en el 514 a.C. Los productos locales más famosos: bordados de doble cara sobre seda (~300 RMB), abanicos de seda y madera de sándalo (+400 RMB), tallas de madera, perlas, teteras y prendas de seda.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 Taxi 30 yuanes desde estación · Suroeste de la ciudad · Entrada 40 yuanes · Paseo en barca incluido</div>
+      <h3>Pan Men — La Puerta del Agua + Pagoda Ruiguang</h3>
+      <p>La puerta más antigua de Suzhou. Última puerta marítima y terrestre perfectamente restaurada conforme a la original bajo la dinastía Yuan (1276-1368). Sistema de doble rastrillo, festones con cañones (Qing) y pabellón de vigilancia. <strong>Pagoda de Ruiguang:</strong> 7 pisos, 53,57 m (en 1978 se encontraron obras de literatura budista y estatuas). <strong>Puente Wumen</strong> (granito, s. XIX): el más elevado de la ciudad, permite el paso de veleros (50 pasos cada ladera). <strong>Paseo en barca</strong> tradicional incluido con remeros que cantan.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 1 km andando · 20 min · Construido en 1035 · Actualizado en 1474 (dinastía Ming)</div>
+      <h3>Templo de Confucio</h3>
+      <p>Gran hall tras la estatua de Confucio, rodeado de jardines perfectamente cuidados. Escondido entre sus muros el más interesante mercado informal de artesanía y antigüedades de Suzhou. Precaución con las imitaciones.</p>
+    </div>
+
+    <!-- FOTO DÍA 14 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia14.jpg" alt="Jardín del Administrador Humilde Suzhou" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia14.jpg</span></div>
+      <div class="foto-caption">Parque de Pan Men  y Templo de Confucio</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Taxi 20 yuanes · 60 yuanes · Casi 5 hectáreas · Patrimonio UNESCO · Oficina de correos dentro para mandar postales</div>
+      <h3>Jardín del Administrador Humilde — Zhuozheng Yuan</h3>
+      <p>Construido en la dinastía Ming por un alto funcionario jubilado en el s. XVI. Vegetación, estanques, casetas y carpas en ~5 hectáreas. Dividido en 3 partes: <strong>Este</strong> (acceso), <strong>Media</strong> (la más exquisita, con la técnica de "visión prestada desde la distancia", pagoda visible a 1 km) y <strong>Oeste</strong> (Salón de los 36 Patos Mandarines, Salón de las 18 Camelias, jardín de bonsáis con ~700 ejemplares). Al salir: tiendas con recuerdos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 1 km de la estación · 1918 Renmin Rd · 9 pisos · 76 m · Jardín alrededor</div>
+      <h3>Pagoda del Templo Norte — Beisi Ta 北寺塔</h3>
+      <p>Construida durante la dinastía Song sobre cimientos que podrían ser de la era de los 3 reinos (220-265 d.C.). Ha sufrido diversos incendios. Sus 9 pisos miden 76 m. Superviviente de un antiguo templo, rodeada de un agradable jardín. Ver sin entrar de camino a la estación de tren.</p>
+    </div>
+
+     <!-- FOTO DÍA 14a -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia14a.jpg" alt="Jardín del Administrador Humilde Suzhou" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia14.jpg</span></div>
+      <div class="foto-caption">Jardín del Administrador Humilde  y Pagoda del Templo Norte</div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 15 — SHANGHAI ═══ -->
+  <section class="day-section" id="dia15">
+    <div class="day-header">
+      <div class="day-number">15</div>
+      <div class="day-info">
+        <h2>Shanghai — Templo Buda de Jade · Museo · Ciudad Vieja · Yu Yuan · Circo ERA</h2>
+        <div class="day-subtitle">Miércoles 11 de Septiembre · Espectáculo ERA a las 19:30h · 2266 Gonghexin Road</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Anyuan Lu 170 · 20 yuanes (+10 para ver buda jade sentado) · 8:00–16:30h</div>
+      <h3>Templo del Buda de Jade 玉佛寺 — Yu Fo Si</h3>
+      <p>Construido en 1882 para albergar dos estatuas de Buda en jade traídas de Birmania por el monje Hui Gen. El más importante: <strong>buda recostado</strong> (piso inferior) y <strong>buda sentado</strong> de jade blanco de 1,9 m, 3 toneladas, con incrustaciones de piedras preciosas (piso superior, 10 yuanes adicionales, sin fotografías). En febrero muy concurrido: 20.000 budistas para el Año Nuevo Lunar.</p>
+    </div>
+
+    <!-- FOTO DÍA 15 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia15.jpg" alt="Jardín Yu Yuan Shanghai Ciudad Vieja" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia15.jpg</span></div>
+      <div class="foto-caption">Templo del Buda de Jade 玉佛寺 — Yu Fo Si</div>
+    </div>
+
+
+    <div class="place">
+      <div class="place-meta">🏛️ People's Square · 9:00–17:00h · Gratuito · +120.000 piezas · 8.000 años de historia</div>
+      <h3>Museo de Shanghai + Museo de Planificación Urbana</h3>
+      <p><strong>Museo de Shanghai:</strong> creado en 1952, uno de los más importantes de China. Bronce, cerámica, muebles, monedas y sellos. <strong>Museo de Planificación Urbana</strong> (200 m al norte, 30 yuanes, ma-ju 9–17h): maqueta de 600 m² con toda la ciudad (día y noche), fotos antiguas, película en pantalla circular 360° (cada hora), recreación de calle de Shanghai de 1930. En la taquilla venden billetes reserva para el tren Maglev (50 yuanes — comprarlos).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏘️ Taxi 21 yuanes · Zona histórica · Renmin Lu y Zhonghua Lu</div>
+      <h3>Ciudad Vieja + Jardín Yu Yuan + Salón de Té Huxinting</h3>
+      <p><strong>Ciudad Vieja:</strong> zona histórica con edificios tradicionales y el Yuyuan Market. Forma circular original, amurallada y rodeada de foso (contra piratas japoneses). <strong>Salón de té Huxinting</strong> (8:30–21h): uno de los más famosos de China, icono de la antigua Shanghai, situado en el centro de un estanque con el "Puente de las 9 Curvas" (los impares son números de buena suerte). <strong>Jardín Yu Yuan</strong> (218 Anren Road, 8:30–17:30h, 40 yuanes): jardín privado de la dinastía Ming terminado en 1577 (20 años de trabajos), 20.000 m². Dividido por muros coronados por cuerpos de dragón. Puntos de interés: Gran Rocalla (14 m, mejores vistas), Piedra de Jade (3,3 m, el mayor tesoro), Jardín Interior (1709, rocas, pabellones, estanques y flores).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎪 ERA Circo · 2266 Gonghexin Road · 19:30h · Entradas ya compradas · 21 $/entrada</div>
+      <h3>Shanghai Circus World — Espectáculo ERA</h3>
+      <p>Espectáculo de circo de clase mundial en el Shanghai Circus World. Metro: desde Yuyuan Garden → línea 9 (1 parada) → North Nanjing Rd → transbordo línea 2 → People's Square → transbordo línea roja → 6 estaciones hasta Shanghai Circus World.</p>
+    </div>
+
+    <!-- FOTO DÍA 15a-->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia15a.jpg" alt="Jardín Yu Yuan Shanghai Ciudad Vieja" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia15.jpg</span></div>
+      <div class="foto-caption">Shanghai Circus World — Espectáculo ERA</div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 16 — VUELTA A BARCELONA ═══ -->
+  <section class="day-section" id="dia16">
+    <div class="day-header">
+      <div class="day-number">16</div>
+      <div class="day-info">
+        <h2>Shanghai → Zúrich → Barcelona — Tren Maglev</h2>
+        <div class="day-subtitle">Jueves 12 de Septiembre · Maglev 07:00h → Vuelo SHA 09:10h → ZRH 15:50h → BCN 22:35h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚄 Estación Longyang Road · Cada 15 min · Entre 6:45 y 21:40h · El tren comercial más rápido del mundo</div>
+      <h3>Tren Maglev — Levitación Magnética</h3>
+      <p>Levantarse a las 05:30h. Taxi a las 06:30h a la estación Longyang. Coger el Maglev de las 07:00h (velocidades: 6:45-8:45h → 300 km/h / 9:00-10:45h → 430 km/h). El único tren de levitación magnética en servicio comercial del mundo. En poco más de 7 minutos recorre los 30 km entre el aeropuerto de Pudong y la estación Longyang Road, alcanzando una velocidad máxima de <strong>431 km/h</strong>. Funciona por repulsión y atracción de campos magnéticos, elevándose unos centímetros sobre las vías.</p>
+    </div>
+
+    <!-- FOTO DÍA 16-->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia16.jpg" alt="Jardín Yu Yuan Shanghai Ciudad Vieja" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia15.jpg</span></div>
+      <div class="foto-caption">Tren Maglev — Levitación Magnética</div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo SHA → ZRH:</strong> Swiss Air · Salida 09:10h (check-in cierra 08:30h) · Llegada Zúrich T2 15:50h<br>
+      <strong>Vuelo ZRH → BCN:</strong> Salida 20:50h · Llegada T1 Barcelona 22:35h<br>
+      <strong style="color: var(--accent);">🇨🇳 Fin del viaje</strong>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+
+    <!-- FILA 1: VÍDEO 1 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 1</div>
+      <div class="video-wrap">
+         <iframe src="https://www.youtube.com/embed/D-4bHEwlyDg"
+          title="Fotos del viaje a China 2013"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span class="icon">▶</span>
+          <span>FOTOS DEL VIAJE PARTE 1</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+        </div>
+      </div>
+    </div>
+    <!-- FILA 1: VÍDEO 2 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 2</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_2 por el ID real de YouTube -->
+        <iframe src="https://www.youtube.com/embed/3axtVdav8z4"
+          title="Vídeo del viaje a China 2013"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph2">
+          <span class="icon">▶</span>
+          <span>FOTOS DEL VIAJE PARTE 2</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILA 1: VÍDEO 3 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 3</div>
+      <div class="video-wrap">
+         <iframe src="https://www.youtube.com/embed/3RbkMBVeTho"
+          title="Fotos del viaje a China 2013"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span class="icon">▶</span>
+          <span>VIDEO DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+        </div>
+      </div>
+    </div>
+
+<!-- FILA 1: VÍDEO 4 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 4</div>
+      <div class="video-wrap">
+         <iframe src="https://www.youtube.com/embed/Hu4aWrC-uZc"
+          title="Fotos del viaje a China 2013"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span class="icon">▶</span>
+          <span>FOTOS DEL VIAJE PARTE 1</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+        </div>
+      </div>
+    </div>
+    <!-- FILA 1: VÍDEO 5 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 5</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_2 por el ID real de YouTube -->
+        <iframe src="https://www.youtube.com/embed/1hxk7_-SzD8"
+          title="Vídeo del viaje a China 2013"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph2">
+          <span class="icon">▶</span>
+          <span>FOTOS DEL VIAJE PARTE 2</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILA 1: VÍDEO 6 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DEL VIAJE</div>
+      <div class="video-wrap">
+         <iframe src="https://www.youtube.com/embed/qxY684YoNS8"
+          title="Fotos del viaje a China 2013"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span class="icon">▶</span>
+          <span>VIDEO DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · China 2013</strong> &nbsp;·&nbsp; 28 Agosto – 12 Septiembre 2013 · 16 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg','fotos/26.jpg'
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/galeria/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto China ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) {
+      document.getElementById(id).style.display = 'none';
+    }
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

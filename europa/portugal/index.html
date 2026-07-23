@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portugal 1997 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.68) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.78) 100%),
+        url('https://images.unsplash.com/photo-1558102400-72da9fdbecae?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.1rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    /* Ciudad badge */
+    .ciudad-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent); color: white; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; padding: 0.3rem 0.9rem; margin-bottom: 1.5rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-islas-portuguesas">🇵🇹 Islas Portuguesa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Portugal 1997</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇵🇹 Portugal</div>
+  <h1 class="hero-title">Portugal</h1>
+  <div class="hero-date">31 Agosto – 5 Septiembre 1997 · 6 días</div>
+  <div class="hero-pills">
+    <span class="pill">Oporto</span>
+    <span class="pill">Vila Nova de Gaia</span>
+    <span class="pill">Coimbra</span>
+    <span class="pill">Fátima</span>
+    <span class="pill">Lisboa</span>
+    <span class="pill">Belém</span>
+    <span class="pill">Monasterio Jerónimos</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Oporto</a>
+  <a href="#dia2">Día 2 · Oporto</a>
+  <a href="#dia3">Día 3 · Gaia</a>
+  <a href="#dia4">Día 4 · Coimbra/Fátima</a>
+  <a href="#dia5">Día 5 · Lisboa</a>
+  <a href="#dia6">Día 6 · Belém</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DÍA 1 — OPORTO ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Oporto — La ciudad del Duero</h2>
+        <div class="day-subtitle">Domingo 31 de Agosto · Oporto · Torre de los Clérigos, Sé y Praça da Batalha</div>
+      </div>
+    </div>
+    <div class="ciudad-badge">🏙️ Oporto</div>
+
+    <div class="place">
+      <div class="place-meta">🗼 1763 · Nicolau Nasoni · 75 m · 225 escalones</div>
+      <h3>Torre de los Clérigos</h3>
+      <p>Se alza como un faro espiritual sobre un mar de casas apretadas. Obra del arquitecto italiano <strong>Nicolau Nasoni</strong>, terminada en 1763. Durante siglos no fue solo un campanario: su altura de <strong>75 metros</strong> servía de punto de referencia para los barcos que navegaban por el Duero para saber que ya estaban cerca del puerto. <strong>Escalera de caracol de 225 escalones</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎭 Teatro São João · Siglo X · Pedro IV de Portugal</div>
+      <h3>Praça da Batalha</h3>
+      <p>En el corazón histórico de la ciudad. El edificio monumental que domina la escena es el <strong>Teatro Nacional São João</strong>, símbolo de la cultura de Oporto. Aunque el teatro original nació en 1794, el edificio actual es una reconstrucción terminada en <strong>1920 tras un incendio devastador</strong>, obra del arquitecto José Marques da Silva. Su fachada tiene cuatro estatuas que representan la Bondad, el Dolor, el Odio y el Amor.<br><br>
+      El nombre de la plaza recuerda una sangrienta batalla del siglo X entre los habitantes cristianos y los invasores sarracenos. Sobre un pedestal, la estatua de <strong>Pedro IV de Portugal</strong>, monarca muy querido en Oporto por haber defendido la ciudad durante el asedio de 1832.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Románico · Gótico · Barroco · Barrio de Pena Ventosa · Nicolau Nasoni</div>
+      <h3>Catedral de Oporto — La Sé do Porto</h3>
+      <p>Robusta y vigilante desde el barrio más antiguo de la ciudad, el de Pena Ventosa, el punto más alto de Oporto. Parece un castillo defensivo con sus almenas y torres macizas. La Sé mezcla estilos de <strong>casi siete siglos</strong>: románica en las torres, con un claustro gótico precioso y detalles barrocos de Nicolau Nasoni.<br><br>
+      Dentro hay un <strong>altar de plata</strong> en la Capilla del Santísimo Sacramento. Leyenda: durante las invasiones francesas de 1809, los habitantes lo cubrieron con <strong>cal para que pareciera yeso sin valor</strong>. Los soldados de Napoleón pasaron de largo y se salvó del saqueo. Los <strong>impresionantes paneles de azulejos blancos y azules</strong> del claustro gótico son de los más famosos de Portugal y narran escenas de la vida de la Virgen y de las Metamorfosis de Ovidio.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏇 Siglo IX · Salvador Barata Feyo · 1968 · Fundador de Portugal</div>
+      <h3>Estatua de Vímara Peres</h3>
+      <p>Figura ecuestre que parece brotar de la muralla, con una lanza apuntando al cielo. Caudillo del siglo IX que en el año <strong>868 conquistó la región a los moros</strong> y fundó el primer condado de Portugal, estableciendo su capital en <em>"Portucale"</em>, el origen del nombre del país. La estatua fue realizada por el escultor <strong>Salvador Barata Feyo</strong> en 1968.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 2 — OPORTO ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Oporto — Barrio de Antas y Mirador de la Catedral</h2>
+        <div class="day-subtitle">Lunes 1 de Septiembre · Oporto · La ciudad de los puentes</div>
+      </div>
+    </div>
+    <div class="ciudad-badge">🏙️ Oporto</div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Años 30-40 · Viana de Lima y Margalha · Barrio de Antas</div>
+      <h3>Iglesia de Santo António das Antas</h3>
+      <p>Torre de hormigón que parece tocar las nubes. Obra maestra de los arquitectos <strong>Viana de Lima y Margalha</strong>. Cuando se construyó, a finales de los años 30 y principios de los 40, fue muy revolucionaria por su estilo <strong>monumental pero minimalista</strong>. Sus aberturas horizontales en la parte superior la hacen parecer más un faro espiritual para el barrio que un campanario convencional. El <strong>Estadio das Antas</strong> del FC Porto está a solo unos minutos a pie.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👁️ Terreiro da Sé · Panorámica sobre la ciudad</div>
+      <h3>Mirador de la Catedral — La ciudad de los puentes</h3>
+      <p>En el Terreiro da Sé, una plaza creada demoliendo casas antiguas para dar visibilidad a la Catedral. El mejor punto para entender por qué a Oporto la llaman la <em>"ciudad de los puentes"</em> y de las cuestas imposibles. Desde aquí se domina: la <strong>Torre de los Clérigos</strong> —el símbolo de la ciudad, el edificio más alto de Portugal durante mucho tiempo—, la Catedral y el Palacio Episcopal que vigilan el barrio de la Ribeira, y el <strong>barrio de la Ribeira</strong> descendiendo en cascada hacia el Duero.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 3 — VILA NOVA DE GAIA ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Vila Nova de Gaia — Los Rabelos del Duero</h2>
+        <div class="day-subtitle">Martes 2 de Septiembre · Orilla sur del Duero · Las bodegas del vino de Oporto</div>
+      </div>
+    </div>
+    <div class="ciudad-badge">🍷 Vila Nova de Gaia</div>
+
+    <div class="place">
+      <div class="place-meta">⛵ Muelle de Gaia · Orilla sur del Duero · Barcos tradicionales</div>
+      <h3>Los Barcos Rabelos</h3>
+      <p>En el muelle de Vila Nova de Gaia, justo en la orilla sur del río Duero. Los barquitos —los <strong>Rabelos</strong>— no tienen quilla y son de fondo plano. Antes de que se construyeran las presas, el Duero era un río salvaje y traicionero, lleno de rápidos. <strong>Solo estos barcos podían transportar los barriles de vino</strong> desde los viñedos del interior hasta las bodegas de Gaia sin encallar, sorteando los rápidos gracias a su diseño único.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 4 — COIMBRA ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Coimbra — La ciudad universitaria</h2>
+        <div class="day-subtitle">Miércoles 3 de Septiembre · Coimbra · Universidad, Biblioteca Joanina y Portugal dos Pequenitos</div>
+      </div>
+    </div>
+    <div class="ciudad-badge">🎓 Coimbra</div>
+
+    <div class="place">
+      <div class="place-meta">🗽 1834 · Costa Motta · 1913 · Puerta de la ciudad</div>
+      <h3>Largo da Portagem — La puerta de Coimbra</h3>
+      <p>La plaza que sirve de puerta de entrada al centro histórico, conectando la ciudad con el río Mondego. El hombre sobre la columna es <strong>Joaquim António de Aguiar</strong>, político nacido en Coimbra, tres veces primer ministro, conocido popularmente como el <em>"Mata-Frades"</em> porque en <strong>1834 firmó el decreto que extinguió las órdenes religiosas en Portugal</strong>. La estatua lo representa en el momento exacto en que firma esa ley, con una pluma y un papel en la mano.<br><br>
+      El nombre "Portagem" no es casualidad: era el punto exacto donde se <strong>cobraban los impuestos</strong> a todas las mercancías que llegaban a la ciudad desde el sur, cruzando el río. Estatua del escultor António Augusto da Costa Motta, instalada en 1913.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Universidad más antigua de Portugal · Colina de la Almedina · Via Latina</div>
+      <h3>Universidad de Coimbra — Paço das Escolas</h3>
+      <p>Subir a la colina de la Almedina hasta el punto más alto de la ciudad. La piedra caliza blanca, desgastada por los pasos de miles de estudiantes a lo largo de los siglos, brilla bajo el sol. La galería de columnas se llama <strong>Via Latina</strong>: hasta el siglo XIX, el latín era el único idioma permitido dentro del recinto. <em>Si un estudiante era sorprendido hablando portugués, podía ser sancionado.</em><br><br>
+      La escalera semicircular se conoce como la <strong>Escada de Minerva</strong>, y la tradición no escrita dice que la forma en que subes estas escaleras el día del examen final puede predecir tu nota. Justo detrás se encuentra la famosa <strong>Biblioteca Joanina</strong>, una de las más bellas del mundo. La <strong>Porta Férrea</strong> es la entrada principal al Palacio de las Escuelas, y las estatuas frente al edificio de Letras representan a <strong>Demóstenes, Aristóteles y Platón</strong>.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🌉 Desde el Mirador del Paço das Escolas</div>
+      <p>Se ve el <strong>Puente de Santa Clara</strong>, la arteria principal para cruzar el Mondego. En la orilla opuesta, el <strong>Portugal dos Pequenitos</strong> y el <strong>Monasterio de Santa Clara-a-Velha</strong>, el secreto hundido: durante siglos sufrió las constantes inundaciones del río.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 1940 · Bissaya Barreto · Parque temático histórico</div>
+      <h3>Portugal dos Pequenitos</h3>
+      <p>Cruzando el río Mondego, un arco triunfal da la bienvenida a este parque temático histórico. A través del arco se ve una réplica perfecta de la Universidad de Coimbra. Aunque se llama <em>"de los pequeñitos"</em>, fue diseñado en <strong>1940 por el profesor Bissaya Barreto</strong> no solo para que los niños jugaran, sino como una herramienta pedagógica para que los adultos entendieran la grandeza del imperio portugués.<br><br>
+      A la derecha del arco, una pared con relieve en forma de <strong>punta de diamante</strong>, réplica de la famosa Casa dos Bicos de Lisboa. En la Plaza de los Monumentos, las cruces grabadas representan los descubrimientos: la misma cruz que llevaban las <strong>carabelas que salieron a explorar el mundo</strong>.</p>
+    </div>
+
+    <div class="ciudad-badge">🎓 Fátima</div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ El corazón espiritual del munda</div>
+      <h3>La Basílica de Nuestra Señora del Rosario</h3>
+      <p>La Basílica de Nuestra Señora del Rosario se eleva unos 65 metros de altura. Está coronada por una cruz iluminada y una corona de bronce que pesa aproximadamente 7 toneladas. El santuario fue construido en el lugar donde, según la tradición, tres pequeños pastores —Lucía, Francisco y Jacinta— presenciaron las apariciones de la Virgen María en <strong>1917</strong>. La explanada es tan inmensa que puede albergar a cientos de miles de personas durante las peregrinaciones. En el suelo un camino de piedra que cruza la plaza principal; muchos peregrinos lo recorren de rodillas como promesa o agradecimiento.<br><br>
+      La torre tiene un carillón de <strong>62 campanas</strong>. La más grande pesa <strong>3.000 kilos</strong>. En la basílica, verás que las tumbas de los tres pastorcitos están allí mismo. No te puedes perder la Procesión de las Velas. Miles de personas caminan con velas encendidas en silencio</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 5 — LISBOA ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Lisboa — Las siete colinas y el Tajo</h2>
+        <div class="day-subtitle">Jueves 4 de Septiembre · Lisboa · Avenida da Liberdade, Alfama y Casa dos Bicos</div>
+      </div>
+    </div>
+    <div class="ciudad-badge">🏙️ Lisboa</div>
+
+    <div class="tip">
+      <div class="tip-label">👁️ Desde el Mirador de las Avenidas Novas</div>
+      <p>Panorámica sobre la ciudad que permite distinguir: el <strong>Castillo de San Jorge</strong>, la corona de Lisboa en el punto más alto del centro histórico; las <strong>Siete Colinas</strong>, cada una con su propio carácter (desde la señorial Graça hasta el bohemio Bairro Alto); el <strong>Mar da Palha</strong>, el estuario del Tajo conocido como "Mar de la Paja" por los reflejos dorados al atardecer; y las <strong>torres Amoreiras</strong>, símbolo de la modernidad lisboeta.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗽 1640 · Obelisco 30 m · Independencia de Portugal · Art Déco</div>
+      <h3>Praça dos Restauradores</h3>
+      <p>Al final de la Avenida da Liberdade se alza el <strong>Monumento a los Restauradores</strong>, un obelisco de 30 metros que celebra la victoria de <strong>1640</strong>: tras 60 años bajo el dominio español, los nobles portugueses recuperaron la independencia de su país. Las dos figuras de bronce en la base representan la Victoria y la Libertad.<br><br>
+      Justo al lado se encuentra el famoso <strong>Edén Teatro</strong>, uno de los edificios art déco más bellos del mundo. A pocos metros, el <strong>Elevador da Glória</strong>, el tranvía amarillo empinado que sube directamente al Bairro Alto.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💎 1523 · 1.125 picos de piedra · Fundación José Saramago</div>
+      <h3>Casa dos Bicos</h3>
+      <p>Construida en 1523 por orden de Brás de Albuquerque, hijo del virrey de la India, inspirándose en el <strong>Palacio de los Diamantes de Ferrara</strong> (Italia). Los <em>"bicos"</em> (picos o puntas) son unos <strong>1.125 y están tallados en piedra caliza</strong>, creando una fachada que parece hecha de diamantes. En la fachada cuelga un gran cartel con el rostro pensativo de <strong>José Saramago</strong>.<br><br>
+      Durante el gran <strong>terremoto de 1755</strong>, la Casa dos Bicos perdió sus dos pisos superiores. No fue hasta los años 80 cuando se reconstruyó con su diseño original. Dentro de la Fundación pueden verse restos de la <strong>antigua muralla romana de Lisboa</strong> y tanques donde se preparaba el <em>garum</em>, la salsa de pescado romana hallados en las excavaciones.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎸 Alfama · Fado · Terremoto 1755 · Panteón Nacional</div>
+      <h3>Miradouro das Portas do Sol — Alfama</h3>
+      <p>Desde aquí se ve la fachada blanca de la <strong>Iglesia de San Esteban</strong>, muy dañada en el terremoto de 1755 y reconstruida, y el <strong>Panteón Nacional</strong>, que tardó casi 300 años en terminarse. Alfama es la cuna del <strong>Fado</strong>, donde se escuchan las guitarras portuguesas sonando en las pequeñas tabernas que se esconden en el barrio más antiguo de Lisboa.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 6 — BELÉM ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Belém — El Tajo y los Descubrimientos</h2>
+        <div class="day-subtitle">Viernes 5 de Septiembre · Belém · Jerónimos, Padrão y los dos puentes</div>
+      </div>
+    </div>
+    <div class="ciudad-badge">⛵ Belém · Lisboa</div>
+
+    <div class="place">
+      <div class="place-meta">🗿 1960 · Infante Don Enrique · Vasco da Gama · Magallanes</div>
+      <h3>Padrão dos Descobrimentos</h3>
+      <p>Gigantesca carabela de piedra blanca. El hombre que lidera la expedición en la proa es el <strong>Infante Don Enrique el Navegante</strong>. Detrás, en fila, los grandes protagonistas de la historia lusa: <strong>Vasco da Gama</strong> (ruta a la India), <strong>Pedro Álvares Cabral</strong> (descubridor de Brasil) y <strong>Magallanes</strong>.<br><br>
+      La reconstrucción en piedra es de <strong>1960</strong>; el original de 1940 era de madera y yeso, construido para una gran exposición. Lo hicieron eterno para conmemorar los 500 años de la muerte del Infante. Tiene forma de <strong>cruz de espada</strong>, simbolizando la doble misión de los descubrimientos: la expansión del reino y de la fe.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Manuelino · 1501 · Diogo de Boitaca · Tumba de Fernando Pessoa</div>
+      <h3>Monasterio de los Jerónimos</h3>
+      <p>Una joya del estilo <strong>manuelino</strong>. Diseñado por el arquitecto <strong>Diogo de Boitaca</strong>, que inició esta maravilla en <strong>1501</strong> con las riquezas que llegaban de las Indias. La máxima expresión del arte de la época del rey Manuel I. En las columnas: <strong>cabos marineros, corales, conchas y esferas armilares</strong> esculpidos en piedra.<br><br>
+      En las galerías del claustro se encuentra la <strong>tumba de Fernando Pessoa</strong>, el gran poeta portugués. Curiosidad: los monjes de este monasterio usaban claras de huevo para almidonar sus hábitos y, para no desperdiciar las yemas, crearon la receta secreta de los famosos <strong>pastéis de Belém</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Praça do Império · 1940 · Exposición del Mundo Portugués · Fonte Luminosa</div>
+      <h3>Praça do Império</h3>
+      <p>Una de las plazas ajardinadas más grandes de Europa. En el centro destaca la imponente <strong>Fonte Luminosa</strong>, rodeada por un diseño geométrico de jardines y setos que parecen un tapiz verde. Al fondo, el Monasterio de los Jerónimos en todo su esplendor, flanqueado por el edificio que alberga el <strong>Museo de la Marina</strong> y el Planetario Calouste Gulbenkian.<br><br>
+      Construida para la <strong>Exposición del Mundo Portugués de 1940</strong>, que celebró los 800 años de la fundación de Portugal. La plaza es tan grande porque fue diseñada para que el dictador de la época pudiera pasar revista a las tropas y realizar desfiles grandiosos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 1966 · Misma compañía que el Golden Gate · Revolución de los Claveles</div>
+      <h3>Puente 25 de Abril</h3>
+      <p>Casi imposible no compararlo con el Golden Gate de San Francisco: fue construido por <strong>la misma compañía</strong>. Inaugurado en 1966 con el nombre de <em>Puente Salazar</em>. El <strong>25 de abril de 1974</strong>, durante la Revolución de los Claveles, el pueblo no esperó a que los políticos cambiaran el nombre: los ciudadanos subieron al puente y <strong>arrancaron las letras de latón que formaban el nombre de Salazar</strong> para pintar '25 de Abril' en su lugar.<br><br>
+      A la derecha, el Tajo se ensancha tanto que los lisboetas lo llaman cariñosamente <em>"Mar de la Paja"</em> (Mar da Palha), por los reflejos dorados que el sol deja sobre el agua al atardecer.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 1998 · 17 km · Expo '98 · El puente más largo de Europa</div>
+      <h3>Puente Vasco da Gama</h3>
+      <p>Se extiende como una línea infinita de <strong>17 kilómetros</strong> que cruza el agua azul. Inaugurado en 1998, se construyó en solo <strong>18 meses</strong> para la Expo '98. Su longitud es tal que, debido a la curvatura de la Tierra, los ingenieros tuvieron que <strong>compensar un desfase de casi un metro</strong> en el diseño para que las secciones encajaran perfectamente.<br><br>
+      En marzo de 1998, para celebrarlo, se instaló una mesa de <strong>5 kilómetros de largo</strong> para servir feijoada a <strong>15.000 personas</strong> en el almuerzo más grande del mundo.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- VÍDEO -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeo del viaje</div>
+
+  <!-- UN SOLO VÍDEO: descomenta y pon el ID de YouTube -->
+  <!--
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/TU_ID_AQUI" title="Portugal 1997" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  -->
+
+  <!-- DOS VÍDEOS: descomenta y pon los IDs -->
+  
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📹 Oporto y Coimbra</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/u2K4eWik0ow" title="Video de fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div class="video-label">📹 Lisboa y Belém</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/MYOfK3XhtEo" title="Video del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  
+  
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Portugal 1997</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Portugal ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

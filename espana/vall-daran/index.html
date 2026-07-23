@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vall d'Aran 2012 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+      --white: #f0f8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(21,101,192,0.40) 60%, rgba(10,31,61,0.82) 100%),
+        url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; }
+    .hero-title em { font-style: italic; color: var(--accent-light); }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .route-list { background: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; }
+    .route-list h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--accent); margin-bottom: 0.8rem; }
+    .route-list ul { list-style: none; display: flex; flex-direction: column; gap: 0.25rem; }
+    .route-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); padding: 0.3rem 0; border-bottom: 1px solid var(--paper-dark); }
+    .route-list li:last-child { border-bottom: none; }
+    .route-list li::before { content: '→'; color: var(--accent); font-weight: 700; flex-shrink: 0; margin-top: 0.05rem; }
+
+    /* price table */
+    .price-table { background: white; border: 1px solid var(--paper-dark); width: 100%; border-collapse: collapse; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; }
+    .price-table th { background: var(--accent); color: white; padding: 0.6rem 1rem; text-align: left; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.1em; font-size: 0.8rem; text-transform: uppercase; }
+    .price-table td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--paper-dark); color: var(--muted); }
+    .price-table tr:last-child td { border-bottom: none; }
+
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); margin-top: 1.5rem; }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; }
+    .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-catalunya">← Catalunya</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Vall d'Aran</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">✈ España · Pirineos · Lleida</p>
+  <h1 class="hero-title">Vall <em>d'Aran</em></h1>
+  <p class="hero-date">30 Julio — 1 Agosto 2012 · 3 días</p>
+  <div class="hero-pills">
+    <span class="pill">Tredòs</span>
+    <span class="pill">Vielha</span>
+    <span class="pill">Baqueira-Beret</span>
+    <span class="pill">Montgarri</span>
+    <span class="pill">Aigüestortes</span>
+    <span class="pill">Rafting</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1 · 30 Jul</a>
+  <a href="#dia2">Día 2 · 31 Jul</a>
+  <a href="#dia3">Día 3 · 1 Ago</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══════════════════════════ DIA 1 -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada · Pla de Beret · Montgarri · Vielha</h2>
+        <div class="day-subtitle">Lunes 30 de Julio de 2012</div>
+      </div>
+    </div>
+
+    <div class="section-title">🚗 Llegada desde Barcelona</div>
+
+    <div class="transport">
+      <strong>Ruta desde Barcelona:</strong> Autovía y carretera nacional · 323 km<br>
+      Igualada → Tárrega → Torrefarrera → Alfarrás → Benabarre → Pont de Suert → Valle de Arán
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento · 3 noches</div>
+        <h3>Hotel de Tredòs</h3>
+        <p>Carretera de Baqueira, km. 177.5 · 25598 Tredòs, Vall d'Aran (Lleida)<br>
+        Tel. +34 973 64 40 14<br>
+        A 10 min de Vielha y 3 min de Baqueira-Beret. Piscina climatizada exterior, jardín solarium, salón social, sala de lectura, bar-cafetería, parking y garaje cubierto.</p>
+      </div>
+    </div>
+
+    <div class="section-title">🎿 Mañana · Pla de Beret y Telesilla Blanhiblar</div>
+
+    <div class="narrative">
+      Dejar las maletas en el hotel e ir al Pla de Beret, que está al lado. Coger el telesilla Blanhiblar de Beret (funciona de 10:00 a 18:00h desde el 7 de julio hasta el 2 de septiembre). Comer en el restaurante de arriba.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Telesilla · 07/07 - 02/09</div>
+      <h3>Telesilla Blanhiblar · Barralh Blanhiblar (2.245 m)</h3>
+      <p>Conduce al Barralh Blanhiblar, en la cota 2.245 m, una terraza desde donde se pueden disfrutar vistas espectaculares de las cimas de la Val d'Aran. Se proponen cuatro rutas a pie y una en bicicleta con las mejores vistas de la estación.</p>
+    </div>
+
+    <table class="price-table">
+      <tr><th>Actividad</th><th>Fechas</th><th>Precio adulto</th><th>Precio infantil</th></tr>
+      <tr><td>Telesilla Blanhiblar</td><td>07/07 - 02/09</td><td>9 €</td><td>5 €</td></tr>
+    </table>
+
+    <div class="tip">
+      <div class="tip-label">🐴 Actividad opcional</div>
+      <h3>Escuela de Equitación Beret</h3>
+      <p>Al fondo del parking de Beret. Posibilidad de montar a caballo.</p>
+    </div>
+
+    <div class="section-title">🥾 Tarde · Ruta Pla de Beret → Santuario de Montgarri</div>
+
+    <div class="place">
+      <div class="place-meta">🥾 Senderismo · 12 km ida y vuelta · 2,5-3 h · Dificultad baja</div>
+      <h3>Ruta Pla de Beret — Santuario de Montgarri</h3>
+      <p>Un paseo que une el Pla de Beret con el Santuario de Montgarri adentrándose en un paisaje de excepción. Desnivel de unos 250 metros de bajada a la ida y subida a la vuelta. Se puede hacer de forma circular (bajando por la senda peatonal y ascendiendo por la pista de todoterreno) o ida y vuelta por la senda peatonal.</p>
+    </div>
+
+    <div class="narrative">
+      Estacionar en el amplio aparcamiento del Pla de Beret. El acceso al camino hacia Montgarri se encuentra al fondo a la izquierda del aparcamiento. La senda se adentra en bosques de pino negro, bordea pequeños arroyos y discurre junto al Río Noguera Pallaresa, que nace en el propio Pla de Beret.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Santuario · S. XII · Pueblo abandonado</div>
+      <h3>Santuario de Montgarri</h3>
+      <p>El origen del santuario data del siglo XII, cuando a un pastor se le apareció la virgen de forma repetida. La actual apariencia arquitectónica es del S.XVI. En 2009 apenas tenía 6 personas censadas. Considerado uno de los pueblos con la temperatura media anual más baja de España, fue abandonado en los años 60. Hoy quedan unas simbólicas bordas y la protección de la Generalitat. Al lado del Santuario hay un refugio y, a pocos metros, los restos del pueblo abandonado.</p>
+    </div>
+
+    <div class="section-title">⛸️ Tarde · Palau de Gel de Vielha</div>
+
+    <div class="place">
+      <div class="place-meta">⛸️ Pista de hielo · Lun-Vie 18:30-20:30h</div>
+      <h3>Palai de Gèu — Vielha</h3>
+      <p>Avinguda Garona 33, 25530 Vielha (Lleida) · Tel. 973 642 864<br>
+      Situado en la zona denominada Eth Solan, a solo 10 minutos caminando del centro de Vielha.<br><br>
+      <strong>Precio:</strong> Adultos 6,80€ + patines 4,20€ = <strong>11€ total</strong><br>
+      ⚠️ Llevar guantes, son obligatorios (si no, cuestan 1,90€ en el recinto).</p>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════ DIA 2 -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Rafting · Bagergue · Bassa d'Oles</h2>
+        <div class="day-subtitle">Martes 31 de Julio de 2012</div>
+      </div>
+    </div>
+
+    <div class="section-title">🚣 Mañana · Rafting en el Río Garona</div>
+
+    <div class="place">
+      <div class="place-meta">🚣 Rafting · Río Garona · 33€/persona · Salida 10:45h</div>
+      <h3>ALTISPORT — Rafting Les Bordes - Bossòts (8 km)</h3>
+      <p>C/ des Arroquets 3, 25530 Vielha · Tel. 973 64 27 93 / 639 312 932<br>
+      <a href="mailto:info@altisportaventura.com" style="color:var(--accent);">info@altisportaventura.com</a> · <a href="http://www.altisportaventura.com" style="color:var(--accent);">www.altisportaventura.com</a><br><br>
+      Haremos la más técnica. Salida a las 10:45h del centro. Regreso a las 13:30-14:00h.<br>
+      De Les Bordes a Bossòts: 7 min · 6 km · a 9,6 km de Vielha hacia el norte por la N-230.<br><br>
+      La actividad completa incluye: recepción, reparto de material, transporte a la salida, explicación técnica, bajada, regreso y despedida.<br>
+      <strong>Precio: 33€/persona (IVA incluido)</strong></p>
+    </div>
+
+    <div class="transport">
+      <strong>Requisitos:</strong> Saber nadar · Llevar bañador y toalla.<br>
+      <strong>Material Altisport incluido:</strong> Traje de neopreno, calzado de neopreno (escarpines), casco, chaleco salvavidas, remo y embarcación de raft. Vestuarios en el centro de actividades de Vielha.
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🚣 Otras empresas de rafting</div>
+      <h3>Camins del Pirineo</h3>
+      <p>Avda. Pas d'Arrò 5, Vielha · Tel. +34 973 642444 / +34 616 335691<br>
+      Rafting Río Garona y Río Noguera Pallaresa · Precio: 34€</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🚣 Otras empresas de rafting</div>
+      <h3>Deportur</h3>
+      <p>Tel. 973 647 045 / 973 647 044 · deportur@deportur.com<br>
+      Reservas: www.deportur.com/reservas</p>
+    </div>
+
+    <div class="section-title">🍽️ Mediodía · Bagergue</div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comida</div>
+      <h3>Bagergue</h3>
+      <p>Pequeño pueblo con encanto a la derecha de Salardú. Al llegar a la rotonda, girar a la derecha. A 3,6 km desde Tredòs. Excelentes restaurantes para degustar la comida típica de la zona. <em>(Si las chicas se han quedado en el hotel, recogerlas antes de ir.)</em></p>
+    </div>
+
+    <div class="section-title">🌄 Tarde · Bassa d'Oles</div>
+
+    <div class="place">
+      <div class="place-meta">🥾 Senderismo · 50 min · Dificultad baja · Desnivel 75 m</div>
+      <h3>Ruta Bassa d'Oles</h3>
+      <p>Un rincón de gran belleza a poca distancia de Vielha. Lugar ideal para pasar el día en familia. El lago está rodeado de un bosque de abeto y pino rojo, con abundante enebro y arándano. Es fácil descubrir rastros de fauna y no es extraño ver algún corzo si se madruga. La pista de acceso pasa por el célebre Bosc de Varicauba.<br><br>
+      <strong>Desde Vielha:</strong> dirección Gausac hasta el aparcamiento de la Bassa d'Oles.</p>
+    </div>
+
+    <div class="route-list">
+      <h3>🗺️ Recorrido detallado: Bassa d'Oles</h3>
+      <ul>
+        <li>Desde el aparcamiento, salir a la izquierda del Refugi dera Piusa · Seguir marcas de PR (amarillas y blancas) por pista forestal</li>
+        <li>Dejar a la izquierda la "Bòrda dera Vila" · Abandonar marcas de PR en la bifurcación</li>
+        <li>Continuar a mano derecha (hito de piedras) · Seguir roderas entre prados y cercado de piedras</li>
+        <li>Pasar junto a cabaña rehabilitada a la derecha (punto de referencia para la vuelta)</li>
+        <li>Llegar a otra cabaña y gran abrevadero entre prados, con panorámica preciosa</li>
+        <li>Volver deshaciendo el camino hasta la anterior cabaña · Atravesar prados cuesta abajo hacia una balsa de agua</li>
+        <li>Seguir roderas que se hacen más evidentes · Pasar junto a nuevas cabañas</li>
+        <li>Entrar en el bosque de pino rojo · La pista rodea el lago hasta el punto de inicio</li>
+      </ul>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🌄 Excursión alternativa</div>
+      <h3>Bagnères-de-Luchon (Francia)</h3>
+      <p>Por la tarde, excursión a Bagnères-de-Luchon. Coger la N-230 · 34 km · 39 min.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════ DIA 3 -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Parque Nacional de Aigüestortes · Sant Maurici</h2>
+        <div class="day-subtitle">Miércoles 1 de Agosto de 2012</div>
+      </div>
+    </div>
+
+    <div class="section-title">🏔️ Parque Nacional de Aigüestortes y Lago de Sant Maurici</div>
+
+    <div class="narrative">
+      El Parque Nacional de Aigüestortes y Lago de Sant Maurici está situado en el extremo noroccidental de Cataluña, en la provincia de Lleida, en plena cordillera pirenaica. Abarca parte de las comarcas de la Alta Ribagorça, el Pallars Sobirà, la Val d'Aran y el Pallars Jussà.
+    </div>
+
+    <div class="transport">
+      <strong>Acceso al sector de Sant Maurici:</strong> Desde Espot (Pallars Sobirà) · En coche hasta el parking (4 km desde Espot) · Desde el parking: a pie, en bicicleta (solo hasta el lago) o en taxi 4×4 (salida en Espot) hasta el refugio de Amitges.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🥾 Ruta circular · 2h 30min · Dificultad baja · Desnivel 300 m (1.910-2.210 m)</div>
+      <h3>Ruta del Mirador del Estany de Sant Maurici</h3>
+      <p><strong>Itinerario:</strong> Estany de Sant Maurici → Estany de Ratera → Mirador del Estany → Estany de Sant Maurici.<br>
+      <strong>Época recomendada:</strong> Desde finales de mayo hasta finales de octubre.<br><br>
+      Itinerario ideal para tener una visión general de la cuenca alta del río Escrita, con un paisaje realmente espectacular durante todo el recorrido.</p>
+    </div>
+
+    <div class="narrative">
+      Desde la caseta de información de Sant Maurici, tomar el camino hacia la cascada de Ratera, que enlaza con la pista que sube al Estany de Ratera. Después del estany, hay una bifurcación junto a un pequeño estany: tomar el camino de la izquierda hacia el Mirador. Flanqueando los contrafuertes del Pic del Portarró, encontrar el camino que baja desde el collado del mismo nombre, descendiendo hacia el Estany de Sant Maurici.
+    </div>
+
+    <div class="route-list">
+      <h3>📍 Puntos de interés del recorrido</h3>
+      <ul>
+        <li><strong>Cascada de Ratera</strong> — Una de las cascadas más espectaculares del Parque, salva el desnivel entre el valle colgado de Ratera y el principal de Sant Maurici</li>
+        <li><strong>L'Ordigal</strong> — Punto estratégico para observar los valles glaciares de Monestero y Subenuix, y el collado del Portarró d'Espot</li>
+        <li><strong>Estany de Ratera</strong> — Uno de los estanys más característicos, donde las truchas nadan y saltan en sus aguas</li>
+        <li><strong>El Mirador del Estany</strong> — Paraje único para contemplar el relieve circundante, con cuadro de orientación para identificar los principales accidentes topográficos</li>
+        <li><strong>Barranco de Subenuix</strong> — Magnífica muestra de los bosques subalpinos del Parque: abeto, pino negro, serbal, abedul, sauce cabruno</li>
+        <li><strong>Estany d'Amitges</strong> — Seguir hasta este estany y subir al mirador pasando por el Estany de Crabes, para obtener una perspectiva preciosa del Estany de Sant Maurici y los picos que lo rodean</li>
+      </ul>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- VIDEO -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeo del viaje</div>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/BGTS54n3Lk4" title="Viaje Vall d'Aran 2012" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Vall d'Aran 2012</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/4975764282381.jpg','fotos/4975765842420.jpg','fotos/4975766602439.jpg',
+    'fotos/4975768562488.jpg','fotos/4975769402509.jpg','fotos/4975770482536.jpg',
+    'fotos/4975771802569.jpg','fotos/4975772282581.jpg','fotos/4975773402609.jpg',
+    'fotos/4975774562638.jpg','fotos/4975776522687.jpg','fotos/4975777522712.jpg',
+    'fotos/4975778962748.jpg','fotos/4975780322782.jpg','fotos/4975781602814.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.onclick = () => openLightbox(i);
+    const img = document.createElement('img');
+    img.src = src; img.alt = `Foto Vall d'Aran ${i+1}`; img.loading = 'lazy';
+    item.appendChild(img);
+    gallery.appendChild(item);
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

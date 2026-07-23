@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Holanda y Bélgica 2001 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 5rem); font-weight: 900; color: white; line-height: 1.05; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    /* Lugar de interés */
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.85; color: var(--muted); }
+
+    /* Alojamiento */
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    /* Restaurante */
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    /* Transporte / itinerario */
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.9; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    /* Consejo */
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    /* Leyenda */
+    .leyenda { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.transport { background: rgba(21,101,192,0.25); border: 1px dashed var(--accent-light); }
+
+    /* Separador de ciudad */
+    .city-divider { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.35em; text-transform: uppercase; font-weight: 700; color: var(--accent); display: flex; align-items: center; gap: 1rem; margin: 2rem 0 1.2rem; }
+    .city-divider::before, .city-divider::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* Galería y vídeos */
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+    @media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } .day-number { width: 50px; height: 50px; font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Holanda y Bélgica 2001</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge" style="font-weight: bold;">🇳🇱 Holanda · 🇧🇪 Bélgica</div>
+  <h1 class="hero-title">Holanda<br><span style="font-size:0.55em;letter-spacing:0.04em;">y Bélgica</span></h1>
+ <div class="hero-date" style="font-size: 1.35em; font-weight: 900; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); color: #ffffff !important;">23 Agosto – 5 Septiembre 2001 · 14 días</div>
+
+  <div class="hero-pills">
+    <span class="pill">Ámsterdam</span>
+    <span class="pill">La Haya</span>
+    <span class="pill">Kinderdijk</span>
+    <span class="pill">Volendam · Edam</span>
+    <span class="pill">Alkmaar</span>
+    <span class="pill">Isla de Texel</span>
+    <span class="pill">Brujas</span>
+    <span class="pill">Bruselas</span>
+    <span class="pill">Gante</span>
+    <span class="pill">Waterloo</span>
+    <span class="pill">Amberes</span>
+    <span class="pill">Damme · Knokke</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Llegada Ámsterdam</a>
+  <a href="#dia2">Día 2 · Rijksmuseum · Van Gogh · Ana Frank</a>
+  <a href="#dia3">Día 3 · La Haya · Kinderdijk</a>
+  <a href="#dia4">Día 4 · Centro histórico · Concierto en los canales</a>
+  <a href="#dia5">Día 5 · Volendam · Edam · Marken</a>
+  <a href="#dia6">Día 6 · Alkmaar · Isla de Texel</a>
+  <a href="#dia7">Día 7 · Traslado a Brujas</a>
+  <a href="#dia8">Día 8 · Brujas</a>
+  <a href="#dia9">Día 9 · Bruselas</a>
+  <a href="#dia10">Día 10 · Gante</a>
+  <a href="#dia11">Día 11 · Waterloo · Amberes</a>
+  <a href="#dia12">Día 12 · Damme · Knokke</a>
+  <a href="#dia13">Día 13 · Vuelta a Ámsterdam</a>
+  <a href="#dia14">Día 14 · Vuelo de regreso</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">🚃 Transporte — Ámsterdam</div>
+    <p><strong>Strippenkaart:</strong> Tarjeta de transporte multiviajes válida en tranvía, metro y autobús · Consultar en la oficina de turismo VVV al llegar · <strong>Museumkaart:</strong> ~80 Florines (6.000 pts) · acceso a los principales museos de la ciudad · <strong>Tren Schiphol → Amsterdam Centraal:</strong> 6,50 Florines / persona · ~15 min · vías 3, 17, 18 o 24</p>
+  </div>
+
+  
+  <!-- ═══════════════════════════ ÁMSTERDAM ═══════════════════════════ -->
+
+  <!-- DÍA 1 -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada a Ámsterdam</h2>
+        <div class="day-subtitle">Jueves 23 de Agosto · Schiphol → Amsterdam Centraal → Hotel Hoksbergen</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo:</strong> Salida 14:30h · Llegada Schiphol 16:55h<br>
+      <strong>Tren al centro:</strong> Schiphol → Amsterdam Centraal · 15 min · 6,50 Florines/persona (13 Fl. los dos, ~1.465 pts) · Vías 3, 17, 18 o 24 · Frecuencias: 17:31 · 17:38 · 17:48 · 17:54h
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Canal Singel</div>
+      <h4>Hotel Hoksbergen</h4>
+      <p>Junto al canal Singel · Llegada prevista 18:30h · Bajar por la avenida Damrak dirección plaza Dam → caminar hacia el canal Singel · Primera visita a la oficina de turismo VVV para plano y Strippenkaart.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Ruta nocturna · Cena</div>
+      <h4>Leidseplein</h4>
+      <p>Pasear por la calle comercial Leidsestraat hasta la animada plaza Leidseplein · Cenar y disfrutar del ambiente en los restaurantes de la zona.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 2 -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Rijksmuseum · Van Gogh Museum · Canales · Casa de Ana Frank</h2>
+        <div class="day-subtitle">Viernes 24 de Agosto · Museumplein · Prinsengracht</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🖼️ 10:00–17:00h · 35 Florines (~2.625 pts) · Tranvías 2, 5, 6, 7 o 10</div>
+      <h3>Rijksmuseum</h3>
+      <p>Mañana cultural en el museo más importante de los Países Bajos. <strong>Visitas imprescindibles:</strong> Sala 224 (primer piso) — <em>La Ronda de Noche</em> de Rembrandt, obra maestra de la pintura holandesa del siglo XVII. Completar el recorrido por las salas de pintura clásica: <strong>211 · 215 · 222 · 224 · 229</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌻 10:00–17:00h · ~2.400 pts · Justo detrás del Rijksmuseum</div>
+      <h3>Van Gogh Museum</h3>
+      <p>Tarde artística en el museo dedicado íntegramente al pintor holandés. <strong>Obras a no perderse:</strong> <em>La habitación de Arlés</em> · <em>La siega</em> · <em>Los girasoles</em> · <em>Los comedores de patatas</em> · <em>Trigal con cuervos</em>.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Paseo en barco por los canales:</strong> Tomar una lancha de recreo en la terminal Singer, al final del canal Singel, frente a la Estación Central.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">📖 Prinsengracht 263 · 09:00–21:00h · ~2.250 pts</div>
+      <h3>Casa de Ana Frank — Anne Frank Huis</h3>
+      <p>La casa-refugio donde la familia Frank se escondió durante más de dos años durante la ocupación nazi. Uno de los testimonios más conmovedores de la Segunda Guerra Mundial en Europa.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎰 Ocio nocturno</div>
+      <p>Casino de la ciudad en Keizersgracht 188.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 3 -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Excursión a La Haya · Molinos de Kinderdijk</h2>
+        <div class="day-subtitle">Sábado 25 de Agosto · Tren 09:43h o 10:43h (Vía 13a) · Billete ida y vuelta ~6.977 pts</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ámsterdam → La Haya:</strong> Tren 09:43h o 10:43h (Vía 13a) · Llegada 11:30h<br>
+      <strong>Ruta a pie desde la estación:</strong> Bajar por Herengracht → Binnenhof y Buitenhof → Lange Voorhout → Grote Markt y Groenmarkt · Para atracciones alejadas: tranvía en Parkstraat
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Antiguo castillo · Sede del Parlamento · Visitas guiadas cada 45 min · 10:00–16:00h · ~1.350 pts</div>
+      <h3>Binnenhof + Ridderzaal — Sala de los Caballeros</h3>
+      <p>El complejo monumental del Binnenhof y Buitenhof, antiguo castillo medieval y actual sede del Parlamento neerlandés. El Ridderzaal (Sala de los Caballeros) es un espectacular edificio gótico del siglo XIII que se usa para la apertura solemne del Parlamento.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚖️ Sede de la Corte Internacional de Justicia</div>
+      <h3>Palacio de la Paz — Vredespaleis</h3>
+      <p>Sede de la Corte Internacional de Justicia y del Tribunal Permanente de Arbitraje. Uno de los edificios más reconocibles de La Haya.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Zeestraat 65 · 10:00–17:00h · ~1.725 pts · 14 m de altura · 120 m de circunferencia</div>
+      <h3>Panorama Mesdag</h3>
+      <p>Impresionante pintura cilíndrica de 14 metros de altura y 120 metros de circunferencia que recrea una vista panorámica costera de la época — una de las pinturas más grandes del mundo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎬 Pantalla semiesférica de 840 m² · 10:00–22:00h · ~1.575 pts · Combinado con Madurodam: ~4.950/5.250 pts</div>
+      <h3>Omniversum — Cine IMAX</h3>
+      <p>Cine IMAX con pantalla gigante semiesférica de 840 m².</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏘️ George Maduroplein 1 · 09:00–22:00h · Adultos ~1.650 pts · Niños ~1.125 pts</div>
+      <h3>Madurodam — Holanda en miniatura</h3>
+      <p>Parque temático con réplicas a escala 1:25 de los edificios y paisajes más emblemáticos de Holanda. A los niños se les entrega un "Tracking Passport" para descubrir los monumentos.</p>
+    </div>
+
+    <div class="transport">
+      <strong>La Haya → Kinderdijk:</strong><br>
+      Tren La Haya Central → Rotterdam Zuidplein (vía 1) · Salidas 14:57 · 15:27 · 15:57h · ~3.375 pts<br>
+      En Rotterdam Zuidplein: bajar una planta → estación de autobuses → <strong>Bus 154</strong> andén L dirección Utrecht · Salidas 15:37 · 16:07 · 16:37h · ~40 min · Llegada 16:04h o 17:04h
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚙️ Patrimonio UNESCO · Paseo en barco ~3.375 pts · Interior "Segundo Molino" ~975 pts (hasta 17:30h)</div>
+      <h3>Molinos de Kinderdijk</h3>
+      <p>Los 19 molinos de viento más icónicos de Holanda, bordeando el bulevar junto a los canales. Posibilidad de paseo en barco por los canales entre los molinos y visita al interior del Segundo Molino.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Regreso:</strong> Autobuses desde Kinderdijk 19:03h y 20:15h → Rotterdam Zuid → tren a Ámsterdam.
+    </div>
+  </section>
+
+  <!-- DÍA 4 -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Centro histórico de Ámsterdam · Concierto en los Canales</h2>
+        <div class="day-subtitle">Domingo 26 de Agosto · Plaza Dam · Barrio Judío · Prinsengracht Concert</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎵 Evento especial · Prinsengracht Concert</div>
+      <p>Concierto de música clásica flotante al aire libre frente al Hotel Pulitzer. Consultar precios de barcos en la plaza Dam para verlo desde el agua.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Corazón de la ciudad desde el siglo XII · 12:30–17:00h</div>
+      <h3>Plaza Dam — Koninklijk Paleis + De Nieuwe Kerk + National Monument</h3>
+      <p><strong>Palacio Real (Koninklijk Paleis):</strong> Diseñado por Jacob Van Campen, construido en 1648 como el Ayuntamiento más grande del mundo. Convertido en Palacio Real en 1808 por Luis Bonaparte. Se asienta sobre <strong>13.659 pilares de madera</strong>. En la planta baja: el Tribunal donde se pronunciaban las sentencias de muerte; en la primera planta: la majestuosa Sala de los Ciudadanos.<br><br>
+      <strong>De Nieuwe Kerk (Iglesia Nueva):</strong> 11:00–17:00h · Iglesia protestante donde se coronan los Reyes de Holanda. Sufrió un grave incendio en 1645 y su gran torre (diseñada por Van Campen) quedó inacabada. Destacan el púlpito y el órgano del siglo XVI.<br><br>
+      <strong>National Monument:</strong> Obelisco de 22 metros. En su interior, urnas con arena de todas las regiones y antiguas colonias holandesas, en memoria de los caídos en la Segunda Guerra Mundial.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 10:00–17:00h · 27 Florines · Acceso por c/ St. Luciensteeg</div>
+      <h3>Amsterdam Historic Museum</h3>
+      <p>Antiguo orfanato reconvertido en museo. Al final del recorrido: Sala de los Regentes (a mano izquierda), con el famoso cuadro de <strong>Willem van de Velde</strong> (siglo XVII).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Fundado siglo XIV · Casa nº 34 construida en madera (siglo XV)</div>
+      <h3>Begijnhof — Beguinaje</h3>
+      <p>Remanso de paz en pleno centro de la ciudad. Convento fundado en el siglo XIV accesible a través de un patio interior. Aquí vivió la última superiora Beguina. Cerca de la capilla, la famosa <strong>casa número 34</strong>, construida en madera en el siglo XV, una de las más antiguas de Ámsterdam.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta por el centro:</strong> Kalverstraat (peatonal comercial) → Torre Munttoren (antigua puerta del siglo XVI) → <strong>Bloemenmarkt</strong> (Mercado de las Flores flotante) → canal Herengracht (fachadas nº 364–394) → puente cruce con Reguliersgracht (una de las vistas más bonitas de Ámsterdam) → Rembrandtsplein → puente sobre el Amstel → Waterlooplein (rastro 09:00–17:00h) → Magere Brug (Puente Delgado)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Rembrandtsplein · Estatua de bronce · Organilleros y terrazas</div>
+      <h3>Rembrandtsplein</h3>
+      <p>Animada plaza presidida por la estatua de bronce de Rembrandt van Rijn. Ambiente de terrazas y organilleros.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕍 Barrio Judío · Sinagoga Portuguesa (la más grande del mundo en su época)</div>
+      <h3>Barrio Judío · Waterlooplein · Magere Brug</h3>
+      <p>Puente levadizo Magere Brug (Puente Delgado), sinagogas judías del barrio histórico y la Sinagoga Portuguesa. Torre Montelbaanstoren (parte de las antiguas murallas defensivas) visible desde el puente. En Jodenbreestraat 69: <strong>Huis de Pinto</strong> (Casa de Pinto), notable mansión del año 1600.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Jodenbreestraat 4 · 09:00–17:00h · 29 Florines (~1.875 pts)</div>
+      <h3>Casa de Rembrandt — Rembrandthuis</h3>
+      <p>La casa donde vivió y trabajó Rembrandt van Rijn, conservada con su aspecto original.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 12:00–17:00h · Primera iglesia protestante de Ámsterdam · 1603–1611</div>
+      <h3>Zuiderkerk + De Waag + Oude Kerk</h3>
+      <p><strong>Zuiderkerk:</strong> Primera iglesia protestante de Ámsterdam (1603–1611). Preguntar si es posible subir a la torre.<br><strong>De Waag:</strong> Antiguo edificio de pesaje fortificado en la plaza Nieuwmarkt, territorio histórico de los gremios.<br><strong>Oude Kerk (Iglesia Vieja):</strong> Oudekerksplein 23 · 11:00–17:00h · Se puede subir a la torre. La iglesia más antigua de Ámsterdam, en pleno Barrio Rojo.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 5 -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Excursión a Volendam · Edam · Marken</h2>
+        <div class="day-subtitle">Lunes 27 de Agosto · Autobús 111 desde Estación Central · 6 viajes de la Strippenkaart · ~1 hora</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Transporte:</strong> Estación Central de Ámsterdam → <strong>Autobús 111</strong> (6 viajes Strippenkaart) · ~1 hora hasta los pintorescos pueblos pesqueros y queseros de los alrededores de la capital.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐟 Pueblo pesquero · Costa del Ijsselmeer · Trajes tradicionales</div>
+      <h3>Volendam · Edam · Marken</h3>
+      <p><strong>Volendam:</strong> Animado pueblo pesquero con puerto, casas tradicionales y habitantes con trajes folklóricos holandeses. <strong>Edam:</strong> Famoso por su queso redondo de corteza roja, mercado histórico y canales tranquilos. <strong>Marken:</strong> Antigua isla (hoy unida por calzada) con casas de madera pintadas en verde oscuro sobre pilotes.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 6 -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Excursión a Alkmaar · Isla de Texel</h2>
+        <div class="day-subtitle">Martes 28 de Agosto · Tren 09:52h (Vías 8a/b) · Excursión completa ~123 Florines / 9.262 pts</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ámsterdam → Alkmaar:</strong> Tren 09:52h (vías 8a/b) · Llegada 10:03h · Bajar del tren, cruzar el puente, bajar por c/ Laat / Langestraat → girar a la izquierda → plaza Waagplein
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧀 Plaza Waagplein · Kaasmarkt viernes 10:00–12:30h</div>
+      <h3>Alkmaar — Mercado de quesos</h3>
+      <p>El famoso <strong>Kaasmarkt</strong>, el mercado tradicional de quesos más conocido de Holanda. Los portadores con sus trajes de colores y sombreros de paja transportan las ruedas de queso en angarillas de madera.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Alkmaar → Den Helder:</strong> Tren 12:23h (vía 3) o autobús línea 33 · Llegada 13:06h · Caminar hacia el puerto<br>
+      <strong>Ferry a Texel:</strong> Veerdienst Texel–Den Helder · Salidas cada hora: 12:35h o 13:35h · &lt;20 min · 12 Florines (~4.050 pts)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚲 Den Burg · 7 km del puerto · Alquiler bici: 9 Florines adulto / 4,50 Florines niño</div>
+      <h3>Isla de Texel — Mar de Frisia (Wadden)</h3>
+      <p>La más grande de las Islas Frisias occidentales. La mejor forma de recorrer la isla y ver los paisajes protegidos del <strong>Mar de Frisia (Wadden, Patrimonio UNESCO)</strong> es en bicicleta. Pueblo principal: Den Burg, a unos 7 km del puerto. Billetes integrados disponibles en el propio barco.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Regreso:</strong> Último autobús al puerto 20:29h · Ferry 20:05h o 21:05h · Tren desde Den Helder 20:57 · 21:27 · 21:57h (vía 3) → Amsterdam Centraal · Llegada ~22:11h
+    </div>
+  </section>
+
+  <!-- DÍA 7 -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Traslado de Ámsterdam a Brujas</h2>
+        <div class="day-subtitle">Miércoles 29 de Agosto · Tren 10:23h (Vía 14a) → Amberes → Brujas · Llegada 13:55h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> Amsterdam Centraal 10:23h (vía 14a) → <strong>Antwerpen-Berchem</strong> (llegada 12:29h) → transbordo tren nº 1834 dirección Ostende 12:43h → <strong>Brujas</strong> llegada 13:55h<br>
+      Tarde libre para instalarse.
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Brujas</div>
+      <h4>Alojamiento en Brujas</h4>
+      <p>Consultar en la Oficina de Turismo de la plaza Burg al llegar.</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════ BÉLGICA ═══════════════════════════ -->
+
+  <!-- DÍA 8 -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Brujas — La Venecia del Norte</h2>
+        <div class="day-subtitle">Jueves 30 de Agosto · Plaza Burg · Markt · Canales · Beguinaje</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Inicio:</strong> Oficina de Turismo en la plaza Burg → Stadhuis → Basílica de la Santa Sangre → plaza Markt → Belfort → ruta sur por Wollestraat
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plaza Burg · Techo abovedado de madera gótico · Una de las maravillas de Bélgica</div>
+      <h3>Stadhuis — Ayuntamiento de Brujas</h3>
+      <p>Uno de los ayuntamientos góticos más antiguos y bellos de los Países Bajos (siglo XIV). Famoso por su espectacular techo abovedado de madera policromada gótico. Junto a él, la <strong>Oude Griffie</strong> (antiguo Tribunal de Justicia), en el emplazamiento del castillo de los Condes de Flandes.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ A la derecha del Ayuntamiento · Reliquia de la Santa Sangre de Cristo</div>
+      <h3>Basílica de la Santa Sangre — Heilig Bloed</h3>
+      <p>Doble iglesia románica y gótica. En el piso superior, el museo venera la reliquia de la Santa Sangre de Jesucristo, traída de Tierra Santa en el siglo XII por el Conde de Flandes.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔔 Plaza Markt · 88 metros · 366 escaleras · Mejores vistas de Brujas</div>
+      <h3>Belfort — Campanario de Brujas</h3>
+      <p>El imponente campanario de 88 metros que domina la plaza principal. Subir las 366 escaleras para disfrutar de las mejores vistas panorámicas de Brujas y sus canales. En la plaza Markt también destaca el edificio <strong>Cranenburg</strong>, posada del siglo XV.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta sur:</strong> Wollestraat → canales de Dijver y puente Oude Brug → Catedral de San Salvador → Heilige-Geeststraat → Iglesia de Nuestra Señora → Memlingmuseum → Beguinaje
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Sint-Salvatorskathedrale · Catedral gótica</div>
+      <h3>Catedral de San Salvador</h3>
+      <p>La catedral más antigua de Brujas, con una imponente torre que domina el skyline de la ciudad.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Onze-Lieve-Vrouwekerk · Siglo XIII · Iglesia de ladrillo gótica más alta de los Países Bajos</div>
+      <h3>Iglesia de Nuestra Señora</h3>
+      <p>La iglesia gótica de ladrillo más alta de los Países Bajos. En su interior: las tumbas de <strong>María de Borgoña y su padre</strong> Carlos el Temerario, y la espectacular <strong><em>Virgen con el Niño</em> de Miguel Ángel</strong> — la única obra del artista que salió de Italia en vida del propio Miguel Ángel.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏥 Memlingmuseum · Antiguo hospital de San Juan</div>
+      <h3>Memlingmuseum — Hospital de San Juan</h3>
+      <p>Uno de los hospitales medievales mejor conservados de Europa, con una excepcional colección de pinturas de <strong>Hans Memling</strong>, flamenco del siglo XV.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Prinselijk Begijnhof · Fundado 1245 · Patrimonio UNESCO</div>
+      <h3>Beguinaje de Brujas</h3>
+      <p>Bellísimo convento blanco fundado en 1245, ideal para pasear en silencio alejado del bullicio turístico.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏦 Esquina Vlamingstraat con Academiestraat · Origen de la palabra "Bolsa"</div>
+      <h3>Casa Ter Beurse — El origen de la Bolsa</h3>
+      <p>La antigua casa patricia de la familia Ter Beurse, en cuya fachada los mercaderes medievales se reunían para comerciar. Su apellido dio origen a la palabra <em>"Bolsa"</em> en todos los idiomas occidentales. Cerca: el puente más antiguo de Brujas (Spanjaardstraat) y el acceso por la calle Vlamingstraat.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 9 -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Excursión a Bruselas</h2>
+        <div class="day-subtitle">Viernes 31 de Agosto · Tren nº 419 · 09:59h o 10:33h · ~3.040 pts · Vuelta 21:04h (nº 542)</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta desde la Estación Central:</strong> Caminar izquierda por Place de l'Albert → subir escaleras del <strong>Mont des Arts</strong> → Place Royale (Reales Museos de Bellas Artes a la izquierda) → <strong>Place du Grand Sablon</strong> → calle Sablon → <strong>Place du Petit Sablon</strong> → Regentschapsstraat → <strong>Palais du Roi</strong> → Parc de Bruxelles
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Place Royale · Mont des Arts</div>
+      <h3>Reales Museos de Bellas Artes de Bélgica</h3>
+      <p>Uno de los grandes museos europeos, con una colección que abarca desde los primitivos flamencos hasta el arte moderno, incluyendo obras de Rubens, Bruegel y Magritte.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Place du Grand Sablon · Place du Petit Sablon</div>
+      <h3>Las plazas del Sablon</h3>
+      <p>La elegante <strong>Place du Grand Sablon</strong>, corazón del barrio de antigüedades y chocolaterías de lujo. La coqueta <strong>Place du Petit Sablon</strong>, con 48 estatuillas gremiales medievales rodeando el jardín central.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Zona Europea:</strong> Metro dirección Mérode → Arco del Triunfo en el <strong>Parque del Cincuentenario</strong> → subir al barrio europeo → plaza <strong>Schuman</strong> → calle Wetstraat / Rue de la Loi (edificios principales de la Comunidad Europea)<br><br>
+      <strong>Centro histórico:</strong> Metro Schuman/Maelbeek → <strong>Bourse</strong> → Iglesia de San Nicolás → <strong>Rue des Bouchers</strong> (ideal para comer) → <strong>Galerías Reales Saint-Hubert</strong> → Catedral de San Miguel y Santa Gúdula → <strong>Grand-Place</strong> → Rue de l'Étuve / Rue de Lombard → <strong>Manneken Pis</strong>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🍺 Grand-Place · Patrimonio UNESCO · Siglo XVII</div>
+      <h3>Grand-Place — Gran Plaza de Bruselas</h3>
+      <p>Una de las plazas más espectaculares de Europa, rodeada de gremios medievales dorados y el majestuoso Ayuntamiento gótico. Declarada Patrimonio de la Humanidad por la UNESCO.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👶 Rue de l'Étuve · El símbolo más irreverente de Bruselas</div>
+      <h3>Manneken Pis</h3>
+      <p>La pequeña y célebre estatuilla de bronce (apenas 55 cm) que representa a un niño orinando y que se ha convertido en el símbolo más querido y peculiar de Bruselas. Cambia de traje más de 900 veces al año por distintas celebraciones.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">⏰ Si da tiempo · Atracciones periféricas</div>
+      <p><strong>Atomium</strong> (Patrimonio cultural belga) y <strong>Autoworld</strong> (museo del automóvil) · Tomar el metro · Entrada combinada ~6.680 pts</p>
+    </div>
+  </section>
+
+  <!-- DÍA 10 -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Excursión a Gante</h2>
+        <div class="day-subtitle">Sábado 1 de Septiembre · Tren 1809 · 10:05h o 11:05h · Weekend Ticket ~2.016 pts · Vuelta 20:55h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Brujas → Gante:</strong> Tren 1809 · 10:05h o 11:05h → Gent-Dampoort · ~4.320 pts (o 2.016 pts con Weekend Ticket)<br>
+      <strong>Ruta a pie:</strong> Dampoortstraat → Steendam → Belfortstraat → subir al Belfort → contemplar el Stadhuis → Hotel St. Jorishof → Limburgstraat → Catedral → Castillo de los Condes
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔔 Campanario · Patrimonio UNESCO · Panorámica de Gante</div>
+      <h3>Belfort de Gante + Stadhuis</h3>
+      <p>El campanario medieval de Gante, símbolo de la independencia de la ciudad. Junto a él, el <strong>Stadhuis</strong> (Ayuntamiento) con su fachada que mezcla gótico y renacentista. Cerca: el <strong>Hotel St. Jorishof</strong>, uno de los establecimientos hoteleros más antiguos de Europa (1228).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Sint-Baafskathedraal · Carlos V bautizado aquí en 1500 · Retablo Van Eyck</div>
+      <h3>Catedral de San Babón — La Adoración del Cordero Místico</h3>
+      <p>Donde el emperador <strong>Carlos V</strong> recibió el bautismo en el año 1500. Alberga el famosísimo políptico del altar mayor: <em>"La adoración del Cordero Místico"</em> de los hermanos <strong>Jan y Hubert van Eyck</strong> (1432), considerado uno de los grandes hitos de la pintura occidental. Detrás de la catedral: el complejo histórico de <strong>Sikkel</strong> (casas señoriales de los siglos XIII a XV).</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta hacia los muelles:</strong> Puente de San Miguel (Sint-Michielsbrug) → Plaza de las Torturas → muelles históricos → Groot Vleeshuis (antiguo mercado de la carne) → Sint-Veerleplein → Gravensteen
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Sint-Veerleplein · Castillo medieval · Uno de los más tenebrosos de Europa</div>
+      <h3>Gravensteen — Castillo de los Condes de Flandes</h3>
+      <p>Uno de los castillos medievales más imponentes y tenebrosos de Europa. Construido en 1180 por Felipe de Alsacia, conde de Flandes. Visitar el patio interior, la cripta con su colección de instrumentos de tortura y el cercano <strong>puente de los decapitados (Hoofdbrug)</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👑 Barrio Prinsenhof · Lugar de nacimiento de Carlos V (1500)</div>
+      <h3>Barrio de Carlos V — Prinsenhof</h3>
+      <p>La zona residencial señorial donde nació el emperador Carlos V en 1500, hijo de Felipe el Hermoso y Juana la Loca.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 11 -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Waterloo · Amberes</h2>
+        <div class="day-subtitle">Domingo 2 de Septiembre · Weekend Ticket · Vuelta 20:37h (tren nº 1842)</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚔️ Chaussée de Bruxelles 149 · Batalla 18 junio 1815 · Butte du Lion 3 km en autobús</div>
+      <h3>Waterloo — Campo de batalla · Butte du Lion</h3>
+      <p>El campo donde Napoleón Bonaparte fue derrotado definitivamente el 18 de junio de 1815. <strong>Museo Wellington:</strong> la posada donde durmió el duque de Wellington la víspera de la batalla. <strong>Butte du Lion</strong> (Colina del León): monumental montículo erigido donde el príncipe heredero de los Países Bajos resultó herido. Desde lo alto, panorámica completa del campo de batalla. <strong>Museo de Cera</strong> con personajes históricos de la batalla y el edificio circular del <strong>Panorama de la Batalla</strong>.</p>
+    </div>
+
+    <div class="transport">
+      <strong>→ Amberes:</strong> Tren 1809 · 10:05h · ~9.950 pts (o 4.648 pts con Weekend Ticket)<br>
+      <strong>Ruta a pie desde la estación:</strong> Avenidas De Keyserlei y Meir (comerciales) → Rubenshuis (izquierda) → Catedral de Nuestra Señora → Grote Markt → Oude Koornmarkt → Stadhuis → Vleeshuis → orilla del Escalda → Het Steen → muelle norte → Sint-Pauluskerk → Sint-Carolus-Borromeus → Kipdorp → Sint-Jacobskerk
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 A la izquierda de la avenida Meir · Casa-museo con jardín</div>
+      <h3>Rubenshuis — Casa-Museo de Rubens</h3>
+      <p>La casa-estudio del pintor barroco flamenco <strong>Peter Paul Rubens</strong>, con su elegante jardín renacentista italiano, conservada tal como la diseñó el propio artista en el siglo XVII.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Onze-Lieve-Vrouwekathedrale · 13:00–21:00h · Torre de 123 m · Gótico brabantino</div>
+      <h3>Catedral de Nuestra Señora de Amberes</h3>
+      <p>La catedral gótica más grande de los Países Bajos. Alberga cuatro obras maestras de Rubens, entre ellas <em>El descendimiento de la Cruz</em> y <em>La elevación de la Cruz</em>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Orilla del Escalda · Museo Naval Nacional</div>
+      <h3>Grote Markt · Vleeshuis · Castillo Het Steen</h3>
+      <p><strong>Grote Markt:</strong> La magnífica plaza mayor de Amberes, con el Ayuntamiento renacentista y las casas gremiales. <strong>Vleeshuis</strong> (Casa de la Carne): impresionante edificio gremial gótico. <strong>Het Steen:</strong> antiguo castillo medieval a orillas del río Escalda, que alberga el Museo Naval Nacional.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 12 -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Damme · Knokke-Heist</h2>
+        <div class="day-subtitle">Lunes 3 de Septiembre · Barco Lamme Goedzak 10:00h (30 min) · Tren a Knokke 15:00h / 15:34h / 17:20h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Brujas → Damme:</strong> Barco fluvial <em>Lamme Goedzak</em> a las 10:00h (30 min), en bicicleta bordeando el canal, o autobús línea 4 (norte de Brujas). Regreso: autobús 16:34h.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏘️ Pueblo medieval del siglo XIV · Ciudad literaria de Tijl Uilenspiegel · Torre iglesia 45 m / 206 escaleras</div>
+      <h3>Damme — El pueblo del pícaro de Flandes</h3>
+      <p>Precioso pueblo medieval que parece parado en el tiempo, a 7 km de Brujas por el canal. La <strong>Plaza del Mercado</strong> y su <strong>Ayuntamiento gótico del siglo XIV</strong> son imprescindibles. Justo enfrente: <strong>De Grote Sterre</strong>, la casa más antigua de Damme. Subir a la torre de la iglesia (45 m, 206 escaleras) para observar los canales desde lo alto. Damme es famoso por ser la ciudad literaria de <strong>Tijl Uilenspiegel</strong>, el pícaro de Flandes inmortalizado por Charles De Coster.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Brujas → Knokke:</strong> Tren 15:00h · 15:34h o 17:20h · 18 min · ~3.550 pts (o ~1.206 pts tarifa reducida)<br>
+      <strong>Trenes de vuelta:</strong> 19:34 · 20:07 · 21:07 (tren 5521) · último 22:07h
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ Costa belga · 18 min desde Brujas</div>
+      <h3>Knokke-Heist — La costa belga</h3>
+      <p>El balneario más elegante de la costa belga, conocido por sus galerías de arte, casino, largas playas y dunas protegidas. Paseo por el frente marítimo.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 13 -->
+  <section class="day-section" id="dia13">
+    <div class="day-header">
+      <div class="day-number">13</div>
+      <div class="day-info">
+        <h2>Vuelta a Ámsterdam · Westerkerk · Descartes</h2>
+        <div class="day-subtitle">Martes 4 de Septiembre · Tren 1809 · 10:05h · Brujas → Antwerpen-Berchem → Amsterdam Centraal</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> Brujas 10:05h (tren 1809) → Antwerpen-Berchem → transbordo tren nº 610 (11:35h, dirección Roosendaal / Amsterdam Centraal)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Westermarkt · La iglesia protestante más grande de los Países Bajos (1631)</div>
+      <h3>Westerkerk + Casa de Descartes</h3>
+      <p>Última tarde en el noroeste menos turístico de Ámsterdam. La <strong>Westerkerk</strong> en la plaza Westermarkt, cuya torre es el punto más alto de la ciudad histórica y lugar donde está enterrada la madre de Rembrandt. En el <strong>número 6 de Westermarkt</strong>: el lugar histórico donde vivió el filósofo <strong>René Descartes</strong> (<em>"Cogito ergo sum"</em>), que eligió Ámsterdam por su tolerancia religiosa.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 14 -->
+  <section class="day-section" id="dia14">
+    <div class="day-header">
+      <div class="day-number">14</div>
+      <div class="day-info">
+        <h2>Vuelo de regreso</h2>
+        <div class="day-subtitle">Miércoles 5 de Septiembre · Tren IC nº 2139 · 09:59h (Vía 13a/b) → Schiphol · Vuelo 14:35h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Traslado al aeropuerto:</strong> Tren Intercity nº 2139 desde Amsterdam Centraal a las 09:59h (vía 13a/b) → Aeropuerto de Schiphol<br>
+      <strong>Vuelo de regreso:</strong> Salida 14:35h
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎉 Fin del viaje</div>
+      <p>14 días recorriendo los canales de Ámsterdam, los molinos de Kinderdijk, los mercados de queso de Alkmaar, las calles medievales de Brujas, la Grand-Place de Bruselas, el retablo Van Eyck en Gante y los campos de Waterloo.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    🎬 VÍDEOS DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/qP9a8uOZXyA" title="Fotos Holanda y Bélgica 2001"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph1"><span style="font-size:2.5rem;opacity:0.4;">▶</span><span>FOTOS DEL VIAJE</span><span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VÍDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/jD_2TqXHqfA" title="Vídeo Holanda y Bélgica 2001"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph2"><span style="font-size:2.5rem;opacity:0.4;">▶</span><span>VÍDEO DEL VIAJE</span><span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Holanda y Bélgica 2001</strong> &nbsp;·&nbsp; 23 Agosto – 5 Septiembre 2001 · 14 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
+    'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
+    'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div'); item.className = 'gallery-item'; item.onclick = () => openLightbox(i);
+    const img = document.createElement('img'); img.src = src; img.alt = `Foto Holanda-Bélgica 2001 ${i+1}`; img.loading = 'lazy';
+    img.onerror = function() {
+      const ph = document.createElement('div');
+      ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
+      ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto '+(i+1)+'</span>';
+      item.replaceChild(ph, this);
+    };
+    item.appendChild(img); gallery.appendChild(item);
+  });
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) document.getElementById(id).style.display = 'none';
+  });
+  let currentPhoto = 0;
+  function openLightbox(idx) { currentPhoto = idx; document.getElementById('lb-img').src = photos[idx]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  function changePhoto(dir) { currentPhoto = (currentPhoto + dir + photos.length) % photos.length; document.getElementById('lb-img').src = photos[currentPhoto]; }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') changePhoto(-1); if (e.key === 'ArrowRight') changePhoto(1); });
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { navLinks.forEach(l => l.classList.remove('active')); const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`); if (a) a.classList.add('active'); } });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

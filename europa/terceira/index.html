@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terceira 2012 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.70) 0%, rgba(21,101,192,0.38) 60%, rgba(10,31,61,0.80) 100%),
+        url('https://images.unsplash.com/photo-1620998051604-95ff17ccc537?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 4rem 2rem 3rem; }
+
+    .intro { font-size: 1rem; font-weight: 500; line-height: 1.9; color: var(--muted); margin-bottom: 3rem; border-left: 3px solid var(--paper-dark); padding-left: 1.2rem; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2.5rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .highlight { background: var(--ink); color: white; padding: 1.4rem 1.8rem; margin-bottom: 0.9rem; border-left: 5px solid var(--accent-light); }
+    .highlight-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .highlight h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: white; margin-bottom: 0.5rem; }
+    .highlight p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.82); line-height: 1.8; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-islas-portuguesas">🇵🇹 Islas Portuguesas</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Terceira</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">🇵🇹 Azores · La Isla Lila · Atlántico</p>
+  <h1 class="hero-title">Terceira</h1>
+  <p class="hero-date">2012 · Azores · Portugal</p>
+  <div class="hero-pills">
+    <span class="pill">Angra do Heroísmo UNESCO</span>
+    <span class="pill">Algar do Carvão</span>
+    <span class="pill">Monte Brasil</span>
+    <span class="pill">Whale Watching</span>
+    <span class="pill">Hortensias</span>
+  </div>
+</header>
+
+<main class="content">
+
+  <div class="intro">
+    Terceira, también conocida como la <strong>isla Lila</strong> por la gran abundancia de hortensias que bordean sus carreteras, está localizada en el centro del archipiélago de las Azores, a unos 167 km de São Miguel. Con 382 km² y alrededor de 56.000 habitantes, es la tercera mayor isla del archipiélago. De forma elíptica (29 km de largo × 18 km de ancho), su naturaleza volcánica tiene su origen en el Rift de Terceira, con cráteres como la <strong>Caldeira de Guilherme Moniz</strong> (15 km de diámetro, el mayor del archipiélago) y el Pico de Santa Bárbara (1.023 m, el más alto de la isla).
+  </div>
+
+  <!-- ══ ANGRA DO HEROÍSMO ══ -->
+  <div class="section-title">🏛️ Angra do Heroísmo — Patrimonio Mundial UNESCO desde 1983</div>
+
+  <div class="highlight">
+    <div class="highlight-label">🏛️ UNESCO · Patrimonio Mundial desde 1983</div>
+    <h3>Angra do Heroísmo — La ciudad más grande de Terceira</h3>
+    <p>La capital fue devastada por un terremoto en 1980 y reconstruida con nuevos materiales, madera en especial para los tejados — esa madera sin tratar está causando hoy problemas con termitas en el centro histórico. Ciudad clave en la historia de la navegación de los S.XV y XVI: puerto de escala de los galeones que traían las riquezas de América y los navíos del comercio con la India. En 1832, desde aquí partió la expedición liberal que daría lugar a la Carta Constitucional de Portugal.</p>
+  </div>
+
+  <div class="place">
+    <div class="place-meta">🚶 City tour · ½ día · Comenzar en la Igreja de São Gonçalo</div>
+    <h3>Recorrido por Angra do Heroísmo</h3>
+    <p><strong>Rua da Sé:</strong> La calle principal de Angra. Muchas tiendas, la Sé Catedral y la pastelería con las <strong>Dona Amélia</strong>, el dulce típico de la isla. Horarios al público: 10:00-12:00 y 14:00-18:00h.<br><br>
+    <strong>Igreja de São Gonçalo</strong> (Convento, Rua da Rosa 9700-171): punto de inicio del recorrido. Reconstruida tras el terremoto. Las monjas estaban apartadas del mundo; el coro superior estaba reservado para ellas. Había una <em>hooda</em> rotatoria para situar paquetes, incluyendo bebés recién nacidos que eran dejados allí.<br><br>
+    <strong>Mercado de agricultores</strong> → <strong>Sé Catedral</strong> (breve parada) → <strong>Palacio da Presidencia</strong> (antiguo colegio de los Jesuitas, hoy museo y residencia de los Capitanes Generales, lleno de hermosos candelabros, alfombras y muebles) → <strong>Jardim Duque da Terceira</strong> (hermoso jardín público) → <strong>Paços do Concelho</strong> (Ayuntamiento, con ropa de las Festas Sanjoaninas en exhibición).</p>
+  </div>
+
+  <div class="place">
+    <div class="place-meta">🏰 Fortaleza · ~4,5 km de muralla · Monte Brasil</div>
+    <h3>Fuerte de São João Baptista · Monte Brasil</h3>
+    <p>El <strong>Fuerte de São João Baptista</strong> es una gran pared fortificada de cerca de 4,5 km de largo, uno de los más importantes del Atlántico. El <strong>Monte Brasil</strong>, clasificado como Paisaje Nacional Protegido, ofrece caminos para pasear y una vista fantástica sobre el océano y la ciudad de Angra do Heroísmo. Primera vez allí: inmediatamente vimos un ciervo deambulando por la zona de juegos. Caminamos entre nenúfares floreciendo y encontramos jaulas con animales distintos esparcidas por todas partes, como una búsqueda del tesoro.</p>
+  </div>
+
+  <div class="place">
+    <div class="place-meta">🏛️ Museo · Convento de São Francisco</div>
+    <h3>Museo de Angra do Heroísmo</h3>
+    <p>Localizado en el antiguo Convento de São Francisco, contiguo a la iglesia de Nossa Senhora da Guia. Recoge el patrimonio histórico de la isla.</p>
+  </div>
+
+  <div class="place">
+    <div class="place-meta">⛪ Imperios · Por toda la isla · Testigos de devoción popular</div>
+    <h3>Los Imperios del Divino Espíritu Santo</h3>
+    <p>Existen en todas las pedanías de la isla. Se caracterizan por un vistoso colorido y son testigos de la devoción popular al Divino Espíritu Santo, una de las tradiciones más características de las Azores.</p>
+  </div>
+
+  <!-- ══ ALGAR DO CARVÃO ══ -->
+  <div class="section-title">🌋 Algar do Carvão — El volcán que se puede visitar por dentro</div>
+
+  <div class="highlight">
+    <div class="highlight-label">🌋 Reserva Natural Geológica · Visita obligatoria · Entrada ~5€</div>
+    <h3>Algar do Carvão — Túnel de lava más grande de Portugal</h3>
+    <p>Probablemente la mayor atracción geológica del centro de Terceira. Esta caverna volcánica fue creada durante una erupción hace unos 2.000 años. La entrada se realiza bajando por peldaños en la chimenea de un volcán extinto que llevan hasta un lago subterráneo alimentado de agua de lluvia (puede alcanzar 15 m de profundidad según la temporada). El cono interior tiene unos 100 m de altura. Tiene <strong>estalactitas de silicio</strong>, algo muy poco común. Se ve la trayectoria que ha ido siguiendo la lava.<br><br>
+    Es uno de los pocos volcanes del mundo que se pueden visitar por dentro. Bien organizado con película como aperitivo. El personal es muy informado. Guía disponible en inglés y portugués.<br><br>
+    ⚠️ No apto para claustrofóbicos · Usar calzado adecuado (hay zonas resbaladizas) · Llevar chubasquero y ropa de abrigo ligera (sudadera o chaqueta fina) · No hay acceso para discapacitados.</p>
+  </div>
+
+  <div class="tip">
+    <div class="tip-label">🌋 Visita combinada con descuento</div>
+    <h3>Algar do Carvão + Gruta do Natal</h3>
+    <p>Los billetes para el Algar do Carvão y la Gruta do Natal pueden comprarse juntos a precio de descuento. La Gruta do Natal está a menos de 8 km y puede visitarse en la misma tarde. También cercanas: las grutas de Enxofre, Cabrito y Balcões.</p>
+  </div>
+
+  <!-- ══ FURNAS DO ENXOFRE ══ -->
+  <div class="section-title">💨 Furnas do Enxofre — Azufre volcánico</div>
+
+  <div class="place">
+    <div class="place-meta">💨 Actividad volcánica · Humo y azufre · ~2 millas del Algar</div>
+    <h3>Furnas do Enxofre</h3>
+    <p>El constante humo que se libera del suelo, con olor intenso a azufre y un paisaje desolador... pero al mismo tiempo bello e imperdible. El contenido de azufre es más elevado aquí que en el Algar do Carvão. Se puede visitar en la misma tarde que el Algar, ya que está a solo 2 millas de distancia. (<em>"Se o inferno estivesse na terra era aqui"</em> — Si el infierno estuviera en la tierra, sería aquí.)</p>
+  </div>
+
+  <!-- ══ OTROS PUNTOS ══ -->
+  <div class="section-title">🌊 Naturaleza y costa</div>
+
+  <div class="place">
+    <div class="place-meta">🌊 Piscinas naturales · Litoral norte · Primer museo del vino de las Azores</div>
+    <h3>Biscoitos — Piscinas y Museo del Vino</h3>
+    <p>El litoral norte está marcado por evidencias de actividad volcánica con varios <em>mistérios</em> (campos de lava) y las famosas <strong>piscinas de Biscoitos</strong> en la costa. Aquí también se encuentra el primer museo del vino del archipiélago: la <strong>Casa Agrícola Brum</strong>, fundada por Francisco Maria Brum en 1890 y administrada hoy por la quinta generación de la familia.</p>
+  </div>
+
+  <div class="place">
+    <div class="place-meta">🏘️ Centro histórico · S. XVI · Patrimonio arquitectónico</div>
+    <h3>Praia da Vitória</h3>
+    <p>El patrimonio arquitectónico se concentra en las iglesias de Matriz y de Santa Casa da Misericórdia y en el Ayuntamiento, edificio del S.XVI de traza característica, con escalinata amplia, porche y campanario.</p>
+  </div>
+
+  <!-- ══ WHALE WATCHING ══ -->
+  <div class="section-title">🐋 Whale Watching</div>
+
+  <div class="place">
+    <div class="place-meta">🐋 Ballenas y delfines · 98% de avistamiento garantizado · Todo el año</div>
+    <h3>Whale Watching — Marsol Viagens Marítimo Turísticas</h3>
+    <p>Cañada da Junta 36 – Feteira, 9700 Angra do Heroísmo · Tel. <strong>+351 295 663 915</strong> · Móvil: <strong>+351 969 212 218</strong><br><br>
+    De las numerosas especies que pasan por las Azores en sus rutas migratorias, destaca la <strong>ballena azul</strong>, visible en primavera y otoño entre las islas de Terceira y São Jorge. En el 98% de los viajes se avistan ballenas o delfines; algunos operadores reembolsan el billete en el raro caso de no avistamiento. En nuestra salida vimos muchos <strong>delfines moteados</strong> (saltaron mucho y se acercaron al barco) y un grupo de <strong>ballenas piloto</strong>. El equipo es muy competente: antes de la salida hacen un briefing explicando cómo se desarrollará el tour y los comportamientos de los animales.</p>
+  </div>
+
+  <!-- ══ HISTORIA ══ -->
+  <div class="section-title">📜 Historia de Terceira</div>
+
+  <div class="place">
+    <div class="place-meta">📜 Desde 1450 · Puerto clave del Atlántico</div>
+    <h3>Historia resumida</h3>
+    <p>El poblamiento comenzó alrededor de 1450, cuando el Infante D. Henrique concedió la capitanía al flamenco Jácome de Bruges. En los S.XV y XVI fue puerto de escala fundamental para los galeones que traían las riquezas de América y los navíos del comercio con India.<br><br>
+    En 1580, cuando Felipe II de España subió al trono portugués, Terceira apoyó al pretendiente portugués Dom António. En 1581 las tropas españolas fueron derrotadas en la <strong>Batalla de Salga</strong>. En 1583, una flota mayor comandada por Álvaro de Bazán finalmente dominó la isla.<br><br>
+    En 1828, la isla se convirtió en la principal base de la resistencia liberal. En 1829, la fuerza absolutista fue derrotada en Vila da Praia. En <strong>1832</strong>, desde Terceira partió la expedición liberal que desembarcó en Mindelo (norte de Portugal), dando lugar a la proclamación de la <strong>Carta Constitucional y la instauración del liberalismo en Portugal</strong>.</p>
+  </div>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/5KtVJfInyng" title="Terceira 2012 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+       <iframe src="https://www.youtube.com/embed/KO9xYbD4E_M" title="Terceira 2012 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Terceira 2012</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = ['fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',];
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Terceira ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+</script>
+
+</body>
+</html>

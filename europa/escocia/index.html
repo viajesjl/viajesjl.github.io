@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escocia 2002 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.25) 55%, rgba(10,31,61,0.78) 100%),
+        url('https://images.unsplash.com/photo-1589489873423-d1745278a8f4?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.85; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.9; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .leyenda { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.transport { background: rgba(21,101,192,0.25); border: 1px dashed var(--accent-light); }
+
+    /* Explorer Pass badge */
+    .pass { display: inline-block; background: #1a3a1a; color: #a5d6a7; font-family: 'Barlow Condensed', sans-serif; font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.15rem 0.5rem; margin-left: 0.4rem; vertical-align: middle; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+    @media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } .day-number { width: 50px; height: 50px; font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Escocia 2002</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Escocia</div>
+  <h1 class="hero-title">Escocia</h1>
+  <div class="hero-date">31 Julio – 11 Agosto 2002 · 12 días</div>
+  <div class="hero-pills">
+    <span class="pill">Edimburgo</span>
+    <span class="pill">Stirling</span>
+    <span class="pill">St. Andrews</span>
+    <span class="pill">Banchory · Deeside</span>
+    <span class="pill">Inverness</span>
+    <span class="pill">Lago Ness</span>
+    <span class="pill">Ben Nevis</span>
+    <span class="pill">Isla de Skye</span>
+    <span class="pill">Isla de Mull</span>
+    <span class="pill">Trossachs</span>
+    <span class="pill">Castillo Doune</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia0">Día 0 · Llegada Edimburgo</a>
+  <a href="#dia1">Día 1 · Edimburgo histórico</a>
+  <a href="#dia2">Día 2 · Edimburgo miradores</a>
+  <a href="#dia3">Día 3 · Stirling</a>
+  <a href="#dia4">Día 4 · St. Andrews · Glamis · Banchory</a>
+  <a href="#dia5">Día 5 · Castillos reales · Inverness</a>
+  <a href="#dia6">Día 6 · Lago Ness · Ben Nevis</a>
+  <a href="#dia7">Día 7 · Wester Ross · Isla de Skye</a>
+  <a href="#dia8">Día 8 · Isla de Skye</a>
+  <a href="#dia9">Día 9 · Ferry · Isla de Mull</a>
+  <a href="#dia10">Día 10 · Mull · Oban · Trossachs</a>
+  <a href="#dia11">Día 11 · Loch Katrine · Trossachs</a>
+  <a href="#dia12">Día 12 · Doune · Vuelo de regreso</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">🎟️ Explorer Pass — Imprescindible</div>
+    <p>Adquirir el <strong>Explorer Pass de Historic Environment Scotland</strong> al llegar: incluye entrada gratuita a Castillo de Edimburgo, Craigmillar, Stirling, St. Andrews, Urquhart, Doune y más. Comprar en la primera taquilla que se visite. Las entradas marcadas con <span class="pass">Explorer Pass</span> están incluidas en el bono.</p>
+  </div>
+
+  <div class="leyenda">
+    <div class="leyenda-item"><div class="leyenda-dot place"></div> Lugar de interés</div>
+    <div class="leyenda-item"><div class="leyenda-dot hotel"></div> Alojamiento</div>
+    <div class="leyenda-item"><div class="leyenda-dot resto"></div> Restaurante / Ocio</div>
+    <div class="leyenda-item"><div class="leyenda-dot transport"></div> Transporte / Itinerario</div>
+  </div>
+
+  <!-- ═══ DÍA 0 — LLEGADA ═══ -->
+  <section class="day-section" id="dia0">
+    <div class="day-header">
+      <div class="day-number">0</div>
+      <div class="day-info">
+        <h2>Llegada a Edimburgo</h2>
+        <div class="day-subtitle">Miércoles 31 de Julio · BCN → Londres Stansted → Edimburgo</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo 1:</strong> Salida 12:55h → Llegada Londres Stansted 14:20h · Almuerzo en las terminales<br>
+      <strong>Vuelo 2:</strong> Salida Stansted 16:25h → Llegada Edimburgo 17:40h<br>
+      <strong>Al aeropuerto:</strong> Estar en el aeropuerto de origen a las 11:00h para facturar<br>
+      <strong>Traslado al centro:</strong> <strong>Airlink Express</strong> (más cómodo que el tren) · ~25 min hasta Waverley Station<br>
+      <strong>Al hotel a pie:</strong> Subir por South St. Andrew Street → girar derecha en York Place → Broughton Street → segunda calle a la derecha: <strong>Forth Street</strong>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · 3 noches · Edimburgo</div>
+      <h4>Hotel Regent House</h4>
+      <p>3-5 Forth Street · ~10 min a pie desde Waverley Station · Broughton Street repleta de excelentes restaurantes para cenar</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍺 Primera noche · Princes Street y Royal Mile</div>
+      <h4>Paseo por Princes Street + pub en la Royal Mile</h4>
+      <p>Tiempo para ducharse, cambiarse y salir a pasear por la emblemática Princes Street. Si hay tiempo, bajar por el puente North Bridge hacia la Royal Mile para buscar un pub tradicional donde cenar. Si se hace tarde, Broughton Street junto al hotel tiene excelentes restaurantes.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 1 — EDIMBURGO HISTÓRICO ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Edimburgo histórico — Royal Mile · Castillo</h2>
+        <div class="day-subtitle">Jueves 1 de Agosto · 08:00h · Oficina de Turismo nº 3 Princes Street</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Inicio:</strong> Desayuno 08:00h → Oficina de Turismo (3 Princes Street) para folletos y mapas → subir por la Royal Mile hacia el Castillo
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗼 08:00–20:00h · 10 £ · 61 metros · 267 escalones en espiral</div>
+      <h3>Scott Monument</h3>
+      <p>Impresionante aguja gótica victoriana de 61 metros dedicada al escritor Sir Walter Scott. Vale la pena subir los 267 estrechos escalones en espiral para disfrutar de una de las mejores panorámicas aéreas de la ciudad.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🥁 Military Tattoo · Taquillas en Market Street (detrás de la estación)</div>
+      <p>Antes de subir a la Royal Mile, pasar por las taquillas de Market Street para gestionar las entradas del famoso festival militar de Edimburgo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 09:00–19:00h · Gratuita · Torre en forma de corona · Iglesia madre del presbiterianismo</div>
+      <h3>St. Giles' Cathedral</h3>
+      <p>Considerada la iglesia madre del presbiterianismo escocés. Destaca por su icónica torre en forma de corona real y sus vidrieras medievales. Justo detrás se encuentra el antiguo edificio del Parlamento escocés.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏠 Lawnmarket, Royal Mile · 10:00–17:00h · 9 £ · Siglo XVII</div>
+      <h3>Gladstone's Land</h3>
+      <p>Una de las casas de comerciantes del siglo XVII mejor conservadas de la Royal Mile. Una ventana en el tiempo para ver cómo era la vida diaria, el hacinamiento y los lujos de la Edimburgo renacentista.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🥃 354 Castlehill · 09:30–17:30h · 5 £ adultos · Paseo interactivo en barril</div>
+      <h3>The Scotch Whisky Heritage Centre</h3>
+      <p>Atracción interactiva que enseña la historia y los secretos de la destilación del whisky escocés mediante un paseo en barril por las distintas etapas de elaboración.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔮 Final de Lawnmarket · 09:30–19:30h · 8 £ familiar · Torre victoriana</div>
+      <h3>Cámara Obscura & World of Illusions</h3>
+      <p>Ubicada en una torre victoriana: ilusiones ópticas, trucos de espejos, hologramas y la famosa "cámara oscura" que proyecta imágenes en vivo de la ciudad en movimiento mediante lentes mágicas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 09:30–17:00h · 20 £ <span class="pass">Explorer Pass</span> · Roca volcánica · One O'Clock Gun a las 13:00h</div>
+      <h3>Castillo de Edimburgo</h3>
+      <p>La fortaleza más icónica de Escocia, erigida sobre una roca de origen volcánico. <strong>Imprescindible:</strong> Sala de la Corona (custodia las Joyas de la Corona Escocesa y la Piedra del Destino) y los Apartamentos Reales. <strong>A las 13:00h en punto:</strong> estar en la Half Moon Battery para presenciar el disparo del cañón tradicional (One O'Clock Gun). También: la diminuta Capilla de Santa Margarita, el edificio más antiguo de Edimburgo.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Tarde:</strong> Pasear por los jardines de Princes Street al salir del castillo · Buscar sitio para comer · Autobús urbano hacia el este para subir a Calton Hill
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Opcional · 09:30–18:00h · 16,30 £ · Residencia oficial de la monarquía en Escocia</div>
+      <h3>Palace of Holyroodhouse (opcional si da tiempo)</h3>
+      <p>Si las piernas aguantan. Si el horario va justo, visitar en su lugar la elegante New Town: Charlotte Square y las tiendas de George Street.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — EDIMBURGO MIRADORES ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Edimburgo — Holyroodhouse · Arthur's Seat · Calton Hill · Canongate</h2>
+        <div class="day-subtitle">Viernes 2 de Agosto · Final de la Royal Mile → Calton Hill</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👑 Final de la Royal Mile · 09:30–18:00h · 16,30 £ · María Estuardo</div>
+      <h3>Palace of Holyroodhouse</h3>
+      <p>Residencia oficial de la monarquía británica en Escocia. Famoso por haber sido el hogar de <strong>María Estuardo</strong>. Permite visitar los suntuosos Apartamentos de Estado y las evocadoras ruinas de la abadía agustina del siglo XII.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌋 Parque Holyrood · Acceso gratuito · ~30 min hasta la cima · Volcán extinto</div>
+      <h3>Arthur's Seat</h3>
+      <p>Antiguo volcán extinto situado en el inmenso parque que rodea el palacio (acceso gratuito con el pase). La caminata hasta la cima toma aproximadamente media hora y ofrece vistas salvajes e incomparables de toda la costa de Edimburgo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪀 Canongate · 10:00–12:00h · Gratuito · El primer museo del mundo dedicado a la infancia</div>
+      <h3>Museum of Childhood</h3>
+      <p>De vuelta por Canongate. El primer museo del mundo dedicado a la historia de la infancia, con una nostálgica colección de juguetes y juegos de diversas épocas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚖️ Canongate · Gratuito · Antiguo juzgado y prisión</div>
+      <h3>Canongate Tolbooth</h3>
+      <p>El antiguo edificio del juzgado y prisión del distrito, reconvertido en museo histórico de la ciudad de acceso gratuito.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗿 Waterloo Place · Nelson Monument 10:00–18:00h · 8 £ · ~5,90 £ con Explorer Pass</div>
+      <h3>Calton Hill — Nelson Monument</h3>
+      <p>Subir utilizando las escaleras de Waterloo Place (junto a Regent Road y Regent Gardens). En el complejo: el Nelson Monument y el imponente National Monument, la inacabada réplica del Partenón ateniense que los edimburgués llaman "la vergüenza de Edimburgo" por haber quedado sin terminar por falta de fondos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 5 km sureste (S.T. Leonard's Street) · 14:30–18:30h <span class="pass">Explorer Pass</span> · Refugio de María Estuardo</div>
+      <h3>Craigmillar Castle (opcional)</h3>
+      <p>Autobús corto de ~20 min. Fortaleza medieval perfectamente conservada, conocida como el "otro castillo de Edimburgo", que sirvió de refugio a la reina María Estuardo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — STIRLING ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Stirling — La cuna de los héroes</h2>
+        <div class="day-subtitle">Sábado 3 de Agosto · Tren 09:33 · 10:03 o 10:33h · 18 £ ida y vuelta · 49 min</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Tren:</strong> Edimburgo → Stirling · Day Return ~18 £ · Trenes a las 09:33 · 10:03 · 10:33h · 49 min<br>
+      <strong>Al llegar:</strong> Oficina de Turismo en la ciudad vieja (09:30–18:00h) · Entrada combinada Castillo + Argyll's Lodging: 13 £ o gratuito con <span class="pass">Explorer Pass</span>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Uno de los castillos más grandes e importantes de Escocia · Guerras de independencia · Dinastía Estuardo</div>
+      <h3>Castillo de Stirling <span class="pass">Explorer Pass</span></h3>
+      <p>Testigo de las guerras de independencia escocesa y hogar de la dinastía Estuardo. Ofrece vistas impresionantes de los campos de batalla históricos que rodean la ciudad.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 10:00–17:00h · Gratuita · Siglo XV · Marcas de balas de los asedios en los muros</div>
+      <h3>Church of the Holy Rude</h3>
+      <p>Iglesia gótica del siglo XV donde fue coronado el rey Jacobo VI de Escocia. Todavía conserva en sus muros de piedra las marcas de las balas de los asedios al castillo.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍺 Almuerzo · Casco histórico de Stirling</div>
+      <h4>Taberna o cafetería del casco histórico</h4>
+      <p>Comer en alguna taberna o cafetería antes de la visita vespertina.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗡️ Abbey Craig · ~9,50 £ · 246 escalones · Homenaje a William Wallace</div>
+      <h3>National Wallace Monument</h3>
+      <p>Impresionante torre victoriana sobre el acantilado de Abbey Craig, homenaje al héroe nacional William Wallace. Para llegar al mirador superior hay que coronar una escalera de caracol de 246 escalones, desde donde se contempla el famoso puente de la batalla de Stirling.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Regreso:</strong> Trenes desde Stirling a las 19:35 · 20:05 · 20:35h → Edimburgo
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — ST. ANDREWS · GLAMIS · BANCHORY ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Recogida del coche · St. Andrews · Glamis · Dunnottar · Banchory</h2>
+        <div class="day-subtitle">Domingo 4 de Agosto · Europcar East London Street · 12:00h · ¡Conducir por la izquierda!</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Recogida:</strong> Europcar, East London Street · 12:00h<br>
+      <strong>Salida de Edimburgo:</strong> Forth Street → Broughton Street → rotonda → East London Street → York Place → Queen Street → gran rotonda → Queensferry Road (A90) dirección norte → <strong>Forth Road Bridge</strong> (peaje 180 p.) → Fife<br>
+      <strong>A St. Andrews:</strong> A90 → M90 salida 8 → A91 por Cupar → St. Andrews (~40 km)<br>
+      <strong>Nota:</strong> Si hay tiempo antes de las 12:00h → Royal Museum of Antiquities y Scottish National Portrait Gallery (1 Queen Street, abren 09:30h)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 09:30–18:30h · 10 £ <span class="pass">Explorer Pass</span> · Catedral más grande de Escocia · Túneles de asedio en la roca</div>
+      <h3>St. Andrews Cathedral & Castle</h3>
+      <p>Las imponentes ruinas de lo que fue la catedral más grande de Escocia, rodeada por un bellísimo cementerio medieval frente al Mar del Norte. Al lado: las ruinas de su castillo fortificado con túneles subterráneos de asedio minados en la roca.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛳ Final de North Street · La cuna mundial del golf · Royal and Ancient Golf Club</div>
+      <h3>The Old Course — Royal and Ancient Golf Club</h3>
+      <p>El campo de golf más famoso y antiguo del mundo, considerado la cuna de este deporte. El propio Old Course se puede contemplar desde el exterior.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> Cupar → desvío derecha a Leuchars → A92 → A90 → Dundee → A90 norte hacia Forfar (19 km) → desvío A928 en Todhills hacia Glamis
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 A928 Todhills · 10:00–17:30h (último pase 16:45h) · 6 £ · Hogar de infancia de la Reina Madre</div>
+      <h3>Glamis Castle</h3>
+      <p>Uno de los castillos más fotogénicos y rodeados de leyendas de fantasmas de Escocia. Fue el hogar de infancia de la <strong>Reina Madre</strong>. Si el horario va muy justo, detenerse a fotografiarlo y contemplarlo desde el exterior.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Acantilados de Stonehaven · Una de las fortalezas más espectaculares del mundo</div>
+      <h3>Dunnottar Castle (Stonehaven)</h3>
+      <p>Si el tiempo acompaña, acercarse a los espectaculares acantilados de Stonehaven para contemplar las ruinas de Dunnottar, fortaleza medieval encaramada de forma imposible sobre una roca rodeada por el mar.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Desde Stonehaven:</strong> Carretera escénica A957 hacia el interior hasta cruzar la A93 → girar izquierda → pueblo de Banchory
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Banchory</div>
+      <h4>Douglas Arms Hotel</h4>
+      <p>High Street, Banchory · Pasear por las orillas del río Dee y cenar en el pueblo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — CASTILLOS REALES · INVERNESS ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Crathes · Drum · Balmoral · Cairngorms · Culloden · Inverness</h2>
+        <div class="day-subtitle">Lunes 5 de Agosto · Ruta del Valle del Dee (Deeside) → Cruce del Parque Nacional Cairngorms</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Jardines desde 09:30h · Interior 11:00–17:30h · 12 £ familia · Techos pintados jacobinos · Jardines de tejos</div>
+      <h3>Crathes Castle</h3>
+      <p>Precioso castillo de cuento de hadas del siglo XVI que destaca por sus espectaculares techos pintados jacobinos y unos jardines amurallados de tejos esculpidos con fama mundial.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 5 km de Crathes dirección Aberdeen · 13:30–17:30h · 12 £ · Torre del siglo XIII · Jardín de rosas</div>
+      <h3>Drum Castle</h3>
+      <p>Una de las torres de homenaje del siglo XIII más antiguas de Escocia y un precioso jardín histórico de rosas.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta Deeside:</strong> Cambiar sentido dirección oeste por A93 → Ballater (balneario victoriano) → Braemar → inmediaciones de Balmoral<br>
+      <strong>Parque Nacional Cairngorms:</strong> A939 dirección Tomintoul (pueblo a mayor altitud de las Highlands · carretera estrecha pero paisajes sublimes) · Parar a comer en la plaza del pueblo<br>
+      <strong>Zona de whiskies:</strong> B9136 → Glenfarclas y Glenlivet (visitas 10:00–18:00h · ~7 £) → A85 → A938 por Carrbridge → A9 norte dirección Inverness
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Residencia de verano de la Familia Real Británica · Contemplar desde el exterior</div>
+      <h3>Balmoral Castle</h3>
+      <p>La famosa residencia de verano oficial de la Familia Real Británica en Escocia, en pleno Valle del Dee.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚔️ Desvío B9006 antes de Daviot · 16 abril 1746 · Último enfrentamiento armado en suelo británico</div>
+      <h3>Culloden Battlefield</h3>
+      <p>Justo antes de entrar a Inverness, desvío a la derecha por la B9006. Las sobrecogedoras landas de Culloden, lugar histórico de la trágica batalla del 16 de abril de 1746, donde las tropas británicas derrotaron definitivamente al ejército jacobita de los clanes escoceses, cambiando el destino de las Highlands para siempre.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Inverness · 2 noches</div>
+      <h4>Hotel Glen Mhor</h4>
+      <p>Ness Bank / Glenurquhart Road · Al cruzar el puente peatonal Greig Street Bridge, a mano izquierda hay excelentes opciones para cenar junto a la animada orilla del río Ness.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — LAGO NESS · BEN NEVIS ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Lago Ness · Urquhart · Nessie · Ben Nevis · Fort William</h2>
+        <div class="day-subtitle">Martes 6 de Agosto · A82 · 109 km hasta Spean Bridge</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> A82 bordeando toda la fosa del Lago Ness dirección suroeste → 109 km totales hasta Spean Bridge
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 09:30–18:30h · 10 £ <span class="pass">Explorer Pass</span> · Cabo del Lago Ness · Uno de los castillos más grandes de Escocia</div>
+      <h3>Castillo de Urquhart</h3>
+      <p>Las icónicas ruinas medievales situadas de forma espectacular sobre un cabo del Lago Ness. Ofrece las mejores oportunidades fotográficas del lago.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦕 Drumnadrochit · Exposición científica y multimedia sobre el mito de Nessie</div>
+      <h3>Official Loch Ness Exhibition</h3>
+      <p>Parada breve en Drumnadrochit para visitar el centro oficial de exposiciones, donde se analiza de forma científica y multimedia el mito del monstruo del Lago Ness.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Fort Augustus · Sistema de esclusas escalonadas · Canal Caledoniano</div>
+      <h3>Fort Augustus — Esclusas del Canal Caledoniano</h3>
+      <p>Precioso pueblo famoso por su espectacular sistema de esclusas escalonadas que conectan el Canal Caledoniano con el Lago Ness.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛰️ Fort William · Nevis Range · Teleférico hasta 650 m · El pico más alto de Gran Bretaña</div>
+      <h3>Ben Nevis — Nevis Range + Teleférico de montaña</h3>
+      <p>Complejo de esquí y montaña Nevis Range. El teleférico sube hasta los 650 metros en las faldas de Ben Nevis. <strong>Almorzar arriba</strong> en el restaurante panorámico de la estación superior.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🦌 Alternativas en Fort William</div>
+      <p><strong>Highland Wildlife Park</strong> (A86 hacia Kingussie · 10:00–17:00h · 20 £): bisontes, ciervos y gatos salvajes escoceses en semilibertad.<br><strong>Strathspey Steam Railway</strong> (Aviemore · ~13 £): tren de vapor de 8 km por los bosques de Kincraig · salidas 09:30–17:00h.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Regreso:</strong> A9 norte de vuelta a Inverness para descansar.
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 7 — WESTER ROSS · ISLA DE SKYE ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Corrieshalloch · Wester Ross · Inverewe · Isla de Skye</h2>
+        <div class="day-subtitle">Miércoles 7 de Agosto · A9 norte → A835 → A832 · 245 km llenos de curvas</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta de salida:</strong> Inverness → A9 norte → desvío A835 (Contin / Garve) → 30 km → girar izquierda A832
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Puente colgante victoriano · Cascadas Measach · 46 m de caída libre</div>
+      <h3>Corrieshalloch Gorge</h3>
+      <p>Impresionante y profundo desfiladero boscoso. Un vertiginoso puente colgante victoriano cruza la garganta sobre las espectaculares cascadas de Measach de 46 metros de caída libre.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 09:30–21:00h · 14 £ · Corriente del Golfo · Plantas tropicales en las Highlands</div>
+      <h3>Inverewe Garden</h3>
+      <p>Uno de los jardines botánicos más sorprendentes del norte del mundo. Gracias al microclima templado de la Corriente del Golfo, en este remoto rincón de las Highlands crecen exuberantes plantas exóticas, palmeras y eucaliptos.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta costera A832:</strong> Aultbea → Gairloch · Mirador frente a Isla de Ewe · Aparcar antes de Poolewe para ver las <strong>Cascadas Victoria</strong> junto al Loch Maree · Aultroy Visitor Centre (10:00–17:00h)<br><br>
+      <strong>En Kinlochewe, dos opciones:</strong><br>
+      · <strong>Opción rápida:</strong> Recto → Achnasheen → A890 bordeando Loch Carron hacia el sur<br>
+      · <strong>Opción espectacular (si hay tiempo):</strong> A896 → Torridon → carretera alpina de un solo carril con apartaderos (Single Track Road) → Shieldaig → Lochcarron<br><br>
+      <strong>A Skye:</strong> Subir el puerto de montaña → A87 → Kyle of Lochalsh → <strong>Skye Bridge</strong> (peaje 6 £) · Continuar A87 norte → Portree → A855 norte hasta Staffin
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · 2 noches · Norte de la Isla de Skye</div>
+      <h4>Hotel en Staffin</h4>
+      <p>~800 m de la carretera de Uig · Mirador <strong>Gairloch View</strong> con increíbles vistas en el camino.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 8 — ISLA DE SKYE ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Isla de Skye — Kilt Rock · Duntulm · Dunvegan · Talisker · Old Man of Storr</h2>
+        <div class="day-subtitle">Jueves 8 de Agosto · Península de Trotternish norte → Dunvegan sur → Portree</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪨 Costa norte Staffin · Acantilado de columnas basálticas · Cascada al mar</div>
+      <h3>Kilt Rock</h3>
+      <p>Impresionante acantilado de columnas basálticas bautizado así por su parecido con los pliegues de una falda escocesa, desde donde una cascada se desploma directamente al mar.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 11 km norte de Staffin · Clan MacDonald · Ballenas y delfines visibles desde el acantilado</div>
+      <h3>Castillo de Duntulm</h3>
+      <p>Dramáticas ruinas de un antiguo baluarte del clan MacDonald colgado sobre un acantilado escarpado. A veces se divisan ballenas y delfines en el océano.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏡 Kilmuir · 09:30–17:30h · 5,50 £ · Cabañas con tejado de paja del siglo XIX</div>
+      <h3>Skye Museum of Island Life</h3>
+      <p>Precioso museo al aire libre compuesto por un conjunto de cabañas tradicionales con tejado de paja (croft houses) que muestran las duras condiciones de la vida rural en la isla durante el siglo XIX.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Tarde:</strong> A850 sur → Bernisdale → Dunvegan
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 10:00–17:30h · 17 £ · Castillo habitado más antiguo de Escocia · Clan MacLeod · Fairy Flag</div>
+      <h3>Dunvegan Castle</h3>
+      <p>El castillo habitado de forma continua más antiguo de Escocia, sede histórica del Clan MacLeod. Custodia la mítica <strong>Fairy Flag</strong> (Bandera de las Hadas), un retal de seda medieval que según la leyenda otorga la victoria en batalla al clan. Hermosos jardines arbolados y restaurante para almorzar.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🥃 Carbost · B8009 desde Drynoch · Whisky con carácter marino y turbio</div>
+      <h3>Destilería Talisker</h3>
+      <p>La famosa destilería de Skye, cuyo destilado tiene un marcado carácter turbio y marino por el agua de los manantiales de la isla.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛰️ Glenbrittle · Pista de un solo carril · Playa de arena negra · Cuillin Hills</div>
+      <h3>Glenbrittle — Cuillin Hills</h3>
+      <p>Conducir por la sinuosa carretera de un solo carril hasta el asentamiento de Glenbrittle, a los pies de las imponentes y oscuras montañas Cuillin Hills, con una preciosa playa de arena negra al final del valle.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗿 Camino de vuelta a Staffin · Monolito gigantesco · Símbolo icónico de la isla</div>
+      <h3>Old Man of Storr</h3>
+      <p>De camino de vuelta a Staffin por Portree (famosa por su fotogénico puerto con casitas de colores brillantes): parada en el sendero del Old Man of Storr, el icónico y gigantesco monolito de piedra que domina todo el paisaje de la isla.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — FERRY · ISLA DE MULL ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Ferry a Mallaig · Ardnamurchan · Ferry a Tobermory · Isla de Mull</h2>
+        <div class="day-subtitle">Viernes 9 de Agosto · Ferry Armadale 10:50h · Presentarse antes de las 10:20h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Madrugar:</strong> A87 sur → Broadford → A851 hasta puerto de <strong>Armadale</strong> (~115 km desde Staffin)<br>
+      <strong>Ferry 1 (Armadale → Mallaig):</strong> Salida 10:50h · Presentarse 10:20h · 30 min · ~27,65 £ · Si se pierde: 12:50h<br>
+      <strong>Ahorro:</strong> Billete combinado <strong>Hopscotch 7 CalMac</strong> ~91,10 £ total (cubre Armadale–Mallaig + Kilchoan–Tobermory + Craignure–Oban)
+    </div>
+
+    <div class="transport">
+      <strong>Ardnamurchan:</strong> Mallaig → A830 → Arisaig → cruce de Salen → B8007 hasta Kilchoan (110 km de ruta salvaje) · Almorzar en la península · Desvío opcional al <strong>faro de Ardnamurchan Point</strong> (punto más occidental de Gran Bretaña)
+    </div>
+
+    <div class="transport">
+      <strong>Ferry 2 (Kilchoan → Tobermory):</strong> Salida 13:45h (o 15:15h si hay retrasos) · 35 min → desembarca en Tobermory
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Tobermory · Isla de Mull</div>
+      <h4>Copeland House</h4>
+      <p>Subir por las empinadas calles Back Brae y Western Road · Tobermory es célebre por sus hileras de casas de colores frente al muelle</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ B8073 · Playa virgen de arena blanca · Si quedan energías</div>
+      <h3>Calgary Bay (opcional)</h3>
+      <p>Tomar la pintoresca carretera B8073 hacia Calgary para pasear por su espectacular playa virgen de arena blanca antes de regresar a cenar al puerto.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — MULL · OBAN · TROSSACHS ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Duart Castle · Ferry Oban · Kilchurn · Callander</h2>
+        <div class="day-subtitle">Sábado 10 de Agosto · A848 + A849 sur → Craignure · Ferry 11:30h o 14:15h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Cruzar Mull:</strong> A848 → A849 sur → puerto de Craignure (~59 km desde Tobermory)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 5 km de Craignure · 10:30–18:00h · 9 £ · Sede del Clan Maclean</div>
+      <h3>Duart Castle</h3>
+      <p>Espectacular e imponente sede histórica del Clan Maclean, alzada sobre un acantilado que domina el estrecho de Mull.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ferry 3 (Craignure → Oban):</strong> 11:30h o 14:15h · 45 min · Presentarse 30 min antes<br>
+      <strong>Oban:</strong> Comer al llegar (capital del marisco de Escocia)<br>
+      <strong>Hacia Callander:</strong> A85 → Connel → Taynuilt → desvío A819 en Dalmally hacia Inveraray · Parada en <strong>Kilchurn Castle</strong> (orilla del Loch Awe) → deshacer el desvío → Tyndrum → Crianlarich → A84 bordeando Loch Earn hasta Callander (~138 km desde Oban)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Orilla del Loch Awe · Ruinas del siglo XV · Una de las imágenes más románticas de Escocia</div>
+      <h3>Kilchurn Castle</h3>
+      <p>Evocadoras ruinas del siglo XV a orillas del Loch Awe, una de las imágenes más famosas y románticas de toda Escocia.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · 2 noches · Callander</div>
+      <h4>East Mains House</h4>
+      <p>Al llegar a Callander: girar derecha en el primer semáforo (Glasgow Road) → cruzar el puente sobre el río → pasar hotel Black & White a la derecha → girar izquierda por Manse Lane → al final de la calle.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 11 — TROSSACHS ═══ -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Loch Katrine · SS Sir Walter Scott · Trossachs · Abadía de Inchmahome</h2>
+        <div class="day-subtitle">Domingo 11 de Agosto · A84 → A821 → Loch Katrine</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> A84 → desvío A821 hacia Aberfoyle → antes del puerto, desvío a <strong>Loch Katrine</strong>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛵ Trossachs Pier · ~14,50 £ · Barco de vapor victoriano de 1899 · Pases 11:00 · 12:00 · 13:45h</div>
+      <h3>SS Sir Walter Scott — Crucero por Loch Katrine</h3>
+      <p>Crucero histórico a bordo de este precioso e histórico barco de vapor victoriano de 1899, navegando por las aguas que inspiraron el famoso poema <em>"La dama del lago"</em> de Walter Scott. Dejar el coche en el aparcamiento habilitado y caminar hasta el muelle de embarque.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Tarde en el Parque Nacional:</strong> A821 → Aberfoyle · Parada en el <strong>Hilltop Viewpoint</strong> (panorámica del bosque)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌲 10:00–18:00h · Peaje 2 £ · 11 km forestal · Lagos y coníferas</div>
+      <h3>Achray Forest Drive</h3>
+      <p>Preciosa y tranquila ruta forestal en coche de 11 km que serpentea entre lagos menores y densos bosques de coníferas. Parada en el <strong>Queen Elizabeth Forest Park Visitor Centre</strong> para mapas e información.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐑 09:30–18:30h · 6 £ · Exhibiciones en vivo de esquilado y pastoreo con collie</div>
+      <h3>Scottish Wool Centre (Aberfoyle)</h3>
+      <p>Espacio dedicado a la tradición lanera escocesa: exhibiciones en vivo de esquilado de ovejas y demostraciones de pastoreo con perros collie.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛵ Loch Menteith · Ferry incluido · 09:30–18:30h · 8 £ · Ruinas medievales en isla</div>
+      <h3>Abadía de Inchmahome (opcional)</h3>
+      <p>Tomar la carretera B829 desde Aberfoyle por los idílicos Loch Ard y Loch Chon, y parar en Loch Menteith para tomar el pequeño ferry a la isla central del lago y visitar las hermosas ruinas medievales de la Abadía de Inchmahome.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 12 — DOUNE · VUELO ═══ -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Doune Castle · Aeropuerto de Edimburgo · Vuelo de regreso</h2>
+        <div class="day-subtitle">Lunes 12 de Agosto · Europcar Eastfield Road · 12:00h · Vuelo 14:35h → BCN 21:15h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Doune · <span class="pass">Explorer Pass</span> · Siglo XIV · Monty Python · Juego de Tronos · Outlander</div>
+      <h3>Doune Castle</h3>
+      <p>Espectacular fortaleza medieval del siglo XIV famosa en la cultura popular por haber sido el escenario de rodaje de <em>Los caballeros de la mesa cuadrada</em> de los Monty Python, y más recientemente el castillo de Invernalia en <em>Juego de Tronos</em> y el castillo de Leoch en <em>Outlander</em>.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Aeropuerto:</strong> Doune → A873 → M9 en Stirling (salida 10) → ~90 km → bifurcación Edimburgo/Glasgow → señales al Aeropuerto de Edimburgo · Llegada 12:00h<br>
+      <strong>Europcar:</strong> Eastfield Road · Dejar el coche con el depósito lleno<br><br>
+      <strong>✈ Vuelo 1:</strong> Edimburgo 14:35h (vuelo 60504) → Londres 15:55h<br>
+      <strong>✈ Vuelo 2:</strong> Londres 17:50h (vuelo 60795) → Barcelona 21:15h
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎉 Fin del viaje</div>
+      <p>12 días recorriendo la Royal Mile y el Castillo de Edimburgo, los campos de Culloden, los acantilados del Lago Ness, los paisajes mágicos de la Isla de Skye, las casas de colores de Tobermory y los bosques de las Trossachs.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    🎬 VÍDEOS DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/PcBjhBoRWpk" title="Fotos Escocia 2002"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph1"><span style="font-size:2.5rem;opacity:0.4;">▶</span><span>FOTOS DEL VIAJE</span><span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VÍDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/qDlwpxWsEwE" title="Vídeo Escocia 2002"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph2"><span style="font-size:2.5rem;opacity:0.4;">▶</span><span>VÍDEO DEL VIAJE</span><span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Escocia 2002</strong> &nbsp;·&nbsp; 31 Julio – 11 Agosto 2002 · 12 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
+    'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
+    'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div'); item.className = 'gallery-item'; item.onclick = () => openLightbox(i);
+    const img = document.createElement('img'); img.src = src; img.alt = `Foto Escocia 2002 ${i+1}`; img.loading = 'lazy';
+    img.onerror = function() {
+      const ph = document.createElement('div');
+      ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
+      ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto '+(i+1)+'</span>';
+      item.replaceChild(ph, this);
+    };
+    item.appendChild(img); gallery.appendChild(item);
+  });
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) document.getElementById(id).style.display = 'none';
+  });
+  let currentPhoto = 0;
+  function openLightbox(idx) { currentPhoto = idx; document.getElementById('lb-img').src = photos[idx]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  function changePhoto(dir) { currentPhoto = (currentPhoto + dir + photos.length) % photos.length; document.getElementById('lb-img').src = photos[currentPhoto]; }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') changePhoto(-1); if (e.key === 'ArrowRight') changePhoto(1); });
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { navLinks.forEach(l => l.classList.remove('active')); const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`); if (a) a.classList.add('active'); } });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

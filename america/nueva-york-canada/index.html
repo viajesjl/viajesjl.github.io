@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva York y Canadá 2006 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .jazz { background: #1a0a2e; border-left: 5px solid #7c3aed; padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .jazz-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: #a78bfa; margin-bottom: 0.2rem; }
+    .jazz h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #e9d5ff; margin-bottom: 0.2rem; }
+    .jazz p { font-size: 0.88rem; font-weight: 500; color: #c4b5fd; line-height: 1.65; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-america">🌎 América</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Nueva York y Canadá 2006</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇺🇸 Nueva York &nbsp;·&nbsp; 🇨🇦 Canadá</div>
+  <h1 class="hero-title">Nueva York y Canadá</h1>
+  <div class="hero-date">9 – 22 Agosto 2006 · 14 días</div>
+  <div class="hero-pills">
+    <span class="pill">Nueva York</span>
+    <span class="pill">Estatua de la Libertad</span>
+    <span class="pill">Cataratas del Niágara</span>
+    <span class="pill">Toronto · CN Tower</span>
+    <span class="pill">Thousand Islands</span>
+    <span class="pill">Ottawa · Gatineau</span>
+    <span class="pill">Québec City</span>
+    <span class="pill">Tadoussac · Ballenas</span>
+    <span class="pill">Grand Sault</span>
+    <span class="pill">Hampton Beach</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Llegada NY</a>
+  <a href="#dia2">Día 2 · Estatua Libertad</a>
+  <a href="#dia3">Día 3 · Wall St · Brooklyn</a>
+  <a href="#dia4">Día 4 · Rockefeller · Met</a>
+  <a href="#dia5">Día 5 · Harlem · Gospel</a>
+  <a href="#dia6">Día 6 · NY → Niágara</a>
+  <a href="#dia7">Día 7 · Niágara · Toronto</a>
+  <a href="#dia8">Día 8 · Port Hope → Thousand Islands → Gatineau</a>
+  <a href="#dia9">Día 9 · Ottawa · Parc Omega</a>
+  <a href="#dia10">Día 10 · Shawinigan · Québec</a>
+  <a href="#dia11">Día 11 · Québec City → Tadoussac</a>
+  <a href="#dia12">Día 12 · Avistamiento de ballenas</a>
+  <a href="#dia13">Día 13 · Grand Sault → Hampton Beach</a>
+  <a href="#dia14">Día 14 · Hampton Beach → NY → BCN</a>
+</div>
+
+<main class="content">
+  
+  <div class="tip">
+    <div class="tip-label">🌎 Consejos prácticos — Nueva York y Canadá 2006</div>
+    <p><strong>Moneda:</strong> Dólar americano (NY) y Dólar canadiense (Canadá) · <strong>Coche de alquiler:</strong> Hertz · 126W de 55st entre la 6ª y la 7ª · Seguro de daños 9$/día · <strong>Canadá IVA:</strong> Se puede reclamar el retorno del GST/TPS (7%) o HST/TVH (15%) para compras de viaje. La compra individual debe ser +50$ y el total +200$. Guardar todos los recibos y rellenar formulario en la frontera · <strong>Jazz en NY:</strong> 55 Bar (55 Christopher St) y Village Vanguard (178 7th Ave South)</p>
+  </div>
+
+  <!-- ═══ DÍA 1 — LLEGADA ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Barcelona → Madrid → Nueva York — Llegada</h2>
+        <div class="day-subtitle">Miércoles 9 de Agosto · Salida BCN 10:30h · Madrid 12:55h → NY 19:00h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>BCN → MAD:</strong> Salida 12:55h<br>
+      <strong>MAD → NY:</strong> Salida 17:00h · Llegada 19:00h<br>
+      <strong>Del aeropuerto al hotel:</strong> Taxi 50$ + 2$ propina
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Nueva York</div>
+      <h4>Portland Square Hotel</h4>
+      <p>132W de 47th St · Entre la 6ª y la 7ª Avenida</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Cena · Times Square</div>
+      <h4>Rosticería de carne en Times Square / Hard Rock Café</h4>
+      <p>Bajar por la 7ª hasta la 42nd St hacia Times Square. Rosticería de carne al lado o Hard Rock Café (1501 Broadway). Volver al hotel.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — ESTATUA DE LA LIBERTAD ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Estatua de la Libertad · Ellis Island · SoHo · Village · Empire State</h2>
+        <div class="day-subtitle">Jueves 10 de Agosto · Entradas estatua a las 10:45h · Estar 2 horas antes</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Metro al Battery Park:</strong> N o R en la 47th con la 7ª → Whitehall St → salir a la derecha hacia Battery Park
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗽 Battery Park · Entradas compradas · Incluye Ellis Island</div>
+      <h3>Estatua de la Libertad + Ellis Island</h3>
+      <p>Ver la Esfera de la Paz (estaba en las Torres Gemelas) y la llama eterna al llegar a Battery Park. El crucero, inaugurado en 1905, transporta 70.000 pasajeros al día. Situarse en la cubierta derecha para ver la estatua. Incluye visita a <strong>Liberty Island</strong> con el Statue of Liberty Museum y <strong>Ellis Island</strong> con el Immigration Museum. Comer de regreso.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👟 Trump Tower · 57th St Este, semiesquina 5ª Av · 4 plantas · Tienda+parque temático Nike</div>
+      <h3>Niketown + World Trade Center + SoHo + Village</h3>
+      <p><strong>Niketown</strong> (Trump Tower, volver en metro N o R desde Whitehall St hasta 57th St). <strong>World Trade Center:</strong> Subir andando por Trinity Place o Church St hasta Liberty St, o metro 1/9 en South Ferry hasta Cortlandt St. <strong>World Financial Center</strong> a la izquierda. Tienda <strong>Century 21</strong> (ropa de marca barata) y tienda <strong>Levi's</strong>. Pasear por Hudson River. Bus 6 por Church St hasta Prince St → <strong>SoHo</strong> → Broadway hasta Washington Square Park → <strong>Greenwich Village</strong>. Bus 6 hasta la 32nd → <strong>Madison Square Garden</strong>. Andando por la 33rd hasta la 5ª → <strong>Empire State Building</strong> (entradas compradas). Volver al hotel en bus 5, 6 o 7 por la 6ª Av.</p>
+    </div>
+
+    <div class="jazz">
+      <div class="jazz-label">🎷 Jazz · Noche</div>
+      <h4>55 Bar — 55 Christopher St (entre 6ª y 7ª Av)</h4>
+      <p>Metro 1/9 hasta Christopher St o bus 10 · Early Show 18h · Late Show 22h<br>Viernes 11: Michelle Walker (early) · Jay Collins Band (late)</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — WALL STREET Y BROOKLYN ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Wall Street · Grand Central · Chinatown · Little Italy · Puente de Brooklyn</h2>
+        <div class="day-subtitle">Viernes 11 de Agosto · Metro 1/9 en 50th St → Chambers St → 2/3 → Wall St</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💰 Distrito financiero · NYSE · Toro de bronce · Trinity Church</div>
+      <h3>Wall Street — Distrito Financiero</h3>
+      <p>Visitar el <strong>NYSE</strong> (recoger ticket para la visita, corta pero interesante). Hacerse foto con el <strong>Toro de Bronce</strong> (antes de llegar). <strong>Trinity Church</strong> a la izquierda. Enfrente: <strong>Federal National Hall</strong>. Seguir por Wall St y girar a la izquierda por Liberty St para ver el Banco de la Reserva Federal, Chase Manhattan Bank, Liberty Tower y la Cámara de Comercio.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚉 Metro línea 4 en Wall St · Bryant Park TKTS 17–20h</div>
+      <h3>Grand Central Terminal + Bryant Park + Biblioteca Pública</h3>
+      <p>Metro línea verde 4 desde Wall St hasta Grand Central. Por la 42nd a la izquierda ir a <strong>Bryant Park</strong> (mirar entradas para el teatro en TKTS Duffy Square, 17–20h para el mismo día; el sábado a las 15h). Ver la <strong>Biblioteca Pública de NY</strong>. Volver a Grand Central para ver el <strong>MetLife Building</strong> y el <strong>Chrysler Building</strong> (319 m, 1930). Subir por Franklin D. Roosevelt para ir al edificio de la <strong>ONU</strong> y estar en el East River.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐉 Metro 6 o S → Canal St · Little Italy en Mulberry St</div>
+      <h3>Chinatown + Little Italy</h3>
+      <p>Coger de nuevo metro 6 o S hasta Canal St. Visitar Chinatown y Little Italy.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 Bowery St hacia abajo · Cruzar a pie · Cenar al otro lado</div>
+      <h3>Puente de Brooklyn</h3>
+      <p>Seguir por Bowery St hacia abajo para llegar al puente de Brooklyn. Cruzarlo a pie. Cenar en una pizzería al otro lado. Coger taxi al hotel.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎶 Barça en el Giants Stadium</div>
+      <p>Viernes 11 de agosto, 19h: Entrenamiento del FC Barcelona en el Giants Stadium (50 State Route 120, East Rutherford, NJ). Bus desde Port Authority Terminal (8ª Av. con 41st St).</p>
+    </div>
+
+    <div class="jazz">
+      <div class="jazz-label">🎷 Jazz · Noche</div>
+      <h4>55 Bar — 55 Christopher St</h4>
+      <p>Viernes 11: Michelle Walker (early) · Jay Collins Band (late)</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — ROCKEFELLER, NATURAL HISTORY, MET ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Rockefeller · Intrepid · Historia Natural · Metropolitan · Lincoln Center · Teatro Broadway</h2>
+        <div class="day-subtitle">Sábado 12 de Agosto · Teatro a las 20h · Partido Barça-NY Red Bulls 19:30h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎡 6ª Av → 49th St · Radio City Music Hall en la 50th · St. Patrick en la 5ª</div>
+      <h3>Rockefeller Center + Radio City Music Hall + St. Patrick Cathedral</h3>
+      <p>Ir al este y subir por la 6ª, cruzando por la 49th. Arriba en la 50th está el <strong>Radio City Music Hall</strong>. Siguiendo a la derecha hasta la 5ª: la <strong>St. Patrick Cathedral</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Bus 50 en la 49th · Hasta las 17h · Portaviones museo · 46th St con la 12ª</div>
+      <h3>Intrepid Sea, Air &amp; Space Museum</h3>
+      <p>Coger el autobús 50 desde la 49th para ir al Intrepid, el portaviones museo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦕 Metro C en 50th St → 81st St · Rose Center + Hayden Planetarium 19$ adultos / 11,50$ niños</div>
+      <h3>Museo de Historia Natural + Planetario Hayden</h3>
+      <p>Subir a la 50th con la 8ª para coger metro C en 50th St y bajar en 81st St (Museo de Historia Natural). Visitar también el Rose Center y el Hayden Planetarium.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Bus 79 cruzando Central Park · 1000 Fifth Ave · Precio sugerido</div>
+      <h3>Metropolitan Museum of Art</h3>
+      <p>Subir a la 81st y cruzar Central Park con el bus 79 hasta el Metropolitan Museum.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎵 72nd St por la 5ª → Bus 72 → Dakota Building · Lincoln Center</div>
+      <h3>Dakota Building + Lincoln Center</h3>
+      <p>Bajar a la 72nd por la 5ª y coger el bus 72 hasta el otro lado del parque: el <strong>Dakota</strong> (donde mataron a John Lennon y vivía Yoko Ono). Bajando se llega a la zona de <strong>Lincoln Center</strong>.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎭 Teatro Broadway — Preferencias</div>
+      <p>Si se han comprado entradas: ir a las 20h. Si hay que comprarlas, bajar a Bryant Park a primera hora. Preferencias: <strong>El Fantasma de la Ópera</strong> (Majestic Theatre, 247W 44th) · <strong>Chicago</strong> (Ambassador, 219W 49th) · <strong>La Bella y la Bestia</strong> (Lunt Fontanne, 205W 46th) · <strong>Rent</strong> (Nederlander, 208W 41st) · <strong>Lion King</strong> (Minskoff, 1515 Broadway) · <strong>Wicked</strong> (Gershwin, 222W 51st)</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">⚽ Barça en NY</div>
+      <p>Sábado 12 de agosto, 19:30h: Partido New York Red Bulls vs FC Barcelona.</p>
+    </div>
+
+    <div class="jazz">
+      <div class="jazz-label">🎷 Jazz · Noche</div>
+      <h4>55 Bar — 55 Christopher St</h4>
+      <p>Sábado 12: Sandy Sasso (early) · KJ Denhert (late)</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — HARLEM Y JAZZ ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Harlem — Misa Gospel · Brunch · Central Park · Village Vanguard</h2>
+        <div class="day-subtitle">Domingo 13 de Agosto · Misa ~11:30h · Llegar antes de las 11h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 230 Malcolm X Av (Lenox con 125th) · Metro 1/9 hasta 96th → 2/3 hasta 125th</div>
+      <h3>St. Martin Episcopal Church — Misa Gospel</h3>
+      <p>Misa sobre las 11:30h. Alternativa: <strong>Abyssinian Baptist Church</strong> (138th con Adam Clayton Powell Jr. Blvd / 7ª Av) — más grande y con más turistas, bajarse en la siguiente estación 138th, a la izquierda. Cola y antes de las 11h ya cierran.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍗 Brunch · Harlem</div>
+      <h4>Sylvia's Restaurant</h4>
+      <p>El mejor brunch de Harlem con el famoso pollo frito y la comida "soul".</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 125th St a la izquierda · 123rd St → Tumba de Grant · Riverside Church · Columbia</div>
+      <h3>Tumba de Grant · Riverside Church · Columbia · St. John the Divine</h3>
+      <p>Ir andando por la 125th a la izquierda y luego coger la 123rd hasta la <strong>Tumba de Grant</strong> y <strong>Riverside Church</strong>. Ver la <strong>Universidad de Columbia</strong> y la <strong>Catedral de St. John</strong> bajando por Amsterdam Av. Metro en 110th Catedral Parkway (C, D) hasta la 81st. Toda la tarde en <strong>Central Park</strong> hacia abajo. Bajar andando al hotel.</p>
+    </div>
+
+    <div class="jazz">
+      <div class="jazz-label">🎷 Jazz clásico · Solo domingos · 30$ (20$ entrada + 10$ consumición)</div>
+      <h4>Village Vanguard — 178 7th Avenue South (just below W 11th St)</h4>
+      <p>Club mítico de jazz. Metro 1, 2 o 3 hasta 14th St, o bus 10 desde Central Park. Abren 20:00h · Actuaciones 21:00 y 23:00h.<br>
+      Aug 08–13: Jeremy Pelt Quartet (Frank Lo-Crasto piano, Vicente Archer contrabajo, Eric McPherson batería). 30 años tocando.</p>
+    </div>
+
+    <div class="jazz">
+      <div class="jazz-label">🎷 Jazz · 55 Bar</div>
+      <h4>55 Bar — Domingo 13</h4>
+      <p>Ellery Eskelin with Andrea Parkins &amp; Jim Black · Late Show</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — NY → NIÁGARA ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Nueva York → Cataratas del Niágara</h2>
+        <div class="day-subtitle">Lunes 14 de Agosto · 663 km · ~8h · Recoger coche Hertz · Paseo nocturno cataratas</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Hertz:</strong> Andando hasta 126W de 55th St entre la 6ª y la 7ª · Seguro de daños 9$/día<br>
+      <strong>Salida Manhattan:</strong> La 55th a la izquierda hasta la 7ª → bajar → 46th a la izquierda → 5ª hacia arriba → izquierda por la 47th. Bajar por la 7ª hasta la 41st → Cardinal Stepnac Plaza → girar a la izquierda para coger el <strong>Lincoln Tunnel</strong>. Seguir indicaciones de la hoja de ruta.<br>
+      <strong>Iluminación cataratas:</strong> A las 21:00h hasta las 22:00h
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💧 Cataratas del Niágara · Paseo nocturno al llegar</div>
+      <h3>Cataratas del Niágara — Primera visión</h3>
+      <p>Dar paseo por las cataratas antes de dormir. A las 21:00h las iluminan hasta las 22:00h. Primera toma de contacto con las cataratas.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🇨🇦 Devolución IVA canadiense</div>
+      <p>Recordar que los regalos, hoteles y demás compras que se vayan a sacar de Canadá permiten pedir el retorno del GST/TPS (7%) o del HST/TVH (15%). Rellenar formulario. Compra individual mínima 50$, total acumulado mínimo 200$.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 7 — NIÁGARA Y TORONTO ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Niágara — Actividades en las cataratas · Toronto · CN Tower</h2>
+        <div class="day-subtitle">Martes 15 de Agosto · Niágara → Toronto → Port Hope · 235 km / 2h15</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💦 Embarcadero al pie de Clifton Hill · Niagara Pass 41$ / Alex 26$ · Ir temprano (mediodía llegan autocares)</div>
+      <h3>Cataratas del Niágara — Actividades completas</h3>
+      <p>El <strong>Niagara Pass</strong> (41$ / Alex 26$) incluye: <strong>White Water Walk</strong> (desde debajo de la catarata, 8,50$ / Alex 5$) · <strong>Whirlpool Aero Car</strong> (4,5 km por debajo de la Horseshoe para ver los rápidos, 11$ / Alex 6$) · <strong>Journey Behind the Falls</strong> (ver detrás de la catarata desde Table Rock House, 11$ / Alex 6,50$) · <strong>Maid of the Mist</strong> (barco que se acerca a la catarata, Table Rock Point, impermeables azules, 14$ / Alex 8,60$). Desde la parte canadiense, <strong>Scenic Tunnels</strong> (cuevas y túneles, impermeables amarillos). Visitar también <strong>Niagara on the Lake</strong> (pueblo tranquilo con el Fort George, fortín británico de 1790).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗼 CN Tower · Parking · 9h–23h · Entradas compradas · Roger Centre</div>
+      <h3>Toronto — CN Tower + Roger Centre</h3>
+      <p>Aparcar en el parking de la <strong>CN Tower</strong> (QEW/Gardiner Expressway → salida Spadina Ave Norte → girar a la derecha por Bremner Blvd). Entradas compradas. En el <strong>Roger Centre</strong> (junto a la CN Tower) juegan los Toronto Blue Jays de la liga de baseball. Tour por las instalaciones: 13,40$×2 + 9,40$ + 8$ - 4$ cupones = 40$ total (~28,57 €). Aproximadamente 1 hora. Si hay tiempo, visitar la zona del puerto.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 8 — THOUSAND ISLANDS → GATINEAU ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Port Hope → Kingston (Fort Henry) → Thousand Islands → Gatineau</h2>
+        <div class="day-subtitle">Miércoles 16 de Agosto · Salir antes de las 10h · 208 km (3h) + 145 km (2h10)</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Kingston · Fort Henry · 10,75$ adultos / 5,25$ niños · Cambio de guardia 15h</div>
+      <h3>Fort Henry — Kingston</h3>
+      <p>Construido entre 1832 y 1837. Cambio de guardia cada media hora y Garrison Parade diario a las 15h. Llegar por: Hwy 401 → Salida 623 (Hwy 15) sur hasta el final → girar derecha en Hwy 2 → girar izquierda en el semáforo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚢 Rockport · Reserva 14h · Cada hora de 9 a 17h · 16$ / Alex 10$ (cupón 2$) · 1h · Barco triple decker</div>
+      <h3>Thousand Islands — Rockport Boat Line</h3>
+      <p>208 km desde Port Hope (3h). El crucero de 1 hora pasa por <strong>Bold's Castle</strong> (lado americano). Barco triple decker one tour cruise. Comprar bocadillo antes.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌙 Gatineau · 145 km / 2h10 · Cenar en el casco antiguo</div>
+      <h3>Gatineau — Noche en el casco antiguo</h3>
+      <p>Llegar a Gatineau y salir a cenar al casco antiguo. Ir con el coche a la derecha, cruzar el 3er puente (Pont Alexandra Bridge), girar a la derecha en Mackenzie Av. → parking. Por la noche hay bastante ambiente.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — OTTAWA Y PARC OMEGA ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Ottawa — Parlamento · Canal Rideau · Parc Omega</h2>
+        <div class="day-subtitle">Jueves 17 de Agosto · Gatineau → Ottawa (80 km / 1,5h) → Grand Mère (274 km / 4h)</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Gatineau · Mismo parking que la noche anterior</div>
+      <h3>Museo de la Civilización (Gatineau) + Catedral de Ottawa</h3>
+      <p>Antes de cruzar el puente Alexandra: el <strong>Museo de la Civilización</strong> con su colección de totems. Dejar el coche en el mismo parking. Después de cruzar el puente: la <strong>Basílica de Notre-Dame</strong> (catedral de Ottawa).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕷️ Calle Sussex · A la izquierda del puente Alexandra · Araña gigante de hierro en la entrada</div>
+      <h3>National Arts Gallery + Canal Rideau + War Memorial + Château Laurier</h3>
+      <p>Ir a la puerta de la <strong>National Arts Gallery</strong> (gran escultura de hierro araña gigante en la entrada). Pasear por el <strong>Canal Rideau</strong> y ver el <strong>National War Memorial</strong> y el <strong>Hotel Château Laurier</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🍁 Colina del Parlamento · Visita guiada gratuita en francés · ~40 min · Cambio de guardia</div>
+      <h3>Edificios del Parlamento + Llama Eterna + Suprema Corte</h3>
+      <p>Visita guiada gratuita a la parte central del Parlamento (~40 min). Ver el cambio de guardia. La <strong>Llama Eterna</strong> (frente a la entrada principal, celebrando el centenario de la Confederación de 1867). La <strong>Suprema Corte de Justicia de Canadá</strong> a pocos minutos a pie. Opcionalmente subir al <strong>Nepean Point</strong> para divisar Ottawa (estatua de un nativo).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦌 Montebello · 80 km / 1,5h · 9–17:30h · 16$ / Alex 11$ · Llevar zanahorias</div>
+      <h3>Parc Omega — Safari de fauna canadiense</h3>
+      <p>De 9h a 17:30h (parque cierra 18:30h). <strong>Fauna:</strong> arces, bisontes, ciervos, osos negros, ardillas, jabalíes, lobos. Área de picnic. <strong>Consejo clave:</strong> llevar una buena dotación de zanahorias para alimentar a los animales desde la ventana del coche. Llevar prismáticos.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — SHAWINIGAN Y QUÉBEC ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Grand Mère → Cité de l'Énergie · Parc Mauricie → Québec City</h2>
+        <div class="day-subtitle">Viernes 18 de Agosto · 60 km + 135 km (2h)</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚡ Shawinigan · 10–18h · 16$ / Alex 9$ · Torre de +115 metros</div>
+      <h3>Cité de l'Énergie — Shawinigan</h3>
+      <p>Salida 211 por la 53, 1ª rotonda a la derecha hacia Shawinigan. Torre de más de 115 metros de altura.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌲 Parc National de la Mauricie · 8–20h · 6,90$ / Alex 3,45$ · Canoas y chalupas</div>
+      <h3>Parc National de la Mauricie — Senderos</h3>
+      <p>Acceso por Autoroute 55 (Sortie 226 a Saint-Jean-des-Piles o Sortie 217 a Saint-Mathieu). <strong>Sentier des Cascades</strong> (fácil, bucle 2,1 km, 45 min): recorre un arroyo en cascada entre coníferas, un pantano y una zona afectada por tornado. <strong>Sentier du Lac-Étienne</strong> (fácil, bucle 1,5 km, 30–60 min): con observatorios y paneles temáticos con textos en braille. Telescopio para ver garzas, castores y alces.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Québec City · 135 km · Casco antiguo · Paseo nocturno</div>
+      <h3>Québec City — Llegada y paseo nocturno</h3>
+      <p>Llegar a Québec y dar una vuelta por el casco antiguo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 11 — QUÉBEC CITY → TADOUSSAC ═══ -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Québec City — Château Frontenac · Ciudad Vieja · Cataratas Montmorency → Tadoussac</h2>
+        <div class="day-subtitle">Sábado 19 de Agosto · Québec → Tadoussac · 212 km / 2h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Ciudad Vieja · Alta y Baja ciudad · Funicular</div>
+      <h3>Québec City — Recorrido completo</h3>
+      <p><strong>Ciudad Alta:</strong> Château Frontenac, monumento Champlain, Place d'Armes, rue du Trésor (calle de los artistas), catedral Holy Trinity y basílica Notre-Dame. <strong>Funicular</strong> para bajar. <strong>Ciudad Baja:</strong> Place Royale y el Puerto. Murales muy realistas en las paredes de algunos edificios. Pasear por rue du Petit-Champlain. <strong>Volver arriba:</strong> pasear por la Terrasse Dufferin y llegar a la Citadelle, puerta Dalhousie, cambio de guardia en la Plaza Parade Square, residencia del gobernador.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💧 12 km al este del centro · Autoroute 40 salida 325 · Parking 8,75$ o Forfait familia 25,75$</div>
+      <h3>Cataratas Montmorency — 83 metros de altura</h3>
+      <p>Teleférico hasta el Manoir Montmorency (restaurante). Av. Royale o Av. des Chutes. Acceso por Autoroute 40 (salida 325) o boulevard Sainte-Anne (138). <strong>Forfait familia:</strong> 25,75$ (parking + teleférico ilimitado para padres e hijos menores de 16 años). Parking P1 (mejor que P2 y P3).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 1018 Av. Royale · Peregrinación más antigua de América del Norte (1658)</div>
+      <h3>Santuario de Sainte-Anne-de-Beaupré</h3>
+      <p>Reproducción de la Piedad de Miguel Ángel. El lugar de peregrinación más antiguo de América del Norte.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Tadoussac:</strong> Seguir a Tadoussac · Coger ferry (5 min, frecuencia continua) · Dar una vuelta por el pueblo y reservar zodiac para las ballenas
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🐋 Reserva de ballenas confirmada</div>
+      <p><strong>Compagnie de la Baie de Tadoussac</strong> · 145, rue du Bord-de-l'Eau · Tel. 1-418-235-4548 · Hablado con Marlene el 08/08/2006 · Reserva con tarjeta · <strong>Salida a las 09:30h · 3 horas · 60$ / Alex 40$ + IVA · Total reserva 264$</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 12 — TADOUSSAC Y BALLENAS ═══ -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Tadoussac — Avistamiento de ballenas · Poste de Traite · CIMM · Parc du Saguenay</h2>
+        <div class="day-subtitle">Domingo 20 de Agosto · Zodiac a las 09:30h · 3 horas · 34 km → St. Siméon → Rivière-du-Loup → Grand Sault</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐋 Zodiac · 09:30h · 3 horas · Compagnie de la Baie de Tadoussac</div>
+      <h3>Avistamiento de Ballenas — Zodiac</h3>
+      <p>Salida a las 09:30h en zodiac. 3 horas de avistamiento de ballenas del Saint-Laurent.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦦 Tadoussac · Hasta el mediodía (domingos degustación de foca a las 11:30h)</div>
+      <h3>Poste de Traite Chauvin + CIMM + Parc du Saguenay</h3>
+      <p><strong>Poste de Traite Chauvin:</strong> réplica del primer puesto de comercio de pieles de 1600. Exposición sobre la prehistoria, el encuentro de dos pueblos, la trata de pieles. Domingos en verano a las 11:30h: degustación de foca. <strong>CIMM</strong> (Centre d'Interprétation Marine): exposición única sobre el mundo fascinante de las ballenas del Saint-Laurent. <strong>Parc du Saguenay</strong> (Maison des Dunes, 5 km al noroeste por rue des Pionniers): avistamiento de ballenas desde la Pointe de l'Islet, Pointe Rouge o las dunas de arena. Sendero de la colline (30 min, vistas 360°).</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ferry Rivière-du-Loup:</strong> A 34 km de Tadoussac está St. Siméon (route 138 → indicaciones Traverse/Ferry) · Transbordador de 65 min (capacidad 100 vehículos, 409 personas) · Horarios: 9:30 · 13:00 · 16:30 · 19:30 · Intentar coger el de las 13:00h · Precio: coche 34,90$ + adultos 13,80$ + Alex 9,10$ · Restaurante a bordo<br>
+      <strong>Grand Sault:</strong> Llegar al hotel según mapa
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💧 Grand Sault · Muy cerca del pueblo · Cataratas de 23 m · Iluminadas de noche</div>
+      <h3>Chutes et Gorge de Grand Sault</h3>
+      <p>Centro de información Malobiannah: la leyenda de la joven autóctona que atrajo a una tribu Mohawk a las cataratas. Bajar los 250 escalones que llevan a los pozos en las rocas (agujeros naturales en la piedra, maravilla de la naturaleza). Excursión en barco-pontón por la garganta (1,5 km de longitud, más de 70 metros de altura). De noche las cataratas están iluminadas.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 13 — GRAND SAULT → HAMPTON BEACH ═══ -->
+  <section class="day-section" id="dia13">
+    <div class="day-header">
+      <div class="day-number">13</div>
+      <div class="day-info">
+        <h2>Grand Sault → Hampton Beach, New Hampshire</h2>
+        <div class="day-subtitle">Lunes 21 de Agosto · 612 km / 7h42 · Devolución IVA en la frontera</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> Grand Sault → Hampton Beach, New Hampshire · 612 km / 7h42<br>
+      <strong>En la frontera:</strong> Intentar canjear el IVA canadiense si se ha llegado al tope. Guardar todos los recibos y comprobar condiciones.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ New Hampshire · Hotel pagado · Playa</div>
+      <h3>Hampton Beach — Playa y descanso</h3>
+      <p>Llegar al hotel (ya pagado). Darse un baño en la playa. Cenar.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 14 — HAMPTON BEACH → NY → BCN ═══ -->
+  <section class="day-section" id="dia14">
+    <div class="day-header">
+      <div class="day-number">14</div>
+      <div class="day-info">
+        <h2>Hampton Beach → Nueva York → Barcelona</h2>
+        <div class="day-subtitle">Martes 22 de Agosto · 409 km / 5h10 · Vuelo NY 21:10h → MAD → BCN</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Hampton Beach → JFK:</strong> 409 km / 5h10 · Sin pasar por Boston · Ir con tiempo al aeropuerto<br>
+      <strong>Devolución coche Hertz:</strong> Oficinas en el Station C en la Van Wyck Expressway<br>
+      <strong>Vuelo:</strong> Terminal 7 JFK · Salida 21:10h (coger AirTrain inter-terminal)<br>
+      <strong>Vuelo de regreso:</strong> Terminal 4 → Madrid salida 12:20h → llegada ~13:30h<br>
+      <strong style="color: var(--accent);">🍁 Fin del viaje</strong>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_1 por el ID real de YouTube (parte después de ?v=) -->
+        <iframe src="https://www.youtube.com/embed/WhXaVNKcQHU"
+          title="Fotos del viaje Nueva York y Canadá 2006"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span class="icon">▶</span>
+          <span>FOTOS DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VÍDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_2 por el ID real de YouTube -->
+        <iframe src="https://www.youtube.com/embed/t-gsPPDwzm8"
+          title="Vídeo del viaje Nueva York y Canadá 2006"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph2">
+          <span class="icon">▶</span>
+          <span>VÍDEO DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Nueva York y Canadá 2006</strong> &nbsp;·&nbsp; 9 – 22 Agosto 2006 · 14 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg', 'fotos/26.jpg','fotos/27.jpg','fotos/28.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/galeria/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto NY-Canadá ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) {
+      document.getElementById(id).style.display = 'none';
+    }
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

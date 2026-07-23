@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Garrotxa 2022 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+      --white: #f0f8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.68) 0%, rgba(21,101,192,0.36) 60%, rgba(10,31,61,0.78) 100%),
+        url('https://images.unsplash.com/photo-1651574087390-b305612980dd?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1.05; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* mapa modernismo inline */
+    .map-img { width: 100%; max-width: 600px; display: block; margin: 1rem auto 0.5rem; border: 2px solid var(--paper-dark); }
+    .map-caption { text-align: center; font-size: 0.8rem; font-weight: 500; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 1rem; font-style: italic; }
+
+    /* Video placeholders */
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.4); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.5; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    /* Gallery */
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-catalunya">← Catalunya</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">La Garrotxa</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">🌋 España · Catalunya · Zona Volcánica</p>
+  <h1 class="hero-title">La Garrotxa</h1>
+  <p class="hero-date">19 — 21 Febrero 2022 · 3 días</p>
+  <div class="hero-pills">
+    <span class="pill">Volcán Santa Margarita</span>
+    <span class="pill">La Fageda d'en Jordà</span>
+    <span class="pill">Castellfollit de la Roca</span>
+    <span class="pill">Besalú medieval</span>
+    <span class="pill">Olot modernismo</span>
+    <span class="pill">Vic · Lago de Banyoles</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1 · Volcanes</a>
+  <a href="#dia2">Día 2 · Olot · Besalú</a>
+  <a href="#dia3">Día 3 · Banyoles · Vic</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Volcán Santa Margarita · Fageda d'en Jordà · Castellfollit de la Roca</h2>
+        <div class="day-subtitle">Sábado 19 de Febrero de 2022</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desde casa:</strong> 136 km · 1h 47 min por AP-7
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Fonda Ca La Paula · Castellfollit de la Roca</h3>
+        <p>Plaça Sant Roc 3, Castellfollit de la Roca · Tel. <strong>972 29 40 32</strong> · 12 km · 12 min desde Santa Pau</p>
+      </div>
+    </div>
+
+    <div class="section-title">🌋 Mañana · Santa Pau — Volcanes</div>
+
+    <div class="place">
+      <div class="place-meta">🌋 Volcán · 700 m altitud · Erupción hace 11.000 años · 1,4 km · 30 min a pie</div>
+      <h3>Volcán de Santa Margarita</h3>
+      <p>Uno de los volcanes más emblemáticos de la Garrotxa. Entró en erupción hace 11.000 años y tiene una altitud de 700 metros. Su extensa boca es hoy un gran prado de 2.000 metros de perímetro desde el que se disfrutan vistas increíbles. En medio de la llanura del cráter se alza la <strong>iglesia de Santa Margarita</strong>, de origen románico, que da nombre al volcán. Hay que hacer el ascenso a pie: una cuesta accesible sin problemas.</p>
+    </div>
+
+    <div class="section-title">🌲 Mediodía · La Fageda d'en Jordà</div>
+
+    <div class="transport">
+      <strong>Desde el parking del volcán:</strong> 3,8 km · Acceso en el km 4,5 de la carretera G-524 de Olot a Santa Pau · Llegar 15 min antes de las 13:00h
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐄 Granja · Visita pagada 13:00h · Con guía</div>
+      <h3>La Fageda d'en Jordà — Visita a la granja</h3>
+      <p>Un proyecto social único: granja que integra a personas con discapacidad intelectual. La visita guiada incluye una explicación del proyecto y sus novedades, visita a la granja con las terneras y las vacas adultas y los robots de ordeño, conocer la fábrica y el obrador de mermeladas desde un pasillo exterior, y al final un vídeo sobre el proyecto y <strong>degustación de los postres de La Fageda</strong>.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Reservar · Menú 23€</div>
+      <h3>Restaurante del Camping La Fageda</h3>
+      <p>Tel. <strong>972 27 38 11 / 631 475 407</strong></p>
+    </div>
+
+    <div class="section-title">🏰 Tarde · Santa Pau · Bosque de hayas</div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Pueblo medieval · 4,2 km · 7 min · S. XIII-XIV</div>
+      <h3>Santa Pau</h3>
+      <p>Pueblo medieval desde donde se contemplan panorámicas espléndidas sobre el valle del Ser. En un día claro, desde el <strong>Portal del Mar</strong>, se puede ver el golfo de Roses y el mar.<br><br>
+      Casco antiguo con edificios singulares: el <strong>Castillo</strong> construido en los S.XIII-XIV; la <strong>Plaza porticada o Firal dels Bous</strong>, que servía de cobijo al mercado; la <strong>iglesia gótica de Santa María</strong> de una sola nave; y el mirador sobre el valle del Ser.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌲 Hayedo volcánico · 5,9 km · 9 min · 550 m de altitud · Rodeado por 21 volcanes</div>
+      <h3>Bosque de hayas — La Fageda d'en Jordà</h3>
+      <p>Crece sobre la colada de lava del volcán Croscat, en un lugar plano a 550 m con colinas suaves. Un laberinto interminable de árboles y hierbas salido de un cuento de hadas que fue fuente de inspiración para el poeta <strong>Joan Maragall</strong>. El bosque está rodeado por 21 de los volcanes de la comarca.<br><br>
+      Desde el aparcamiento se cruza la carretera y unas escaleras dan acceso a la Fageda. Antes de bajarlas, a mano derecha, el <strong>monolito en memoria de Joan Maragall</strong> con el famoso poema que le inspiró este bosque. El sendero lleva hasta el pie de un gran tossol, se rodea completamente y se regresa por el mismo camino.</p>
+    </div>
+
+    <div class="section-title">🌋 Tarde-noche · Castellfollit de la Roca</div>
+
+    <div class="place">
+      <div class="place-meta">🌋 Pueblo volcánico · 296 m · Pared basáltica de ~60 m · Menos de 1 km²</div>
+      <h3>Castellfollit de la Roca — El pueblo sobre el riscal</h3>
+      <p>Uno de los municipios más pequeños de Cataluña. Se levanta sobre una pared basáltica de origen volcánico, consecuencia de la acción erosiva de los ríos Fluvià y Toronell sobre los restos volcánicos de hace miles de años. La pared tiene casi 60 metros de altura por casi 1 km de longitud.<br><br>
+      <strong>Mirador sobre la pasarela del río Fluvià</strong> (900 m · 14 min): vistas impresionantes del pueblo desde el río. En el camino desde el casco antiguo al mirador del cingle, un pequeño puente metálico de gran composición con el entorno, sustituto del antiguo puente gótico del S.XIV destruido por las inundaciones de 1970.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕰️ Torre · 1925 · Frente al Ayuntamiento · Curiosidad del reloj</div>
+      <h3>Torre del Reloj</h3>
+      <p>Uno de los monumentos más emblemáticos del pueblo. Construida en 1925, dicen que como promesa electoral del diputado Lluís Pons i Tusquets. Destaca su fuente inferior con una imagen de San Roque (1885), el escudo de armas del pueblo y el reloj en la parte superior.<br><br>
+      💡 Si te fijas en la esfera verás que el 4 está representado como <strong>IIII</strong> (4 barras) y no como IV. Aunque parezca un error, muchos relojes de la época marcaban así este número.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ S. XII · Fachada renacentista · Subir al campanario</div>
+      <h3>Iglesia de Sant Salvador — Església Vella</h3>
+      <p>Antigua iglesia parroquial de la localidad. Las primeras referencias son del S.XII aunque lo actual es fruto de varias reconstrucciones por guerras y terremotos. Destaca su fachada de estilo renacentista tardío y el campanario de planta cuadrada. Se puede subir al campanario para observar interesantes vistas del paisaje y del casco antiguo.<br><br>
+      Junto a ella, la pequeña <strong>Plaza de Josep Pla</strong> con bonitas vistas del valle y de las montañas del horizonte. Hasta 1961 fue el cementerio del pueblo.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena</div>
+      <h3>Restaurante del hotel Fonda Ca La Paula</h3>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Sant Joan les Fonts · Olot · Besalú</h2>
+        <div class="day-subtitle">Domingo 20 de Febrero de 2022</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Hostal Mas Ferrer</h3>
+        <p>17 km · 16 min desde Besalú</p>
+      </div>
+    </div>
+
+    <div class="section-title">🧗 Mañana · Sant Joan les Fonts</div>
+
+    <div class="place">
+      <div class="place-meta">🧗 Excursión · 3,8 km · 4 min desde Castellfollit</div>
+      <h3>Cingles Basàltics de Fontfreda — Sant Joan les Fonts</h3>
+      <p>Excursión por los impresionantes escalones y paredes de roca basáltica de origen volcánico que el río Fluvià ha tallado a su paso por Sant Joan les Fonts.</p>
+    </div>
+
+    <div class="section-title">🏛️ Mediodía · Olot</div>
+
+    <div class="transport">
+      <strong>Desde Sant Joan les Fonts:</strong> 6,5 km · 9 min
+    </div>
+
+    <div class="narrative">
+      La villa medieval de Olot se desarrolló desde el S.IX alrededor de una antigua iglesia románica situada en el lugar que ahora ocupa el Santuario del Tura.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia principal · Fachada 1800 · Con Murales</div>
+      <h3>Iglesia de Sant Esteve</h3>
+      <p>La principal y más impresionante de Olot. Su fachada principal, del año 1800, tenía tres hornacinas con imágenes de piedra de Sant Esteve, Sant Valentí y Santa Sabina, destruidas en 1936. Actualmente está en obras.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Santuario · Patrona de Olot · Talla románica S. XII</div>
+      <h3>Iglesia de la Mare de Déu del Tura</h3>
+      <p>Santuario de la patrona de Olot. De la primitiva iglesia solo se conserva la talla románica de la Verge del Tura.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Claustro · Finales S. XVI · Dom y festivos 10:00-13:00h · Bien Cultural Interés Nacional</div>
+      <h3>Claustros del Carme</h3>
+      <p>Construido a finales del S.XVI. Lo forman dos plantas proyectadas por Llàtzer Cisterna. Uno de los pocos claustros renacentistas conservados en Cataluña y declarado Bien Cultural de Interés Nacional. Actualmente es la sede de la Escola d'Art i Superior de Disseny d'Olot.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Arquitectura · Ruta por el centro histórico · Desde la oficina de turismo</div>
+      <h3>Ruta del Modernismo de Olot</h3>
+      <p>Ruta por el centro histórico donde se concentran los edificios modernistas. Ejemplos destacados: <strong>Casa Solà-Morales</strong> (Domènech i Montaner), <strong>Casa Pujador</strong> (Azemar), <strong>Casa Escubós</strong>, <strong>Casa Gassiot</strong> y <strong>Casa Gaietà Vila</strong> (Paluzie). La ruta se inicia en la oficina de turismo de Olot.</p>
+    </div>
+
+    <!-- Mapa de la ruta del modernismo extraído del PDF -->
+    <img class="map-img" src="mapa_modernismo_olot.png" alt="Mapa Ruta del Modernismo de Olot" onerror="this.style.display='none'">
+    <p class="map-caption">Mapa de la Ruta del Modernismo de Olot · Fuente: Oficina de Turismo de Olot</p>
+
+    <div class="section-title">🏰 Tarde · Besalú Medieval</div>
+
+    <div class="transport">
+      <strong>Desde Olot:</strong> 21 km · 16 min
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Reserva confirmada 15:00h · Menú 28,50€</div>
+      <h3>Restaurante Curia Real · Besalú</h3>
+      <p>Plaça de la Llibertat 8-9 · Tel. <strong>972 59 02 63</strong> · Código reserva: qv6p71gy<br>
+      Edificio histórico de transición del románico al gótico (S.XIII-XIV), uno de los más emblemáticos de la arquitectura civil de Besalú. Fue sede de la vegueria, palacio de justícia y Cort Reial, y más tarde convento de monjas del Cor de Maria. Habilitado como restaurante desde 1977.</p>
+    </div>
+
+    <div class="narrative">
+      Localidad medieval de poco más de 2.000 habitantes. El nombre original era <em>Bisuldunum</em>: "fortaleza entre dos ríos" (el Fluvià al sur y el Capellades al norte). Las primeras evidencias de presencia humana datan de 1200-1100 a.C. Fue un importante asentamiento ibérico (S.IV-III a.C.) y prosperó en época romana gracias a la Via Annia. Su época dorada fue como condado independiente, uno de los más importantes de Cataluña medieval hacia el año 1000.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 Puente románico · S. XI · 105 m de largo · Torre hexagonal de 30 m</div>
+      <h3>Puente Románico de Besalú</h3>
+      <p>El emblema de Besalú. Construido en el S.XI con 105 metros de largo y una gran torre hexagonal de 30 metros que emerge sobre uno de los pilares centrales. Siete arcos desiguales sobre el río y dos torres. En la torre central se instaló el <em>pagus condal</em> (peaje medieval) que controlaba el acceso de comerciantes a la villa.<br><br>
+      La última gran reconstrucción fue tras la Guerra Civil, cuando el puente fue dinamitado y se destruyeron varios de sus arcos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕍 Barrio judío · S. IX-XV · Único miqve en España</div>
+      <h3>Barrio Judío (Call) y Miqve</h3>
+      <p>Perderse por sus estrechas callejuelas empedradas que fueron hogar de una importante comunidad judía entre los S.IX y XV (expulsados por los Reyes Católicos). Las <strong>sillas de Besalú</strong> son esculturas que encontrarás paseando.<br><br>
+      Los restos de los muros de la antigua sinagoga (documentada en 1264) y el acceso a la <strong>miqve</strong> (12:00-13:30h): baños de purificación ritual en el judaísmo. La visita solo se hace de forma guiada a través de la oficina de turismo. Descubierta en 1964, es el <strong>único edificio de estas características en España</strong> y el tercero en importancia de toda Europa, de los 10 conocidos en el mundo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Monasterio benedictino · 977 d.C. · Fundado por el conde obispo Miró</div>
+      <h3>Monasterio de Sant Pere · Plaça Prat de Sant Pere</h3>
+      <p>Presidiendo la plaza principal de Besalú. Fundado en el año 977 por el conde obispo Miró. Fue uno de los monasterios con más influencia del país. Hoy solo se conserva la iglesia de todo el conjunto inicial: destaca el <strong>ventanal escoltado por 2 leones</strong> en su sencilla fachada. En el interior, las tumbas de varios abades de su época de esplendor.<br><br>
+      En la misma plaza: la <strong>Casa Cornellà</strong> y el antiguo <strong>Hospital de Sant Julià</strong> con fachada del S.XII.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Románico · Finales S. X · Con elementos góticos</div>
+      <h3>Iglesia de Sant Vicenç</h3>
+      <p>Actual iglesia parroquial de Besalú. Edificio románico de finales del S.X con algunos elementos del gótico que ya asomaba por Europa. Interior de planta basilical con tres naves, crucero y tres ábsides semicirculares. En su interior, la tumba gótica de <strong>Pere Rovira</strong>, quien llevó a Besalú los restos de San Vicente.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Restos del castillo · Colegiata gótica</div>
+      <h3>Colegiata de Santa Maria</h3>
+      <p>Los únicos restos que quedan del antiguo castillo de Besalú. Buen lugar para sentarse a tomar algo en la Plaça Prat de Sant Pere o la Plaça Llibertat.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Lago de Banyoles · Vic</h2>
+        <div class="day-subtitle">Lunes 21 de Febrero de 2022</div>
+      </div>
+    </div>
+
+    <div class="section-title">🏞️ Mañana · Lago de Banyoles</div>
+
+    <div class="transport">
+      <strong>Desde el hostal:</strong> 5,2 km · 7 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏞️ El lago más grande de Cataluña · 7 km circulares · ~1h 30 min</div>
+      <h3>Lago de Banyoles</h3>
+      <p>De origen kárstico, el lago más grande de Cataluña. La actividad más típica es dar la vuelta completa: 7 km en ruta circular, ~1h 30 min, siguiendo el sentido de las agujas del reloj desde la Oficina de Turismo.<br><br>
+      Durante el trayecto se encuentran las <strong>pesqueras</strong>: construcciones de mediados del S.XIX y principios del S.XX que la burguesía usaba para bañarse, pescar y guardar las barcas. Casi al final del camino, el <strong>Poblado Neolítico de la Draga</strong>.<br><br>
+      ⚠️ Está prohibido bañarse salvo en los sitios autorizados. La barca <strong>Tirona</strong> (catamarán eléctrico, 80 personas) ofrece recorridos de 40 min. Lunes: cerrado.</p>
+    </div>
+
+    <div class="section-title">🏛️ Tarde · Vic</div>
+
+    <div class="transport">
+      <strong>Desde Banyoles:</strong> 86 km · 58 min · Aparcar en el parking de la Plaza Mayor
+    </div>
+
+    <div class="narrative">
+      Vic es conocida por ser la cuna mundial del fuet y por tener una de las plazas más grandes y bonitas de Cataluña. La ciudad se conoce desde el S.IV a.C. como <em>Ausa</em>, centro de la tribu ibérica de los ausetanos. Destruida en el año 826, Wifredo el Velloso la repobló en el 878 como <em>Vicus Ausonae</em>, de donde salió el nombre de Vic.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plaza Mayor · Plaça del Mercadal · Sin asfaltar · Con dibujos del mercado</div>
+      <h3>Plaza Mayor de Vic — Plaça del Mercadal</h3>
+      <p>La plaza no está asfaltada: es de tierra, y en ella se pueden ver dibujadas las formas de los puestos del mercado semanal. A la entrada destaca la <strong>Casa Comella</strong> por la belleza de su fachada. El <strong>Ayuntamiento</strong>: la parte más antigua es el edificio del S.XIV donde hoy está la Oficina de Turismo (la Llotja del Blat, espacio donde se vendía carne, pescado y se pesaba el trigo).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Casa señorial barroca · Murales de El Vigatà (1743-1805)</div>
+      <h3>Casa Cortada — C/ Ciutat 4</h3>
+      <p>Ejemplo característico de las casas señoriales barrocas de Vic. Austera por fuera, conserva por dentro el mobiliario y la decoración originales con <strong>pinturas murales de Francesc Pla, El Vigatà</strong> (1743-1805), considerado el pintor catalán más interesante del último cuarto del S.XVIII. Las pinturas narran las aventuras de Telèmac, hijo de Ulises, en muy buen estado de conservación.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Catedral · Románico S. XI · Murales de Sert · Campanar más alto de Catalunya</div>
+      <h3>Catedral de Sant Pere de Vic</h3>
+      <p>Abierta de lunes a domingo de 10:00-13:00h. El <strong>campanario</strong> (el más alto de Cataluña de estilo románico) y la <strong>cripta</strong> son joyas del S.XI que se conservan desde su construcción.<br><br>
+      En el interior, todas las paredes están cubiertas de <strong>murales pintados por Josep Maria Sert</strong>. Los originales del 1900 fueron destruidos en la Guerra Civil. Fue el bisbe Oliba quien construyó la catedral románica en el S.XI; con el tiempo fue ampliándose hasta que en el S.XVIII se construyó el gran templo neoclásico. A principios del S.XX, Sert recibió el encargo del bisbe Torras i Bages de decorar el interior.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 Pont de Queralt · S. XI · Entrada histórica a la ciudad</div>
+      <h3>Pont de Queralt y Muralla de Vic</h3>
+      <p>Antiguo puente de entrada a la ciudad cuando estaba amurallada. D'estil romànic, construït al S.XI, donava accés al portal de la muralla. Fins al 1274 per entrar a Vic, venint de Barcelona, s'havia de passar per aquest pont. Para llegar se pasa por una zona donde aún se aprecia bien la antigua muralla y los edificios de las antiguas curtidoras de piel, negocio muy importante en la Edad Media por la cercanía al río.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Templo romano · S. II d.C. · Mar-Sáb 11:00-13:00h · Oculto siglos en el castillo</div>
+      <h3>Templo Romano — El Castell dels Montcada</h3>
+      <p>Con la ocupación romana se construyó un templo en el S.II d.C. en el punto más alto de la ciudad. Ocultado por pura casualidad: sus muros fueron usados para construir el castillo de Montcada y el templo quedó "escondido" dentro. No fue hasta el S.XIX, al derruir el castillo, cuando lo encontraron en su interior. Fue consagrado al culto al emperador y es el único edificio recuperado de la ciudad de <em>Auso</em>.<br><br>
+      💡 Si te fijas en las columnas, podrás ver <strong>balazos de metralla de la Guerra Civil</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Museo · Inaugurado 1891 · 20.000 piezas · Arte románico catalán</div>
+      <h3>Museo Episcopal de Vic</h3>
+      <p>El museo más importante de la ciudad. Una de las colecciones de arte románico catalán más importantes de toda Europa, con 20.000 piezas. Inaugurado en 1891, desde 2002 en un edificio muy moderno justo al lado de la catedral. Lunes cerrado.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia gótica · S. XVII · Muy deteriorada · Fachada preciosa</div>
+      <h3>Iglesia de la Piedad</h3>
+      <p>Muy cerca del Templo Romano. Iglesia gótica datada del S.XVII, actualmente en obras por deterioro. Sin duda, su fachada es preciosa.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer</div>
+      <h3>Restaurant L'Ona · Vic</h3>
+      <p>Carrer del Pla de Balenya 22 · Tel. <strong>938 862 598</strong> · Menú 12,50€</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍸 Vermut final</div>
+      <h3>Barmutet · Centro de Vic</h3>
+      <p>Bar muy TOP con multitud de marcas de vermut y cosas para picar.</p>
+    </div>
+
+    <div class="section-title">🚗 Regreso a casa</div>
+    <div class="transport">
+      <strong>Desde Vic:</strong> 85 km · 1h 14 min por C-17
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS — añadir las URLs cuando estén disponibles -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_1 por el ID real del primer vídeo -->
+        <div class="video-placeholder">
+          <span class="icon">▶</span>
+          <span>Vídeo de fotos</span>
+        </div>
+        <iframe src="https://www.youtube.com/embed/B_L_xceIO_A" title="La Garrotxa 2022 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_2 por el ID real del segundo vídeo -->
+        <div class="video-placeholder">
+          <span class="icon">▶</span>
+          <span>Vídeo del viaje</span>
+        </div>
+        <iframe src="https://www.youtube.com/embed/MJsKeNzz3B4" title="La Garrotxa 2022 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY — añadir fotos en fotos/ y sus nombres en el array -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; La Garrotxa 2022</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ─── VÍDEOS ───────────────────────────────────────────────────────────────
+  // Cuando tengas los IDs de YouTube, descomenta los <iframe> y borra los
+  // <div class="video-placeholder"> correspondientes.
+  //
+  // Ejemplo: si la URL es https://youtu.be/AbCdEfGhIjK
+  // el ID es AbCdEfGhIjK
+  // y el src del iframe sería:
+  // https://www.youtube.com/embed/AbCdEfGhIjK
+
+  // ─── GALERÍA ──────────────────────────────────────────────────────────────
+  // Añade los nombres de las fotos en la carpeta fotos/ y ponlos aquí:
+  const photos = [
+     'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+     'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+     'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a la carpeta <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto La Garrotxa ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  // ─── NAV ACTIVO ───────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

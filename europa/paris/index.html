@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>París 2017 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1541264161754-445bbdd7de52?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.85; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    .video-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; } /* He ampliado el ancho de 920px a 1100px */
+    .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 900px) { .video-grid { grid-template-columns: repeat(2, 1fr); } } /* 2 por fila en tablets */
+    @media (max-width: 600px) { .video-grid { grid-template-columns: 1fr; } }           /* 1 por fila en móviles */
+
+   .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+   .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+   .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+   .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    /* OpenTour badge */
+    .opentour { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.2rem 0.6rem; margin-right: 0.4rem; }
+    .opentour.verde  { background: #2e7d32; color: white; }
+    .opentour.amarillo { background: #f9a825; color: #3e2000; }
+    .opentour.naranja { background: #e65100; color: white; }
+    .opentour.azul   { background: var(--accent); color: white; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">París 2017</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇫🇷 Francia</div>
+  <h1 class="hero-title">París 2017</h1>
+  <div class="hero-date">10 – 12 Marzo 2017 · 3 días</div>
+  <div class="hero-pills">
+    <span class="pill">Torre Eiffel</span>
+    <span class="pill">Notre-Dame</span>
+    <span class="pill">Sacré-Cœur</span>
+    <span class="pill">Louvre</span>
+    <span class="pill">Montmartre</span>
+    <span class="pill">La Madeleine</span>
+    <span class="pill">Panteón</span>
+    <span class="pill">Les Invalides</span>
+    <span class="pill">Arco del Triunfo</span>
+    <span class="pill">Barrio Latino</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Llegada · Torre Eiffel · Notre-Dame · Barrio Latino</a>
+  <a href="#dia2">Día 2 · Sacré-Cœur · La Madeleine · Panteón · Les Invalides</a>
+  <a href="#dia3">Día 3 · Louvre · Arco del Triunfo · Vuelta BCN</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">🚌 OpenTour — E-Ticket 144098 · 5 personas · 230 € · 2 días</div>
+    <p>Bus turístico hop-on/hop-off con <strong>4 rutas</strong> y más de 50 paradas. El circuito más completo es el <span class="opentour verde">Verde</span> (Torre Eiffel, Trocadéro, Inválidos, Arco del Triunfo, Campos Elíseos, Notre-Dame, Louvre, Ópera Garnier, Plaza de la Concordia…). También disponibles rutas <span class="opentour amarillo">Amarilla</span>, <span class="opentour naranja">Naranja</span> y <span class="opentour azul">Azul</span>. Incluye <strong>Batobus</strong> (barco por el Sena) con 7 paradas: Beaugrenelle · Tour Eiffel · Musée d'Orsay · Notre-Dame · Jardin des Plantes · Louvre · Champs-Élysées. Temporada baja (nov–mar): cada 30 min de 9:30 a 18:30h.</p>
+  </div>
+
+  <div class="hotel">
+    <div class="hotel-label">🏨 Alojamiento · 3 noches</div>
+    <h4>Austin's Saint Lazare Hotel</h4>
+    <p>26 Rue d'Amsterdam · París · Parada de bus OpenTour a 20 m a la izquierda: Gare Saint-Lazare, Budapest (líneas 81-95)</p>
+  </div>
+
+  <div class="tip">
+    <div class="tip-label">🚕 Transporte Orly → Hotel</div>
+    <p><strong>Taxi reservado:</strong> Rideways.com · Reserva ida 10166185 / vuelta 10165889 · 137 € ida y vuelta &nbsp;|&nbsp; <strong>Orlyval:</strong> 11,30 € (10 min) → estación Antony (línea B) &nbsp;|&nbsp; <strong>Taxi alternativo:</strong> mytaxiparis.es ~70 € · Pagar en efectivo</p>
+  </div>
+
+  <!-- ═══ DÍA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Torre Eiffel · Notre-Dame · Barrio Latino</h2>
+        <div class="day-subtitle">Viernes 10 de Marzo · Vuelo VY8008 Vueling · Salida T1 8:55h → Llegada Orly 10:45h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Al Trocadéro / Torre Eiffel desde el hotel</strong> (opción recomendada):<br>
+      Bajar por c/ Amsterdam → Rue de Saint-Lazare (300 m) → comprar <strong>carnet de 10 viajes</strong> → metro 12 hasta <strong>Concorde</strong> (2 paradas) → OpenTour <span class="opentour verde">Verde</span> parada 9 (Pl. Concorde / Hotel Crillon) → paradas 10→15 pasando Campos Elíseos y Arco del Triunfo hasta <strong>Tour Eiffel – Quai Branly (pilier ouest)</strong>. Si hay tiempo, bajar en parada 13 (Arco del Triunfo) y retomar siguiente bus.<br><br>
+      <strong>Opción rápida</strong> (si vamos justos): metro 13 hasta Invalides (3 paradas) → RER C hasta Champ de Mars-Tour Eiffel (2 paradas) → 450 m a la izquierda. Total ~25 min.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗼 Quai Branly · Tickets comprados a las 14:30h · 324 m de altura</div>
+      <h3>Torre Eiffel</h3>
+      <p>El monumento más visitado del mundo con más de 7 millones de visitas anuales. Construida para la Exposición Universal de París de 1889 por <strong>Gustave Eiffel</strong>. Antes de subir, dar una vuelta por el <strong>Champ de Mars</strong> (900 m) y cruzar el Pont d'Iéna para ver la perspectiva desde el Trocadéro. <strong>Tickets ya comprados para las 14:30h.</strong></p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Opción comida · Si no hemos comido antes</div>
+      <h4>Bistro de la Tour Eiffel</h4>
+      <p>21 Avenue de la Bourdonnais · Tirando a la derecha por avenue de la Tour Eiffel y a la derecha por avenue de Bourdonnais.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Torre Eiffel → Notre-Dame</strong>:<br>
+      Opción barco: Batobus en Quai Branly → 5 paradas hasta Notre-Dame.<br>
+      Opción OpenTour: <span class="opentour verde">Verde</span> · 9 paradas desde Quai Branly.<br>
+      Opción metro: RER C en Champ de Mars-Tour Eiffel → 4 paradas (10 min) hasta Saint-Michel – Notre-Dame → 450 m a pie.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Île de la Cité · Abierta hasta las 18:45h · Visita en español sábados 14:30h (parte trasera, bajo el gran órgano)</div>
+      <h3>Catedral de Notre-Dame</h3>
+      <p>Una de las catedrales góticas más antiguas del mundo, construida entre 1163 y 1245. En su interior tuvieron lugar la coronación de Napoleón Bonaparte, la beatificación de Juana de Arco y la coronación de Enrique VI de Inglaterra. Las dos torres de su fachada miden 69 metros — sí, esas donde vivía Quasimodo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 800 m a pie desde Notre-Dame · Cierra a las 18h · 8,50 €</div>
+      <h3>El Panteón</h3>
+      <p>Ruta a pie desde Notre-Dame: Pont au Double → Rue Lagrange → Rue des Carmes → Rue Valette → Place du Panthéon. Construido entre 1764 y 1790. La visita se divide en dos partes: el <strong>interior</strong> (impresionante tamaño y decoración) y la <strong>cripta</strong>, con las tumbas de Voltaire, Rousseau, Victor Hugo, Marie Curie, Louis Braille, Jean Monnet y Alejandro Dumas. Junto al Panteón: la iglesia <strong>Saint-Étienne-du-Mont</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">☕ Barrio Latino · Rue Huchette · Terraza · Precios asequibles</div>
+      <h3>Barrio Latino — Plaza Saint-Michel + Rue Huchette</h3>
+      <p>Tras atravesar la Plaza de Saint-Michel (fuente con San Miguel luchando con un dragón), se entra en el entramado de callejuelas del Barrio Latino: restaurantes y cafeterías con terrazas muy asequibles. La principal arteria es la <strong>Rue Huchette</strong>, calle perpendicular al Quai Saint-Michel que sale a la izquierda de la fuente.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelta al hotel</strong>: RER C desde Pont de Saint-Michel → Invalides (2 paradas) → metro 13 hasta Paris Saint-Lazare (3 paradas) → subir por Rue d'Amsterdam.
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Sacré-Cœur · La Madeleine · Panteón · Les Invalides · Grand Palais</h2>
+        <div class="day-subtitle">Sábado 11 de Marzo · OpenTour <span class="opentour amarillo">Amarilla</span> parada 50 a las 9:25h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Hotel → Sacré-Cœur</strong>: Subir por c/ Budapest → Rue Saint-Lazare → girar izquierda → 3ª derecha Rue de Mogador → esperar OpenTour <span class="opentour amarillo">Amarilla</span> parada 50 a las <strong>9:25h</strong>. En parada 51 se pasa por el <strong>Moulin Rouge</strong>. Bajar en parada 52: Montmartre-Anvers (frente metro Anvers, bd. de Rochechouart nº 68) → subir por Rue de Steinkerque → izquierda por Place Saint-Pierre → derecha hacia Place Suzanne Valadon (270 m total).
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🚡 Funicular de Montmartre</div>
+      <p>Desde Place Suzanne-Valadon hasta Place Willette (debajo de la Basílica). Vale con la tarjeta de metro. Normalmente hay cola para subir.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Cima de la Butte Montmartre · Entrada libre · 6:00–23:00h todos los días</div>
+      <h3>Basílica del Sacré-Cœur</h3>
+      <p>Magnífica estructura de estilo Romano-Bizantino en el punto más alto de la ciudad. La idea de construir una iglesia dedicada al Sagrado Corazón surgió al final de la guerra Franco-Prusiana (1870). Diseñada por el arquitecto <strong>Paul Abadie</strong>, continuada por otros arquitectos tras su muerte en 1884; construcción completada en 1914, consagración tras la Primera Guerra Mundial.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Sacré-Cœur → La Madeleine</strong>: Volver a coger OpenTour <span class="opentour amarillo">Amarilla</span> pasando por Gare du Nord, Gare de l'Est y la pequeña estatua de la Libertad. Bajar en parada 19: Sainte-Marie de la Madeleine.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Parada 19 · 9:30–19:00h todos los días</div>
+      <h3>Iglesia de la Madeleine</h3>
+      <p>Uno de los templos más curiosos de París por su diseño propio de los templos clásicos de la Antigua Grecia. Formado por <strong>52 columnas corintias de 20 m de altura</strong>. En el frontón principal: altorrelieve de El Juicio Final. Interior levemente iluminado con una sola nave y tres cúpulas invisibles desde el exterior. Sobre el Altar Mayor: escultura de la Asunción de la Magdalena. En la cúpula: fresco sobre la historia del cristianismo. Especialmente notable: el órgano de tubos, considerado uno de los mejores de la ciudad.</p>
+    </div>
+
+    <div class="transport">
+      <strong>La Madeleine → Notre-Dame → Panteón</strong>: OpenTour <span class="opentour verde">Verde</span> desde parada 19 pasando por Ópera Garnier, Palacio Real, Museo del Louvre y Palacio de Justicia → bajar parada 6 Notre-Dame (6 Rue de la Cité) → caminar 160 m bajando por Rue de la Cité (dejando Rue de la Huchette a la derecha) hasta parada 30 Petit-Pont (4 Rue du Petit-Pont) para coger <span class="opentour naranja">Naranja</span>.<br><br>
+      <strong>Para el Panteón</strong>: Opción A: 800 m a pie por Rue Saint-Jacques hasta cruzar Rue Cujas y girar izquierda. Opción B: <span class="opentour naranja">Naranja</span> hasta parada 31 (4 Pl. Edmond Rostand) → 450 m a la izquierda por Rue Soufflot (solo si la espera es ≤ 5 min).
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Hasta las 18:00h · 8,50 € · Construido 1764-1790</div>
+      <h3>Panteón de París</h3>
+      <p>Interior impresionante por su tamaño y decoración. Cripta con las tumbas de <strong>Voltaire, Rousseau, Victor Hugo, Marie Curie, Louis Braille, Jean Monnet</strong> y Alejandro Dumas. Después: iglesia <strong>Saint-Étienne-du-Mont</strong>, justo al lado.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Panteón → Les Invalides</strong>: <span class="opentour naranja">Naranja</span> desde parada 31 (4 Pl. Edmond Rostand) pasando por el Conservatorio de París y la Torre Montparnasse → bajar en parada 17: Invalides.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚔️ Cierra a las 17:00h · Siglo XVII · Sarcófago de Napoleón</div>
+      <h3>Les Invalides — Palacio Nacional + Iglesia del Domo</h3>
+      <p>Imponente complejo arquitectónico edificado en el siglo XVII como residencia para soldados franceses retirados. La <strong>Iglesia del Domo</strong> (construida 1677–1706), capilla real convertida en panteón militar, guarda el sarcófago con las cenizas de <strong>Napoleón I</strong>. La cúpula dorada de 100 m de altura resulta llamativa desde diferentes partes de la ciudad.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Les Invalides → Grand Palais / Petit Palais / Concorde</strong>: Subir por los jardines de Invalides hasta el <strong>Puente Alexandre III</strong>. A la derecha, Quai d'Orsay con parada de barco Batobus — si es posible, coger el barco y hacer el recorrido por el Sena. Si no, cruzar el puente Alexandre III.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Campos Elíseos · La estructura de hierro y vidrio más grande del planeta</div>
+      <h3>Grand Palais + Petit Palais</h3>
+      <p>El Gran Palacio es un impresionante edificio histórico dedicado a exposiciones. Construcción iniciada en 1897, fue el eje de la Exposición Universal de 1900. Recientemente restaurado con reemplazo de las enormes vidrieras y reparación del techo. En sus sótanos, comisaría de policía que protege las obras de las Galerías Nacionales. En el ala oeste: el Palacio de los Descubrimientos (museo de ciencia).</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🌅 Tarde · Plaza de la Concordia + Jardines de las Tullerías</div>
+      <p>A la derecha del Grand Palais están la Plaza de la Concordia y los jardines de las Tullerías. Cenar por la zona o volver al hotel. Opción: metro línea 12 desde Concorde → 2 paradas hasta Rue Saint-Lazare.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Museo del Louvre · Arco del Triunfo · Vuelta a Barcelona</h2>
+        <div class="day-subtitle">Domingo 12 de Marzo · 9:00–18:00h · Taxi a las 17:30h · Vuelo 20:10h → BCN 21:45h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Hotel → Louvre</strong>: Metro 13 desde Saint-Lazare → Champs-Élysées – Clemenceau (2 paradas) → metro 1 → Louvre Museum (3 paradas). <strong>Libre para minusválidos y acompañantes.</strong> Ir directamente a la puerta de entrada. 15 €. De 9:00 a 18:00h.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🖼️ 9:00–18:00h · 15 € · Inaugurado 1793 · Más de 8 millones de visitas/año</div>
+      <h3>Museo del Louvre</h3>
+      <p>El museo más importante de Francia. Alojado en el Palacio del Louvre, una fortaleza del siglo XII ampliada y reformada sucesivas veces. En 1989 se añadió la célebre pirámide de cristal.<br><br>
+      <strong>Pinturas imprescindibles:</strong><br>
+      · <em>La Gioconda</em> (Mona Lisa) · Leonardo da Vinci · 1503 · En el Louvre desde 1797. Retrato de Lisa Gherardini, esposa de Francesco del Giocondo.<br>
+      · <em>La Libertad guiando al pueblo</em> · Delacroix · 1830. El lienzo representa la jornada del 28 de julio de 1830 en que el pueblo de París levantó barricadas.<br>
+      · <em>Las Bodas de Caná</em> · Paolo Veronese · 1563. Óleo sobre lienzo, una de las pinturas más grandes del museo.<br><br>
+      <strong>Esculturas imprescindibles:</strong><br>
+      · <em>Venus de Milo</em> · Grecia helenística · ~130-100 a.C. Representa a Afrodita. Desenterrada por un campesino en la isla de Milo (Cícladas) y vendida a Francia en 1819–1820.<br>
+      · <em>Victoria Alada de Samotracia</em> · Grecia helenística · ~190 a.C. · 2,45 m de mármol. Representa a Niké, diosa de la victoria. Descubierta en 1863 en Samotracia por el cónsul francés Charles Champoiseau.<br>
+      · <em>El Escriba Sentado</em> · Antiguo Egipto · 2480-2350 a.C. Una de las estatuas más representativas del Imperio Antiguo de Egipto y de las mejor conservadas de la civilización egipcia.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Louvre → Arco del Triunfo</strong>: Metro 1 desde Palais Royal – Musée du Louvre → Charles de Gaulle Étoile (6 paradas, 17 min).
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Charles de Gaulle – Étoile · 50 m de alto · Base 45×22 m</div>
+      <h3>Arco del Triunfo + Campos Elíseos</h3>
+      <p>Representa las victorias del ejército francés bajo Napoleón. Testigo del paso de los restos mortales de Napoleón (15 dic. 1840) y los desfiles militares de las dos guerras mundiales (1919 y 1944). En la base: la <strong>Tumba del Soldado Desconocido</strong> (1921), con una llama siempre encendida en memoria de los franceses caídos en la Primera Guerra Mundial sin identificar. En los cuatro pilares: nombres de las batallas napoleónicas y de 558 generales franceses (los que murieron en combate aparecen subrayados). Si sobra tiempo, pasear por los Campos Elíseos.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Arco del Triunfo → Hotel (17:30h):</strong> Bus 22 a las 16:45h o 17:07h en Av. de Friedland (la siguiente al norte de los Champs-Élysées) → 6 paradas hasta Gare Saint-Lazare → subir al hotel.<br><br>
+      <strong>⚠️ El taxi está reservado a las 17:30h.</strong> Recoger maletas y hacia el aeropuerto. 25 km · 40 min – 1h15. Vuelo a las 20:10h → Llegada BCN T1 a las 21:45h.
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div class="section-title-block" style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;max-width:1100px;margin-left:auto;margin-right:auto;">
+    🎬 VÍDEOS DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="video-grid">
+    
+    <!-- VÍDEO 1 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DE FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://youtube.com/embed/CepM0IZYB0k" title="Fotos del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph1"><span class="icon">▶</span><span>FOTOS DEL VIAJE</span></div>
+      </div>
+    </div>
+
+    <!-- VÍDEO 2 -->
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://youtube.com/embed/Ra94Y_JlOLE" title="Vídeo del viaje París 1998" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph2"><span class="icon">▶</span><span>VIDEO DEL VIAJE</span></div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · París 2017</strong> &nbsp;·&nbsp; 10 – 12 Marzo 2017 · 3 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
+    'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
+    'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (!photos.length) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code>.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto París 2017 ${i+1}`; img.loading = 'lazy';
+      img.onerror = function() {
+        const ph = document.createElement('div');
+        ph.className = 'foto-placeholder';
+        ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
+        ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto ' + (i+1) + '</span>';
+        item.replaceChild(ph, this);
+      };
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) document.getElementById(id).style.display = 'none';
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Granada 2025 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* ── NAV FIJA ── */
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.32) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1543783207-ec64e4d95325?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    /* ── NAV DÍAS ── */
+    .days-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.1rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* ── CONTENIDO ── */
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* ── RESTAURANTES ── */
+    .resto { background: white; border-left: 4px solid #e8a838; padding: 1.1rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .resto:hover { border-left-color: #c47d10; }
+    .resto-meta { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: #c47d10; font-weight: 700; margin-bottom: 0.3rem; }
+    .resto h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+    .resto p { font-size: 0.95rem; font-weight: 500; line-height: 1.75; color: var(--muted); }
+
+    /* ── VÍDEOS ── */
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    /* ── GALERÍA ── */
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV FIJA -->
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-espana">🇪🇸 España</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Granada 2025</span>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">🇪🇸 España · Andalucía</div>
+  <h1 class="hero-title">Granada</h1>
+  <div class="hero-date">26 Febrero – 1 Marzo 2025 · 4 días</div>
+  <div class="hero-pills">
+    <span class="pill">Albaicín</span>
+    <span class="pill">La Alhambra</span>
+    <span class="pill">Sacromonte</span>
+    <span class="pill">Parque de las Ciencias</span>
+    <span class="pill">Monachil</span>
+  </div>
+</header>
+
+<!-- NAV DÍAS -->
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1</a>
+  <a href="#dia2">Día 2</a>
+  <a href="#dia3">Día 3</a>
+  <a href="#dia4">Día 4</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada a Málaga y el Albaicín de Granada</h2>
+        <div class="day-subtitle">Miércoles 26 de Febrero · Málaga → Granada</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vueling BCN T1 09:00h → Málaga 10:40h</strong><br>
+      Recogida coche Centauro (ref. 781120102) · Kia Stonic o similar · Bus de cortesía, entrega a partir de las 11:00h<br>
+      <strong>Alojamiento:</strong> Casa Al-Andalus, Monachil · 7 Colonia los Rasales (buscar en Maps como «Colonia los Rasales»)
+    </div>
+
+    <div class="section-title">🍽️ Comida</div>
+
+    <div class="resto">
+      <div class="resto-meta">🍷 Restaurante · Reserva 13:30h · 952 266 211</div>
+      <h3>La Venta del Túnel</h3>
+      <p>A 15 km / 18 min del aeropuerto de Málaga. Primera parada del viaje antes de subir a Granada.</p>
+    </div>
+
+    <div class="section-title">📍 Tarde · El Albaicín</div>
+
+    <div class="tip">
+      <div class="tip-label">🅿️ Parking recomendado</div>
+      <p><strong>Parking San Agustín – Telpark</strong> (Plaza de San Agustín, pleno centro junto a la Catedral). Alternativa exclusiva para el Albaicín: <strong>Parking San Cristóbal</strong> (Carretera de Murcia, 126) a 680 m / 9 min andando hasta el mirador.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Historia · Centro</div>
+      <h3>Plaza de Isabel la Católica · Palacio de la Madraza · Corral del Carbón</h3>
+      <p>Punto de partida ideal. A pocos metros, cruzando hacia la calle Estribo, el <strong>Palacio de la Madraza</strong> es el mejor lugar para empaparse de la esencia árabe de Granada. De vuelta en la calle de los Reyes Católicos, la calle Puente del Carbón conduce al <strong>Corral del Carbón</strong>, antigua alhóndiga árabe y uno de los monumentos más importantes de la ciudad.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Paseo · Albaicín</div>
+      <h3>Carrera del Darro y Paseo de los Tristes</h3>
+      <p>Dos de las calles más especiales de Granada: el río Darro pasa a su lado, y al fondo, la <strong>Alhambra iluminada al atardecer</strong>. Llenas de bares, restaurantes y tiendas de recuerdos. El momento ideal es a última hora de la tarde. ¡Un escenario de postal!</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛁 Baños árabes · Siglo XI · Albaicín</div>
+      <h3>El Bañuelo</h3>
+      <p>Uno de los baños árabes mejor conservados de España. Data del siglo XI y sobrevivió a la orden de destrucción de los Reyes Católicos. Junto con los baños de la Alhambra, son los más bonitos de la ciudad.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏠 Casa morisca · Siglo XIV · Albaicín</div>
+      <h3>Casa de Zafra — Centro de Interpretación del Albaicín</h3>
+      <p>Construida en el siglo XIV por una importante familia del reino nazarí. Fue convento durante años. Tiene un bonito patio con las estancias a su alrededor. Actualmente explica la historia del barrio y pone en valor su patrimonio. <strong>Cierra a las 19h.</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏠 Casa morisca · Albaicín</div>
+      <h3>Casa Horno del Oro</h3>
+      <p>Casa morisca de dos plantas cerca del Paseo de los Tristes, en la zona de Axares. Conserva el patio árabe, la alberca y las columnas nazaríes, así como puertas y yeserías en muy buen estado. <strong>Entrada: 5 € (incluye Bañuelo, Palacio Dar al-Horra y Corral del Carbón).</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕌 Mirador · Albaicín</div>
+      <h3>Mirador de San Nicolás</h3>
+      <p>El más visitado de Granada, y con razón: tiene las mejores vistas de la Alhambra, justo enfrente. Al lado, casi desapercibida, la <strong>Mezquita Mayor de Granada</strong> (construida en 2003) ofrece casi las mismas vistas desde sus jardines pero con mucha menos gente. Otros miradores del barrio: San Miguel Alto, Los Carvajales, San Cristóbal y La Lona.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Palacio nazarí · Albaicín</div>
+      <h3>Palacio Dar al-Horra</h3>
+      <p>Perteneció a la sultana Aixa, madre del último monarca nazarí Boabdil. Aparte de la Alhambra, es el <strong>único palacio nazarí de Granada</strong>. Su patio con alberca es pura arquitectura musulmana. Tras la Reconquista se convirtió en monasterio de clausura, conservando parte de la decoración árabe original. <strong>Cierra a las 20:30h.</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕌 Historia · Albaicín</div>
+      <h3>Iglesia del Salvador</h3>
+      <p>Ocupa el lugar de la antigua Mezquita Mayor de la ciudad, considerada una de las más bonitas de España. Los Reyes Católicos la destruyeron para propagar el cristianismo, pero se conservan el patio de abluciones y el aljibe originales. Estilo mudéjar.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Palacio · Albaicín</div>
+      <h3>Palacio de los Córdova</h3>
+      <p>Uno de los sitios menos conocidos del Albaicín. Palacio renacentista con jardines y huertos, que mezcla en su interior estilos gótico y mudéjar. Curiosidad: originalmente no estaba aquí; en 1960 se trasladó desde la Placeta de las Descalzas a la Cuesta Chapiz. <strong>Entrada gratuita.</strong> Horario: 10:00-14:00 h y 16:00-18:00 h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏠 Casa morisca · Siglo XVI · Albaicín</div>
+      <h3>Casa de Chapiz</h3>
+      <p>En realidad son dos casas del siglo XVI comunicadas entre sí, que combinan elementos musulmanes y cristianos. Desde aquí hay bonitas vistas a la Alhambra y al valle del Darro. La segunda planta es actualmente la <strong>Escuela de Estudios Árabes de Granada</strong>. Entrada: 2 €. Horario: 10:00-16:45h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚪 Puerta histórica · Siglo IX</div>
+      <h3>Puerta de Elvira</h3>
+      <p>La antigua puerta de entrada a Granada, construida en el siglo IX. Hoy solo se conserva el arco. A sus pies está la Plaza de San Gil. Vale la pena pasear también por la calle Elvira, donde encontrarás la <strong>Iglesia de San Andrés</strong>, que tiene un minarete porque fue originalmente una mezquita.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Parque de las Ciencias</h2>
+        <div class="day-subtitle">Jueves 27 de Febrero · Granada</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">ℹ️ Información práctica</div>
+      <p><strong>Horario:</strong> Martes a sábado, 10:00-19:00h · <strong>Acceso:</strong> Edificio Macroscopio (Avda. de la Ciencia, s/n) · 15 minutos a pie del centro histórico.<br>
+      <strong>Precios:</strong> Museo 10 € · Planetario 3,50 € · BioDomo 7 €<br>
+      <strong>Parking:</strong> Exterior (entrada por Edificio Péndulo de Foucault) o subterráneo (Edificio Macroscopio). Primeras 3 horas: 1,50 €.</p>
+    </div>
+
+    <div class="section-title">⭐ No te puedes perder</div>
+
+    <div class="place">
+      <div class="place-meta">🦁 Biodiversidad · Edificio Macroscopio</div>
+      <h3>BioDomo</h3>
+      <p>Una ventana a la vida dedicada a la biodiversidad del planeta, con más de <strong>200 especies entre animales y plantas</strong>. Horario asignado en taquilla sujeto a disponibilidad. A partir de febrero, horario ininterrumpido.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦅 Espectáculo · Exteriores</div>
+      <h3>Rapaces en vuelo</h3>
+      <p>Observar el vuelo de un águila o cómo caza un halcón a unos centímetros de distancia. Sesiones a las <strong>11:30h y 17:15h</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔭 Astronomía · Edificio Péndulo de Foucault</div>
+      <h3>Planetario Digital</h3>
+      <p>Proyectores que recrean más de <strong>7.000 estrellas</strong> en una visión del Universo en 360°. Sesiones: 10:30 · 11:30 · 12:30 · 13:30 · 14:30 · 15:30 · 16:30h. Horario asignado en taquilla.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦋 Naturaleza · Exteriores</div>
+      <h3>Mariposario Tropical</h3>
+      <p>20 especies de mariposas y más de 70 especies de plantas de origen tropical y subtropical. Abierto de 11:00 a 18:30h.</p>
+    </div>
+
+    <div class="section-title">🏛️ Pabellones y exposiciones</div>
+
+    <div class="place">
+      <div class="place-meta">🧬 Ciencia · Pabellón Margarita Salas</div>
+      <h3>WOW — Maravillas de la vida salvaje</h3>
+      <p>Se aproxima al movimiento animal: correr, saltar, huir o cazar con escenas panorámicas de gran belleza y dramatismo. Taller «Huye mientras puedas» y «Más allá de la reproducción» de 11:30 a 12:30h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🤖 Innovación · Pabellón Leonardo da Vinci</div>
+      <h3>BioInspiración — Innovar desde la naturaleza</h3>
+      <p>La humanidad se ha inspirado en la naturaleza durante siglos. Esta exposición muestra los mejores ejemplos de <strong>biomímesis</strong> en ingeniería, robótica, medicina y exploración espacial. Taller «Naturaleza, fuente de inspiración» de 12:00-14:00h y 17:00-18:00h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚢 Exposición temporal · Pabellón Titanic</div>
+      <h3>Titanic — Enseñanzas de la gran tragedia</h3>
+      <p>A través de objetos originales, maquetas e interactivos, explica la cadena de factores que provocaron el hundimiento la madrugada del 14 al 15 de abril de 1912. Incluye un interactivo donde se emula cómo distintas decisiones podrían haber evitado el accidente. De 12:00 a 17:15h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧠 Salud mental · Edificio Péndulo de Foucault</div>
+      <h3>Menssana — Salud mental y bienestar</h3>
+      <p>Exposición que visibiliza el conocimiento científico sobre salud mental, promociona la prevención y divulga los avances de la investigación. Junto con la exposición «Cambio climático. Desafío global, tú decides».</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕌 Historia · Exposición permanente</div>
+      <h3>Al-Ándalus y la Ciencia</h3>
+      <p>Explica la aportación de los andalusíes al avance de la ciencia y la tecnología entre los siglos VIII y XV. Incluye la reproducción a escala de una noria de Albarracín, maquetas de la Alhambra y un ábaco del siglo IX.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧍 Medicina · Pabellón Viaje al Cuerpo Humano</div>
+      <h3>Viaje al Cuerpo Humano</h3>
+      <p>Interactivos con sensores infrarrojos sobre anatomía, biomedicina, trasplantes, genética y alimentación. Taller «Anatomía del aparato digestivo» jueves y viernes a las 13:00h en el Anfiteatro anatómico.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>La Alhambra y Granada ciudad</h2>
+        <div class="day-subtitle">Viernes 28 de Febrero · Granada</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎟️ Entradas</div>
+      <p>Entrada para los <strong>Palacios Nazaríes a las 13:30h</strong>. Llegar con tiempo suficiente al recinto.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Patrimonio Mundial UNESCO · Granada</div>
+      <h3>La Alhambra — Palacios Nazaríes</h3>
+      <p>Una de las joyas del arte islámico medieval y el monumento más visitado de España. Los Palacios Nazaríes son el corazón del conjunto: estancias con una decoración de yesería, azulejo y madera de una delicadeza extraordinaria. El complejo incluye también el <strong>Generalife</strong> (jardines reales) y la <strong>Alcazaba</strong> (la fortaleza militar con las mejores vistas de Granada).</p>
+    </div>
+
+    <div class="section-title">🍽️ Comida</div>
+
+    <div class="resto">
+      <div class="resto-meta">🌿 Restaurante · Reserva 14:30h</div>
+      <h3>Restaurante Jardines Alberto</h3>
+      <p>Pausa para comer durante la jornada en la Alhambra.</p>
+    </div>
+
+    <div class="section-title">📍 También en Granada ciudad</div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Monumento renacentista · Centro</div>
+      <h3>Catedral de Granada y Capilla Real</h3>
+      <p>El monumento renacentista más impresionante de la ciudad. La <strong>Capilla Real</strong> acoge la tumba de los Reyes Católicos. <strong>Entradas:</strong> Catedral 5 € · Capilla Real 5 €. Horario: 10:00-18:15h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏘️ Barrio · Granada</div>
+      <h3>Sacromonte</h3>
+      <p>Barrio famoso por sus <strong>casas-cueva</strong> excavadas en la ladera. Visita el <strong>Museo Cuevas del Sacromonte</strong> (entrada 5 €) para entender la cultura gitana y flamenca que ha dado forma a este rincón único de Granada.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Historia · Centro</div>
+      <h3>Corral del Carbón</h3>
+      <p>Antigua alhóndiga árabe y uno de los monumentos más importantes para conocer la historia de Granada. <strong>Entrada gratuita.</strong></p>
+    </div>
+
+  </section>
+
+  <!-- ═══ DIA 4 ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Regreso a Barcelona vía Málaga</h2>
+        <div class="day-subtitle">Sábado 1 de Marzo · Granada → Málaga → Barcelona</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Salida hacia Málaga</strong><br>
+      Aeropuerto a las 17:00h · Devolución del coche a las 18:00h<br>
+      <strong>Vuelo:</strong> Sale 19:20h → Llega Barcelona T1 20:55h<br>
+      Bus L99: salida 21:15h o 21:45h
+    </div>
+
+  </section>
+
+</main>
+
+<!-- RESTAURANTES RECOMENDADOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🍽️ Restaurantes a tener en cuenta</div>
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top:1.5rem;">
+    <div class="resto">
+      <div class="resto-meta">🐟 Tapas · Calle Navas, 28</div>
+      <h3>Bar Los Diamantes</h3>
+      <p>Especialidad en fritura de pescado y tapas gratis con la bebida. Aprox. 15-18 € por persona.</p>
+    </div>
+    <div class="resto">
+      <div class="resto-meta">🍻 Tapas · Pl. Pescadería, 16 · Al lado de la Catedral</div>
+      <h3>La Bella y La Bestia</h3>
+      <p>Tapas generosas con la bebida. Aprox. 15 € por persona.</p>
+    </div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeo del viaje</div>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/IQOCXrNZXg8" title="Viaje a Granada 2025" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Granada 2025</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ── FOTOS ──────────────────────────────────────────────────────────────
+  // Añade aquí los nombres de tus fotos dentro de la carpeta fotos/
+  // Ejemplo: 'fotos/1.jpg', 'fotos/2.jpg', etc.
+  const photos = ['fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg', 
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Granada ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  // ── NAV ACTIVO ────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

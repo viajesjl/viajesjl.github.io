@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Madeira 2018 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.68) 0%, rgba(21,101,192,0.36) 60%, rgba(10,31,61,0.78) 100%),
+        url('https://images.unsplash.com/photo-1628413283166-a7666966d26b?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.85rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .ruta { background: white; border-left: 4px solid var(--accent); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; }
+    .ruta-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem; }
+    .ruta h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
+    .ruta-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem; }
+    .ruta-stat { background: var(--accent-pale); color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; padding: 0.2rem 0.7rem; }
+    .ruta p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .unesco { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--accent); color: white; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; padding: 0.25rem 0.7rem; margin-bottom: 0.8rem; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-islas-portuguesas">🇵🇹 Islas Portuguesas</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Madeira</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">🇵🇹 Portugal · Isla atlántica · Flores y volcanes</p>
+  <h1 class="hero-title">Madeira</h1>
+  <p class="hero-date">2 — 6 Abril 2018 · 5 días</p>
+  <div class="hero-pills">
+    <span class="pill">Porto Moniz · Piscinas volcánicas</span>
+    <span class="pill">Cabo Girão · Suelo de cristal</span>
+    <span class="pill">Levada 25 Fontes UNESCO</span>
+    <span class="pill">Carrinhos do Cesto</span>
+    <span class="pill">Funchal · Monte</span>
+    <span class="pill">Caldeirão Verde</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1</a>
+  <a href="#dia2">Día 2</a>
+  <a href="#dia3">Día 3</a>
+  <a href="#dia4">Día 4</a>
+  <a href="#dia5">Día 5</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada · Porto Moniz</h2>
+        <div class="day-subtitle">Lunes 2 de Abril</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelos TAP (reserva MAUD25):</strong> Barcelona T1 10:25h → Lisboa T1 11:20h (TP1041) · Comer en el aeropuerto<br>
+      Lisboa 13:30h → Funchal (TP1681) → Llegada 15:15h<br>
+      <strong>Coche alquiler CarTrawler:</strong> Ref. PT898082320 · Opel Adam o similar<br>
+      <strong>Hasta Porto Moniz:</strong> 66 km · 46 min
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento · Base toda la estancia</div>
+        <h3>Hotel Euro Moniz · Porto Moniz</h3>
+        <p>Rua das Alfarrobeiras 4, Porto Moniz · Tel. <strong>+351 291 850 050</strong></p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Piscinas volcánicas · 1,50€ entrada · Vestuarios cierran 17:30h · Parking gratis a 5 min</div>
+      <h3>Piscinas Naturales de Porto Moniz</h3>
+      <p>Formadas por lava volcánica donde el agua salada entra a su interior. Precio: 1,50€ (entrada) + 1€ (taquilla). Los vestuarios cierran a las 17:30h pero se puede seguir en las piscinas. ⚠️ Evitar el restaurante (caro). El agua es fría.<br><br>
+      💡 Cerca del acuario hay unas piscinas <strong>gratuitas</strong>, preciosas y mucho menos masificadas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Fuerte · 1730 · Defensa contra piratas</div>
+      <h3>Fuerte de João Batista</h3>
+      <p>Datado de 1730, fue construido para proteger a la población de los asaltos de los piratas. Hoy alberga el acuario de Porto Moniz: 11 estanques con hábitats del mundo marino de Madeira (el principal tiene ~500.000 litros de agua). Precio: 7€ · 10:00-18:00h.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena · Reservar</div>
+      <h3>Restaurante Sea View · Porto Moniz</h3>
+      <p>Tel. <strong>+351 291 640 100</strong> · Alternativas: Restaurante Orca · Polo Norte · Mar a Vista</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Costa norte · Cabo Girão · Câmara de Lobos · Funchal</h2>
+        <div class="day-subtitle">Martes 3 de Abril · Porto Moniz → Funchal</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪨 Formaciones rocosas · 3 km del hotel · 3 min</div>
+      <h3>Illhéu da Ribeira da Janela — Los Trolls de Madeira</h3>
+      <p>Serie de formaciones rocosas cerca de la costa. El conjunto consta de tres peñones: <em>Ilheuzinho</em> (izquierda), <em>Ilhéu da Rama</em> (derecha) y <em>Ilhéu Alto ou Ilhéu Comprido</em> (centro), un pináculo de casi 40 metros de altura (equivalente a 13 pisos) que tiene una brecha en la parte superior parecida a una ventana — de ahí el topónimo "Ribeira da Janela" (Río de la Ventana). Un pequeño sendero desde unas escaleras se adentra en el peñasco y permite llegar al lado del mar.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Piscinas · 6,4 km · Playa das Lajes</div>
+      <h3>Piscinas Naturales de Seixal</h3>
+      <p>Piscinas naturales y la bonita Praia das Lajes.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💧 Cascada · 2,3 km de las piscinas · Parking en la carretera</div>
+      <h3>Cascada Véu da Noiva — São Vicente</h3>
+      <p>La cascada que se precipita directamente hacia el mar. Parada breve en el parking de la carretera.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌋 Grutas volcánicas · 6,8 km · 8€ · 10:00-19:00h</div>
+      <h3>Grutas de São Vicente — 400.000 años de historia</h3>
+      <p>Serie de 8 túneles con más de 1.000 metros de largo, intactos desde su formación hace 400.000 años cuando la lava formó insólitos tubos subterráneos, descubiertos en 1886. Visita guiada de ~700 m (30 min). Hay un ascensor que simula un viaje al centro de la Tierra. Impresionantes estalactitas volcánicas, acumulaciones de lava o "bolo de lava" y la galería más grande: el <strong>Lago dos Desejos</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👁️ Mirador · 1.007 m de altitud · 9,7 km · 8 min</div>
+      <h3>Boca de Encumeada — Vistas norte y sur</h3>
+      <p>Mirador elevado a 1.007 m en la cordillera que atraviesa Madeira de este a oeste. Desde aquí se observan simultáneamente hermosas vistas de la costa norte y la costa sur de la isla.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏔️ Acantilado · Más de 500 m de caída vertical · Mirador de cristal · Gratis · Siempre abierto</div>
+      <h3>Cabo Girão — Entre los acantilados más altos de Europa</h3>
+      <p>Más de 500 metros de caída prácticamente vertical hasta las aguas del océano. El mirador tiene un <strong>suelo de cristal</strong> que se extiende sobre el punto más alto del acantilado, con vistas asombrosas a lo largo de la costa que descienden hasta Câmara de Lobos. Entrada gratuita, siempre abierto.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Teleférico · Desde Rancho · 3,4 km · 5€ trayecto de vuelta · 8:00-19:00h</div>
+      <h3>Teleférico y Fajãs do Cabo Girão — Viñedos en el acantilado</h3>
+      <p>El teleférico baja por la cara del acantilado hasta las <strong>Fajãs do Cabo Girão</strong>: terrazas de cultivo de viñedos. La razón de cultivar en un terreno tan inaccesible es que los acantilados orientados al sur protegen las terrazas, radiando calor y creando un microclima casi perfecto. Antes del teleférico, los agricultores solo podían acceder en embarcación. Dos cabinas de 6 asientos. Al bajar, tirar a la derecha hacia la hermosa playa.<br><br>
+      En Rancho hay un restaurante con platos típicos: la <em>espada</em> (pez sable negro), el <em>picado</em> (carne típica) y el <em>polvo de escabeche</em> (pulpo en escabeche).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Villa histórica · 3 km · Primer asentamiento de la isla</div>
+      <h3>Câmara de Lobos — El pueblo del descubridor</h3>
+      <p>Una de las localidades más antiguas de Madeira; el primer lugar donde vivió João Gonçalves Zarco, navegante descubridor de la isla (1420-1424). El nombre viene de la enorme cantidad de lobos marinos que habitaban la bahía. ~35.000 habitantes.<br><br>
+      <strong>Patrimonio:</strong> Iglesia de San Sebastián (S.XVI), Capilla de la Virgen de la Concepción (S.XV, reedificada S.XVIII), antiguo Convento de San Bernardino (1425), y el "Forno da Cal" en la zona de Salinas.<br><br>
+      <strong>Islote de Câmara de Lobos:</strong> peñasco que sobresale del mar donde habita parte de la clase pescadora. Jardín con vistas panorámicas a la ciudad, el mar y el Cabo Girão. Se pueden ver las pintorescas embarcaciones llamadas <em>Xavelhas</em>.<br><br>
+      <strong>Pico da Torre</strong> (Pico da Cruz, 936 m · 3,3 km · 4 min): mirador privilegiado sobre Câmara de Lobos. Restaurantes con <em>poncha</em> (bebida típica) y <em>gata</em> (pez que se seca al aire — cuando se percibe un olor intenso a la entrada de la ciudad, es el proceso de secado).</p>
+    </div>
+
+    <div class="section-title">🏙️ Tarde · Funchal</div>
+
+    <div class="transport">
+      <strong>Desde Câmara de Lobos:</strong> 9,7 km · 8 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛒 Mercado · 7:00-19:00h · Dos plantas</div>
+      <h3>Mercado dos Lavradores — Funchal</h3>
+      <p>Mercado de dos plantas con todo tipo de productos, especialmente tubérculos, hortalizas y fruta tropical. En el fondo, una nave inferior con la lonja de pescado. En el piso superior, frutas y hortalizas tropicales que dan a probar en la mano.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Cable Car · 440 m del mercado · 16€ · Combinado Jardín Botánico 30,90€ · 9:00-17:45h · 15-25 min</div>
+      <h3>Cable Car · Zona Velha · Funchal</h3>
+      <p>Bajar por Rua Brigadeiro Oudinot hasta el puerto, a la izquierda está el Cable Car. Las vistas durante el ascenso muestran desde mansiones hasta barrios suburbiales, dando una panorámica de cómo las casas han ido escalando la montaña hasta formar la capital. Dar una vuelta por la <strong>Zona Velha</strong> (barrio antiguo).</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Levada das 25 Fontes · Costa suroeste</h2>
+        <div class="day-subtitle">Miércoles 4 de Abril</div>
+      </div>
+    </div>
+
+    <div class="ruta">
+      <div class="ruta-label">🥾 Senderismo · UNESCO · Laurisilva de Madeira</div>
+      <h3>Levada das 25 Fontes — Laguna mágica</h3>
+      <div class="ruta-stats">
+        <span class="ruta-stat">4,6 km + 4,6 km</span>
+        <span class="ruta-stat">~3 horas</span>
+        <span class="ruta-stat">900 m → 1.290 m</span>
+        <span class="ruta-stat">Dificultad media</span>
+      </div>
+      <div class="unesco">🌿 Laurisilva de Madeira · Patrimonio Mundial Natural UNESCO</div>
+      <p>El sendero comienza descendiendo hasta Rabaçal, y desde allí sigue a lo largo de la <em>levada</em> hasta la cascada. El regreso es por el mismo camino.<br><br>
+      <strong>PR 6.1 — Levada do Risco</strong> (1.000 m altitud): cascada espectacular que cae en vertical formando una línea perfecta en la roca.<br><br>
+      <strong>PR 6 — Lagoa das 25 Fontes:</strong> laguna formada por las aguas que bajan de Paul da Serra y emergen misteriosamente por detrás de la pared que la forma, con más de 25 fuentes. <em>La leyenda cuenta que quienes se sumergieran aquí nunca más aparecerían en la superficie — un inglés quiso romper la superstición y nunca se le encontró.</em><br><br>
+      La levada comenzó a construirse en 1835 y el 16 de septiembre de 1855 discurrieron las aguas por primera vez, pasando del norte al sur. Aquí habita y anida la <strong>paloma torcaz</strong>, especie endémica de Madeira. Las levadas alimentan la central hidroeléctrica de Calheta y el riego agrícola.<br><br>
+      <strong>Parking:</strong> Carretera regional E.R. 110 · 24 km · 20 min desde el hotel</p>
+    </div>
+
+    <div class="section-title">🌊 Tarde · Costa suroeste</div>
+
+    <div class="place">
+      <div class="place-meta">🌅 Pueblo tranquilo · 18 km · 15 min</div>
+      <h3>Ponta do Sol — Caña de azúcar, plátanos y viñedos</h3>
+      <p>Pequeño y tranquilo pueblo al suroeste, bañado por el océano. Zona ideal para apreciar los extensos cultivos de caña de azúcar, plátanos y plantaciones de vid.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛵ Puerto deportivo · Playa artificial · 9,9 km · 7 min · Fundado en 1572</div>
+      <h3>Calheta — Playa de arena traída de Marruecos</h3>
+      <p>Elegante puerto deportivo y playa artificial de color dorado con arena traída de Marruecos y Portugal. El Arco da Calheta es uno de los lugares más famosos del archipiélago. Situado entre montañas con fantásticos rincones.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏄 Surf · 6,5 km · 3 playas de piedra</div>
+      <h3>Jardim do Mar — La meca del surf en Madeira</h3>
+      <p>Pintoresco pueblo conocido en todo el mundo por ser el mejor lugar para practicar surf en Madeira. Tres playas de piedra: Portinho, Enseada y Ponta Jardim, con preciosos parajes naturales y mucha tranquilidad.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Puerto pesquero · 3,5 km · Centro pesquero importante</div>
+      <h3>Paul do Mar — Pueblo pesquero tradicional</h3>
+      <p>Uno de los centros pesqueros más importantes de la isla. Ideal para disfrutar de un día de playa tranquilo. Iglesia parroquial de Santo Amaro.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👁️ Mirador · 15 km · 20 min</div>
+      <h3>Vereda da Garganta Funda — Cascada natural</h3>
+      <p>Mirador para contemplar la caída natural del agua.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Teleférico · 14 km · 3,50€ · 10:00-18:00h</div>
+      <h3>Teleférico Achadas da Cruz — Acceso a la playa</h3>
+      <p>Atractivo y moderno medio de transporte que conecta Achadas da Cruz con la playa de abajo. Soberbias vistas del frondoso Porto Moniz. Fue construido en parte para facilitar el acceso a los campesinos de la zona.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 4 ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Santana · Parque das Queimadas · Caldeirão Verde</h2>
+        <div class="day-subtitle">Jueves 5 de Abril</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏡 Parque temático · 47 km · 38 min · 10:00-19:00h</div>
+      <h3>Parque Temático de Santana — Las casitas triangulares</h3>
+      <p>Las icónicas <strong>casinhas de Santana</strong>: casas triangulares de tejados a dos aguas en rojo y azul, con techos de paja y flores en las ventanas, construidas con piedra natural. Eran habitadas por agricultores; hoy vacías pero visitables.<br><br>
+      El parque incluye: máquina que simula el descubrimiento de la isla, circuito "zoom-in zoom-out" con referencias locales, réplica del tren de Monte, carreta tirada por bueyes, y barcas que recuerdan a las antiguas barcas de pesca de Câmara de Lobos.</p>
+    </div>
+
+    <div class="ruta">
+      <div class="ruta-label">🥾 Senderismo · Laurisilva · UNESCO · 4 km del parque</div>
+      <h3>Parque das Queimadas — Caldeirão Verde</h3>
+      <div class="ruta-stats">
+        <span class="ruta-stat">6,5 km + 6,5 km</span>
+        <span class="ruta-stat">5h 30 min</span>
+        <span class="ruta-stat">Dificultad media</span>
+        <span class="ruta-stat">⚠️ Llevar linterna</span>
+      </div>
+      <div class="unesco">🌿 Bosque de Laurisilva · Patrimonio Mundial Natural UNESCO</div>
+      <p>El Parque das Queimadas alberga el <strong>Pico Ruivo</strong> (1.861 m, el más alto de la isla) y el <strong>Bosque de Laurisilva</strong>, el mayor bosque de laurel existente en el mundo y reliquia de las selvas subtropicales que cubrieron Europa antes de las glaciaciones.<br><br>
+      La ruta lleva a la <strong>cascada del Caldeirão Verde</strong> de 300 metros que cae sobre un estanque de helechos en un cráter volcánico. El sendero pasa por 4 túneles — hay que llevar linterna.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏔️ Valle · 39 km · 39 min · Opcional si hay energía</div>
+      <h3>Curral das Freiras — El Valle de las Monjas</h3>
+      <p>Situado en un enorme cráter de volcán extinguido, rodeado por altas montañas y alejado del mar. Visita obligada por la belleza del paisaje y las vistas panorámicas desde los miradores. El más bonito es <strong>Eira do Serrado</strong> (1.095 m), que ofrece vistas tanto del pueblo como de las montañas que lo rodean. Celebra la popular <strong>Fiesta de la Castaña</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 5 ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Monte · Nossa Senhora do Monte · Carrinhos do Cesto · Regreso</h2>
+        <div class="day-subtitle">Viernes 6 de Abril · Funchal → Barcelona</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desde Porto Moniz a Funchal:</strong> 50 km · 35 min · Parking del teleférico a Monte
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌺 Jardín · 12,50€ · 9:30-18:00h (Museos hasta 16:30h) · Junto al teleférico</div>
+      <h3>Jardín Tropical Monte Palace</h3>
+      <p>Cerca de 100.000 especies vegetales de todo el mundo. Colección excepcional de <strong>cicas</strong> (encephalartos): de las 72 especies conocidas, el jardín tiene ~60 variedades, consideradas fósiles vivos por su edad. Espacio dedicado a la flora madeirense con la mayor parte de las variedades de Laurisilva de la Macaronesia y especies en vías de extinción como el <em>Pittosporum coriaceum</em> ("mocano").</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia · Cable Car · 480 m · 10 min desde la base</div>
+      <h3>Nossa Senhora do Monte</h3>
+      <p>Construida en el emplazamiento de una capilla edificada en 1470 por Adam Gonçalves Ferreira — él y su hermana gemela Eva fueron los <strong>primeros niños nacidos en Madeira</strong>. Fachada con frontón barroco, grandes ventanas y pórtico con soportales. Interior con preciosa estatua de la Virgen en tabernáculo de plata.<br><br>
+      La leyenda dice que en el S.XV una pastorcilla recibió esta estatua de la Virgen, a la que se le atribuyen muchos milagros. La capilla norte alberga el <strong>imponente sarcófago negro del Emperador Carlos I</strong>, que falleció en Madeira de neumonía a los 35 años.<br><br>
+      Frente a la iglesia, una escalera de 74 peldaños que los penitentes suben de rodillas cada 15 de agosto.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛷 Tradición desde 1850 · 30€ para dos · 9:00-18:00h · Debajo de las escaleras de la iglesia</div>
+      <h3>Carrinhos do Cesto — Descenso en cesto de mimbre</h3>
+      <p>Una de las tradiciones más singulares de Madeira: descender 2 km en un <em>"cesto de mimbre"</em> carretera abajo, empujado por dos hombres vestidos de blanco con sombrero de paja. El recorrido por el Caminho do Comboio dura unos 10 minutos. Comenzó alrededor de 1850 como transporte habitual para los habitantes de Monte.<br><br>
+      La salida está debajo de las escaleras de Nossa Senhora do Monte. Para volver al coche, bus 19 (2€) desde la base: 14 paradas hasta Praça Autonomia en el Centro-Cais.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">👁️ Si hay tiempo · 21 km · 14 min</div>
+      <h3>Mirador de Machico</h3>
+      <p>Vistas de toda Machico, las Islas Selvagens al fondo y el aeropuerto de Funchal. Si se va mal de tiempo, ir directamente al aeropuerto (3,3 km · 4 min desde Machico).</p>
+    </div>
+
+    <div class="section-title">✈ Regreso a Barcelona</div>
+
+    <div class="transport">
+      <strong>Devolver el coche · Vuelo TP1686:</strong> Funchal 18:35h → Lisboa 20:10h · Cenar en el aeropuerto<br>
+      <strong>Vuelo TP1048:</strong> Lisboa 21:30h → Barcelona 00:20h
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/b6Y7EVPBOug" title="Madeira 2018 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/ba6GoqH4eD0" title="Madeira 2018 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Madeira 2018</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = ['fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',];
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Madeira ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

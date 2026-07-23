@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>California 2021 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1622583529718-b68ded6804d8?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    /* FOTO PLACEHOLDER */
+    .foto-inline-wrap { margin: 1rem 0; }
+    .foto-inline-wrap img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+    .foto-placeholder {
+      width: 100%; height: 220px;
+      background: var(--paper-dark); border: 2px dashed var(--accent-light);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+    .foto-placeholder .fp-icon { font-size: 2rem; opacity: 0.35; }
+    .foto-placeholder .fp-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    .foto-placeholder .fp-file { font-size: 0.72rem; color: var(--accent-light); font-family: monospace; margin-top: 0.1rem; }
+    .foto-caption { font-size: 0.72rem; color: var(--muted); font-style: italic; padding: 0.3rem 0.5rem; background: rgba(10,31,61,0.04); text-align: center; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-america">🌎 América</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">California 2021</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇺🇸 California · Estados Unidos</div>
+  <h1 class="hero-title">California</h1>
+  <div class="hero-date">10 – 25 Diciembre 2021 · 15 días</div>
+  <div class="hero-pills">
+    <span class="pill">Los Ángeles</span>
+    <span class="pill">Malibú</span>
+    <span class="pill">Santa Mónica</span>
+    <span class="pill">Venice Beach</span>
+    <span class="pill">Universal Studios</span>
+    <span class="pill">San Diego</span>
+    <span class="pill">Las Vegas</span>
+    <span class="pill">Grand Canyon</span>
+    <span class="pill">Seligman · Ruta 66</span>
+    <span class="pill">Page · Horseshoe Bend</span>
+    <span class="pill">Antelope Canyon</span>
+    <span class="pill">Bryce Canyon</span>
+    <span class="pill">Death Valley</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia-1">Día -1 · Preparativos</a>
+  <a href="#dia0">Día 0 · Check-in</a>
+  <a href="#dia1">Día 1 · Los Ángeles</a>
+  <a href="#dia2">Día 2 · Malibú · SM · Venice</a>
+  <a href="#dia3">Día 3 · Hollywood</a>
+  <a href="#dia4">Día 4 · Universal Studios</a>
+  <a href="#dia5">Día 5 · San Diego</a>
+  <a href="#dia6">Día 6 · Las Vegas</a>
+  <a href="#dia7">Día 7 · Las Vegas</a>
+  <a href="#dia8">Día 8 · Grand Canyon West</a>
+  <a href="#dia9">Día 9 · Grand Canyon South</a>
+  <a href="#dia10">Día 10 · Page · Glen Canyon</a>
+  <a href="#dia11">Día 11 · Antelope · Bryce</a>
+  <a href="#dia12">Día 12 · Death Valley</a>
+  <a href="#dia13">Día 13 · Death Valley</a>
+  <a href="#dia14">Día 14 · Los Ángeles</a>
+  <a href="#dia15">Día 15 · Vuelta a BCN</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">🇺🇸 Consejos prácticos — California 2021</div>
+    <p><strong>SIM:</strong> Holafly 15 días · 55,10 € · Activar al menos 3 días antes · La SIM se activa entre las 00:00 y las 09:00h hora Chicago · Comparte datos hasta 7GB · <strong>Coche:</strong> Europcar / FOX Rent A Car · Reserva 1140112613 · Chrisler 300 3.6 o similar · Acceso a línea PRIORITY en agencia FOX · <strong>Moneda:</strong> Dólar estadounidense · <strong>Conducción:</strong> Por la derecha · <strong>Propinas:</strong> 15-20% habitual en restaurantes</p>
+  </div>
+
+  <!-- ═══ DÍA -1 — PREPARATIVOS ═══ -->
+  <section class="day-section" id="dia-1">
+    <div class="day-header">
+      <div class="day-number" style="font-size:1.1rem;">-1</div>
+      <div class="day-info">
+        <h2>Preparativos — Activar tarjeta Holafly</h2>
+        <div class="day-subtitle">Lunes 6 de Diciembre · Al menos 3 días antes de la llegada</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>SIM Holafly:</strong> Comprada para 15 días por 55,10 € · Activar en la dirección indicada en el correo de compra · La tarjeta SIM se activará entre las 00:00 y las 09:00h, hora Chicago · Permite compartir datos hasta 7GB con otros dispositivos
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 0 — CHECK-IN ═══ -->
+  <section class="day-section" id="dia0">
+    <div class="day-header">
+      <div class="day-number" style="font-size:1.3rem;">0</div>
+      <div class="day-info">
+        <h2>Preparativos — Reserva de asiento y taxi</h2>
+        <div class="day-subtitle">Jueves 9 de Diciembre · Check-in vuelo abre a las 00:00h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Check-in:</strong> Se abre a las 00:00h · <strong>Asiento BCN-AMS:</strong> Evitar filas 10-21 (zona del ala) · <strong>Taxi:</strong> Pedir taxi para las 03:00h del día 1
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 1 — LOS ÁNGELES ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Los Ángeles — Llegada</h2>
+        <div class="day-subtitle">Viernes 10 de Diciembre · BCN 06:00h → AMS → LAX 11:50h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo BCN→AMS:</strong> Reserva AIR FRANCE ULTP67 · Vuelo KL1662 operado por KLM · Salida 06:00h Terminal 1 BCN · Llegada 08:25h Schiphol · Puertas C73 a C76<br>
+      <strong>Vuelo AMS→LAX:</strong> Vuelo KL0601 operado por KLM · Salida 09:50h por puerta D10 o G4 · Llegada 11:50h Los Angeles International Terminal B<br>
+      <strong>Coche de alquiler:</strong> Europcar / FOX RENT A CAR · Referencia 1140112613 · Chrisler 300 3.6 o similar · Ir a la zona de autobuses de coches de alquiler (color morado, coche con llave) · Esperar bus de FOX a <strong>5500 W Century Blvd 90045 Los Angeles</strong> · 3 km / 4 min · Acceso a <strong>línea PRIORITY</strong> en agencia FOX
+    </div>
+
+    <!-- FOTO DÍA 1 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia1.jpg" alt="Llegada a Los Ángeles" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia1.jpg</span></div>
+      <div class="foto-caption">Llegada a Los Ángeles</div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Los Ángeles · Apartamento de Ismael</div>
+      <h4>The Chadvick</h4>
+      <p>3333 W 2nd · APT 54-216 · 22 km / 21 min desde FOX location</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Cena · Los Ángeles</div>
+      <h4>Por determinar con Ismael</h4>
+      <p>Cenar donde Ismael diga. Volver al apartamento.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — MALIBÚ, SANTA MÓNICA Y VENICE BEACH ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Malibú · Santa Mónica · Venice Beach</h2>
+        <div class="day-subtitle">Sábado 11 de Diciembre · Ruta costera de oeste a este</div>
+      </div>
+    </div>
+
+    <!-- FOTO DÍA 2 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia2.jpg" alt="Playas de Malibú" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">Las playas de Malibú</div>
+    </div>
+
+    <div class="transport">
+      <strong>Salida:</strong> Hacia Malibú · 42 km / 34 min desde apartamento · Desayunar en <strong>Malibu Country Mart</strong> · Dejar el coche en el parking a 380 m
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏄 Malibú · Surfrider Beach · 820 m / 12 min andando</div>
+      <h3>Surfrider Beach</h3>
+      <p>Una de las zonas más conocidas por los surfistas. Playa enorme con olas perfectas para surfear.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Malibú · Punto más al oeste del viaje</div>
+      <h3>El Matador Beach</h3>
+      <p>Una de las playas más románticas y bonitas de California. Paisaje rocoso y aguas muy cristalinas. Perfecta para ir al atardecer, cuando los colores del sol la hacen mágica. <strong>Será el punto más al oeste en el que habremos estado.</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ Malibú · La playa más grande y popular</div>
+      <h3>Zuma Beach</h3>
+      <p>La playa más popular de Malibú y también la más grande. Una de las playas más concurridas de la zona, con bares y restaurantes donde tomar algo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪨 Malibú · 14 km / 13 min desde Zuma · Parking al otro lado de la carretera</div>
+      <h3>Point Dume</h3>
+      <p>Playa más difícil de acceder, pero perfecta si gustan las playas de roca y la tranquilidad. Muy cerca de Zuma Beach.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦢 Malibú · A 230 m de Point Dume · Unión del Río Malibú con el Pacífico</div>
+      <h3>Malibu Lagoon State Beach + Malibú Pier</h3>
+      <p>Hermoso lago pegado a la carretera donde el Río Malibú se une con el Océano Pacífico. Alrededor: mansiones gigantescas y embarcaciones privadas. Visitar el Malibú Pier y desayunar.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Santa Mónica:</strong> 38 km / 35 min · Parking público: ~14 $ todo el día (o 8$ en parking de playa) · Limonadas en puestos de calle ~5,50$
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎡 Santa Mónica · Pacific Park · Noria 10$ solo, atracciones 5$ c/u · Pack 33$/pax</div>
+      <h3>Muelle de Santa Mónica + Pacific Park</h3>
+      <p>El lugar más conocido del distrito. De madera, crea un ambiente bucólico. Visitar antes del anochecer para ver la puesta de sol. Al final del muelle, pasado el Bubba Gump Shrimp, está el <strong>letrero del Final de la Ruta 66</strong>. Subirse a la famosa Noria de Santa Mónica para unas vistas inmejorables de Los Ángeles y el Pacífico. Pasar por debajo del muelle.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚶 4,5 km / 45 min caminando desde Santa Mónica</div>
+      <h3>Venice Beach</h3>
+      <p>Lo más interesante no son sus playas sino el colorido paseo y sus espectáculos callejeros. Distrito muy concurrido por artistas bohemios. Se puede palpar la esencia de las culturas urbanas de California. Recreación de los canales de Venecia (6 canales originales). Ver la <strong>Venice Sign</strong> en el cruce de Windward Ave y Pacific Street, especialmente al atardecer cuando se ilumina. Ver el <strong>Muscle Beach</strong> (gimnasio al aire libre), canchas de basket y skate park. Alquiler de bicis: 7-15$ (efectivo, si no +3$).</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">💡 Vuelta al apartamento</div>
+      <p>Pedir un Cabify para volver al parking de Santa Mónica a recoger el coche. Después, vuelta al apartamento de Ismael · 23 km / 22 min.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Los Ángeles · Apartamento de Ismael</div>
+      <h4>The Chadvick</h4>
+      <p>3333 W 2nd · APT 54-216</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — LOS ÁNGELES ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Los Ángeles — Hollywood y Lakers</h2>
+        <div class="day-subtitle">Domingo 12 de Diciembre · Beverly Hills · Hollywood Blvd · Staples Center</div>
+      </div>
+    </div>
+
+    <!-- FOTO DÍA 3 -->
+    
+    <div class="place">
+      <div class="place-meta">🌟 Beverly Hills · Parking enfrente del cartel</div>
+      <h3>Beverly Hills Sign + Rodeo Drive</h3>
+      <p>Visita al cartel de Beverly Hills. Bajar por la famosa calle <strong>Rodeo Drive</strong>, ambientada en la escena de Julia Roberts en Pretty Woman.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⭐ Hollywood Boulevard · +2.500 estrellas · 2 km de paseo</div>
+      <h3>Walk of Fame — Hollywood Boulevard</h3>
+      <p>Más de 2.500 estrellas dedicadas a artistas como Robert De Niro, Michael Jackson, Alejandro Sanz, John Lennon, Walt Disney o Donald Trump. Más de 10 millones de personas lo recorren cada año.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎬 Hollywood Boulevard · Huellas de más de 200 famosos</div>
+      <h3>Teatro Chino de Grauman</h3>
+      <p>Obra magna de Sir Grauman, abierto en 1927 con el estreno de "Rey de Reyes". En el exterior: huellas de manos y pies de más de 200 famosos (Shirley Temple, Sophia Loren, Jackie Chan, Marilyn Monroe…). En 2013 se convirtió en el cine IMAX más grande del mundo. Más de 4 millones de visitantes al año.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏆 Hollywood · Sede de los Premios Óscar desde 2002 · Tour guiado disponible</div>
+      <h3>Dolby Theatre</h3>
+      <p>Sede de los Óscar desde 2002. Ofrece tour guiado por sus instalaciones (no visitable por libre). Sin la ceremonia, puede parecer "pequeño" en comparación con las expectativas. No imprescindible.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏀 18:30h · Lakers vs Orlando Magic · Entradas ya compradas</div>
+      <h3>Staples Center — Lakers vs Orlando Magic</h3>
+      <p>Ir a recoger a Ismael y al Staples Center en coche (parking ~10$) o en metro (línea B roja en Wilshire/Vermont, 2 paradas, bajarse en 7th St + 1,2 km · 1,75$). <strong>Mejor opción:</strong> Bus 14 desde Beverly Boulevard (700 m) · parada Beverly/Hoover · 7 paradas · cambio a bus 37 (ID parada 9003) · 9 paradas más hasta Grand/11th · 500 m al estadio. Cerveza: +12$ · Pretzel: +5$.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Los Ángeles · Apartamento de Ismael</div>
+      <h4>The Chadvick</h4>
+      <p>3333 W 2nd · APT 54-216 · Cenar y volver al apartamento tras el partido</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — UNIVERSAL STUDIOS ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Universal Studios Hollywood</h2>
+        <div class="day-subtitle">Lunes 13 de Diciembre · 10:00 – 17:00h · 12 km / 12 min</div>
+      </div>
+    </div>
+
+    <!-- FOTO DÍA 4 -->
+    
+    <div class="transport">
+      <strong>Parking:</strong> Dejar el coche en el parking de Jurassic Park · General antes de las 17h: 30$ · Preferente: 40$ · Front Gate: 60$<br>
+      <strong>Entradas:</strong> General 114$/pax · Residentes California 104$/pax<br>
+      <strong>Horario:</strong> 10:00 – 17:00h · Consultar diciembre en universalstudioshollywood.com
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎥 ~60 min · Guiado en vídeo por Jimmy Fallon · Ir a primera hora</div>
+      <h3>Studio Tour</h3>
+      <p>Tour turístico por diferentes estudios de cine y TV de Hollywood. Platós de películas y series famosas, efectos especiales (La Guerra de los Mundos), y espectáculo final de Fast and Furious. Narración disponible en español con Carmen Villalobos en días selectos. <strong>Ir a primera hora</strong> para evitar colas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚡ Atracciones: Harry Potter and the Forbidden Journey · Flight of the Hippogriff</div>
+      <h3>The Wizarding World of Harry Potter</h3>
+      <p>Zona dedicada al mundo de Harry Potter. Las calles transportan a las películas. En sus restaurantes: la famosa <strong>Cerveza de Mantequilla</strong>. Visitar la tienda de Ollivanders y elegir tu propia varita para usar hechizos por el parque de Hogwarts.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💥 Clasificado como el mejor espectáculo del parque</div>
+      <h3>WaterWorld</h3>
+      <p>Espectáculo con tiroteos, explosiones y hasta un accidente aéreo. Escenas de acción al nivel de Hollywood.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🍩 Springfield · Krusty Burger · Bar de Moe</div>
+      <h3>The Simpsons</h3>
+      <p>Inspirada en el centro de Springfield: hamburguesería Krusty Burger, bar de Moe, centralita de Homer. Atracción principal: montaña rusa de realidad virtual con los personajes de la serie.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦕 Atracción de agua · Caída final</div>
+      <h3>Jurassic Park</h3>
+      <p>Barcas que pasan por la jungla con dinosaurios en su hábitat natural. Termina en una caída que deja helado.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🛍️ CityWalk Hollywood</div>
+      <p>Cerca del parque: calle con bares, restaurantes y tiendas ambientadas en Hollywood. Indoor Skydiving, sala de fiesta Howl at the Moon, grandes salas de cine. <strong>Shuttle gratuito</strong> entre CityWalk y el parque, 7 días a la semana, cada 15 minutos.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — SAN DIEGO ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>San Diego</h2>
+        <div class="day-subtitle">Martes 14 de Diciembre · La Jolla · Old Town · USS Midway · 187 km / 2h05</div>
+      </div>
+    </div>
+
+    <!-- FOTO DÍA 5 -->
+    
+    <div class="transport">
+      <strong>Ruta:</strong> Los Ángeles → La Jolla Cove · 187 km / 2h05 · 17ª ciudad más poblada de EEUU con 3,5 M de habitantes · Hace frontera con Tijuana (México)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦭 La Jolla · Leones marinos en la playa</div>
+      <h3>La Jolla Cove</h3>
+      <p>Los leones marinos son típicos de California. Se pueden ver también en el puerto de San Francisco, pero en La Jolla Cove están en la misma playa bañándose. Una experiencia única.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌮 16 km desde La Jolla · Primer asentamiento de la ciudad · "Taco Tuesday"</div>
+      <h3>Old Town San Diego</h3>
+      <p>El casco antiguo preserva el período histórico de 1821 a 1872 (desde la independencia de México hasta la conversión de San Diego en estado de EEUU). Calles sin asfaltar, gente vestida de época, tiendas con productos artesanales. <strong>Old Town Market:</strong> antiguo mercado de 1800 con tiendas, artesanos y restaurantes. <strong>Horario atracciones (oct–abr):</strong> lunes a jueves 10:00–16:00h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Puerto de San Diego · 6,7 km desde Old Town · Abre 10:00h · Última admisión 16:00h</div>
+      <h3>USS Midway Museum</h3>
+      <p>El barco más grande del mundo cuando fue diseñado en 1945. Se retiró en 1991 y ahora sirve como museo en San Diego. Más de 30 aviones restaurados y casi 10 acres de exposiciones. Ver primero el corto sobre la Batalla de Midway en el teatro (incluido). Tour de audio autoguiado por la cubierta, dormitorios, hangar y cubierta de vuelo. Voluntarios ex-tripulantes dan vida al barco. <strong>Tickets online:</strong> 26$ (5$ de ahorro vs taquilla). Dejar al menos 3 horas. <strong>Consejo:</strong> sin aire acondicionado, llevar agua.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗿 A 500 m del USS Midway</div>
+      <h3>Escultura "Embracing Peace" + Bob Hope</h3>
+      <p>Escultura de 20 pies de altura celebrando el final de la Segunda Guerra Mundial en Times Square. Ver también la escultura de Bob Hope, el comediante que animaba a las tropas. Están en la base naval más grande de EEUU: el Camp Pendleton.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — LAS VEGAS ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Las Vegas — Llegada por la Ruta 66</h2>
+        <div class="day-subtitle">Miércoles 15 de Diciembre · Calico · Peggy Sue's · Ruta 66 · Las Vegas Strip</div>
+      </div>
+    </div>
+
+    <!-- FOTO DÍA 6 -->
+    
+    <div class="transport">
+      <strong>Ruta:</strong> San Diego → Calico · 210 km / 2h17 · Desvío en Armory Road para tramo de Ruta 66 (logos pintados en la carretera, 201 km) → Peggy Sue's 50s Diner → Calico → Las Vegas · 229 km / 2h19
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏜️ Condado de San Bernardino · Desierto de Mojave · 9:00–17:00h · Adultos 8$</div>
+      <h3>Calico — Pueblo Fantasma de la Fiebre de la Plata</h3>
+      <p>Pueblo minero de plata fundado en 1881, abandonado en 1929. Declarado en 2005 por Schwarzenegger como "La Ciudad Fantasma de la Fiebre de la Plata". Restaurado por Walter Knott en los años 50. Solo un tercio de los 30 edificios son originales. <strong>5 edificios originales:</strong> Lucy Lane Museum, Maggie Mine (mina de plata de los 1880s), el salón Lil, la galería de Smitty y el Salón Joe. Actividades: recreación de tiroteos, acrobacias a caballo, tren Calico Odessa Railroad, Mystery Shack de ilusiones ópticas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎰 3667 Las Vegas Blvd · 4,2 km / 6 min · Check-in electrónico · Parking incluido</div>
+      <h3>Hotel Planet Hollywood Resort &amp; Casino</h3>
+      <p>Check-in electrónico, sin personal en el lobby. Restaurante Ocean (rico y económico). Centro comercial con tiendas y restaurantes en el primer nivel. Show de Criss Angel MINDFREAK: miér-dom a las 19h (esos días puede que no actúe). <strong>Parking:</strong> incluido pero bastante lejos (caminar por el centro comercial Mirage en 13 Audrie St).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛲ Bellagio · Fuente cada 30 min · Árbol de Navidad de 42 pies con estrella de Swarovski</div>
+      <h3>Bellagio — Fuente y Conservatory</h3>
+      <p>Show de luces y agua cada 30 minutos. El interior sorprende con más de 2.000 flores de cristal decoradas por el Circo del Sol. En el Bellagio Conservatory (detrás de la fuente, zona del parque): árbol de Navidad de 42 pies coronado con estrella de cristal de Swarovski.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 7 — LAS VEGAS ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Las Vegas — El Strip y Fremont Street</h2>
+        <div class="day-subtitle">Jueves 16 de Diciembre · Linq · High Roller · Venetian · César · Stratosphere · Fremont St</div>
+      </div>
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">🍺 Linq Promenade · 35 tiendas · Frente al Caesars Palace</div>
+      <h3>Linq Promenade — Desayuno</h3>
+      <p>Calle comercial abierta en 2014 con restaurantes, tiendas y entretenimiento. Destacan: <strong>American Beer &amp; Cocktails</strong> (70 cervezas en lata de los 50 estados) y el <strong>Minus5 ICEBAR</strong> (todo hecho de hielo, por debajo de 5°C, dan parka y guantes). Entrada única válida todo el día en el ICEBAR.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎡 167 m de altura · Diurno 23,50$ · Nocturno 34,75$ · Viaje 30 min · A 1 km hotel Flamingo</div>
+      <h3>High Roller — La noria más alta del mundo</h3>
+      <p>167 metros de altura, récord Guinness de noria de observación más alta del mundo. 28 cabinas de cristal de 28 m² para hasta 40 personas. Audio y 8 pantallas con puntos de referencia. 2.000 bombillas LED. <strong>Evitar colas:</strong> ir martes o miércoles. Inaugurada en 2014.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🇮🇹 1,3 km del Flamingo · El resort más grande del mundo · 7.200 habitaciones</div>
+      <h3>The Venetian</h3>
+      <p>El hotel más espectacular de la ciudad. Han recreado Venecia al detalle: canales con agua, Puente Rialto, Gran Canal, Plaza San Marcos, Campanile. <strong>Imprescindible:</strong> ir al lobby porque está decorado de Navidad.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 1 km del Venetian · Temática Antigua Roma · Teatro Coliseo</div>
+      <h3>Caesar's Palace</h3>
+      <p>Tematizado como la Antigua Roma. Fuentes alucinantes y el enorme Teatro Coliseo con espectáculos semanales. De noche también es muy bonito: iluminan sus fuentes.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎂 ARIA Resort · 1,2 km · Pastelería navideña excepcional</div>
+      <h3>ARIA Resort &amp; Casino</h3>
+      <p>Pastelería buenísima. Este año exhibición navideña con bola de nieve de 8 pies (200 paneles de azúcar), árboles hechos a mano con 1.000 macarons franceses y un hombre de pan de jengibre de 6 pies (100 libras de chocolate amargo). Novedad: "Sugar Palace" en el Chalet Alpine Themed Restaurant.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗽 New York Hotel · 520m · Skyline de Manhattan y Estatua de la Libertad gigante</div>
+      <h3>New York-New York · Excalibur · Luxor</h3>
+      <p><strong>New York:</strong> Simula el skyline de Manhattan, con Estatua de la Libertad gigante. <strong>Excalibur</strong> (410m): castillo basado en el Rey Arturo, precioso iluminado. Preguntar por espectáculos en recepción. <strong>Luxor</strong> (540m): la pirámide más espectacular de Las Vegas, parece un OVNI. De su cúspide sale un haz de luz visible a kilómetros en el desierto de Nevada.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏙️ 350 m de altura · Edificio más alto de Nevada · 10:00–01:00h · Mirador 20$ · Con atracciones hasta 33$</div>
+      <h3>Stratosphere Tower — Miradores y atracciones</h3>
+      <p>La Torre Stratosphere (350 m, inaugurada 1996) es el edificio más alto de Nevada. Dos miradores a ~280 m: uno interior con paredes oblicuas de cristal (vértigo garantizado) y uno exterior con perspectiva 360° de la ciudad. Atracciones en la cima: <strong>X-Scream</strong> (montaña rusa que te saca de la torre a 300 m), <strong>Insanity the Ride</strong> (carrusel giratorio exterior) y <strong>Skyjump</strong> (puenting desde 260 m de altura). Parking gratuito exterior (OJO: valet = aparcacoches con propina).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎶 Fremont Street · 416 m de bóveda · 2,1M bombillas · Espectáculo cada hora al anochecer · Tirolina 450 m a 30 m de altura</div>
+      <h3>Fremont Street Experience</h3>
+      <p>220 altavoces de 550.000 vatios y la pantalla LED más grande del mundo. Conciertos, shows, restaurantes locos. Bóveda de cañón de 27 m de alto y 416 m de longitud con 2,1 millones de bombillas y 65.000 combinaciones dirigidas por 36 ordenadores. Espectáculo de 10 minutos cada hora en punto al caer la noche. <strong>Tirolina Fremont:</strong> 450 m a 30 m de altura. En el techo: casinos clásicos Golden Gate y 4 Queens. El <strong>Golden Nugget</strong> (1946) es el casino más antiguo de la ciudad con la pepita de oro más grande del mundo en exhibición: "La Mano de la Fe" (27,2 kg).</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍔 Cena · A 13 km de Fremont Street</div>
+      <h4>Heart Attack Grill</h4>
+      <p>Comedor con temática hospitalaria. Las enfermeras-camareras visten de hospital. Menú: hamburguesas de hasta 8 pisos (hasta 19.900 calorías) y Coronary Dog. Patatas fritas en manteca, batidos de mantequilla reales, chupitos de vodka en jeringuilla y cigarrillos Lucky Strike sin filtro. Si no terminas: <em>3 azotes públicos</em>. A partir del Quadruple Bypass, te llevan en silla de ruedas al coche. Si pesas más de 160 kg: comes gratis. Coger taxi para volver al hotel (7 km).</p>
+    </div>
+  </section>
+
+
+  <!-- ═══ DÍA 8 — GRAND CANYON WEST RIM Y SELIGMAN ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Grand Canyon West Rim — Lago Mead · Presa Hoover · Seligman</h2>
+        <div class="day-subtitle">Viernes 17 de Diciembre · Las Vegas → Lago Mead → Presa Hoover → Grand Canyon West → Seligman</div>
+      </div>
+    </div>
+
+   <div class="transport">
+      <strong>Salida:</strong> Temprano desde Las Vegas · <strong>Primera parada:</strong> Lago Mead (Lakeview Overlook) · 48 km / 39 min · Entre Nevada y Arizona
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💧 48 km / 39 min del hotel · Entre Nevada y Arizona · 640 km² de superficie</div>
+      <h3>Lago Mead — El mayor lago artificial de EEUU</h3>
+      <p>Formado por las aguas recogidas por la Presa Hoover, se extiende 180 km detrás de la presa. Su agua se envía por acueductos a comunidades del sur de California y Nevada. 8-10 millones de visitantes anuales. 5º parque nacional más visitado de EEUU. Ofrece ensenadas con acantilados rocosos, playas arenosas y varias islas. En ocasiones se pueden ver las ruinas del pueblo de St. Thomas cuando baja el nivel del agua.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏗️ A 4 km · Parking Area 11 · Evitar el parking principal (10$)</div>
+      <h3>Presa Hoover</h3>
+      <p>Presa de hormigón de arco-gravedad en el río Colorado, en la frontera Nevada-Arizona. Construida entre 1931 y 1936 durante la Gran Depresión, completada dos años antes de lo previsto. Antes de la presa, el Colorado se desbordaba al derretirse la nieve de las Rocosas. Para evitar la retracción del hormigón fue construida como una serie de ménsulas trapezoidales con tubos de acero de refrigeración; de haberse hecho en un solo bloque, el hormigón habría tardado 125 años en enfriarse y se habría agrietado.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍳 Desayuno · Dolan Springs · 84 km / 59 min</div>
+      <h4>Canyon Café / Hot Diggity Dog</h4>
+      <p>Pueblo genuino del profundo oeste americano. <strong>Canyon Café:</strong> buena ubicación, excelente servicio y café destacable · 10-20$. Después no hay otro lugar donde comer hasta el Skywalk.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦅 37 km desde Canyon Café · Gestión privada tribu Hualapai · Parking exterior gigante</div>
+      <h3>Grand Canyon West Rim — Eagle Point · Skywalk · Guano Point</h3>
+      <p><strong>Precios:</strong> Entrada 39$/persona (acceso a Eagle Point, Guano Point y Hualapai Ranch + autobús) · Skywalk: 20$ adicionales · Legacy Gold Package (incluye todo + comida): ~80$/persona.<br><br>
+      <strong>Hualapai Ranch</strong> (1ª parada): recreación de un pueblo del viejo oeste con gente disfrazada, tiendas y restaurantes. Para curiosear, no hacen falta muchas fotos.<br><br>
+      <strong>Eagle Point</strong> (2ª parada): se ve perfectamente la imagen de un águila esculpida por la naturaleza en la roca. Zona regentada por la tribu Hualapai.<br><br>
+      <strong>Skywalk</strong>: inaugurado el 20 de marzo de 2007, permite estar 1.300 metros sobre el vacío. Bucle de 22 m en horizontal sobre el Colorado. Plataforma de 500 toneladas, cristales de más de 10 cm. Aguanta 800 personas (se permiten 120 a la vez) y vientos de hasta 160 km/h. <em>No dejan llevar cámara ni móvil</em>: si quieres foto, la hacen dentro por 16$. Dejar los bártulos en taquilla y ponerse calcetines protectores.<br><br>
+      <strong>Guano Point</strong> (3,6 km, 3ª parada): sin duda el mejor mirador del West Rim, competiendo con los del South Rim. Subirse a las rocas y contemplar el cañón desde esa altura es una pasada. No paran de pasar helicópteros. El nombre viene de que en 1930 se descubrió una cueva con 100.000 toneladas de guano de murciélago que se explotó como fertilizante.</p>
+    </div>
+
+    <!-- FOTO DÍA 8 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia8.jpg" alt="Eeagle Point" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia8.jpg</span></div>
+      <div class="foto-caption">Eagle Point</div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🚌 Cómo visitar</div>
+      <p>Elegir el <strong>paquete de bus</strong>, el más económico: los autobuses hacen el recorrido continuamente entre los 3 puntos. Comer en el coche de camino a Seligman.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Seligman:</strong> 228 km desde West Rim · Ciudad-museo de la mítica Ruta 66 · Solo 500 habitantes · Inspiración para la película Cars de Disney-Pixar
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Seligman · 81 € / 92 $</div>
+      <h4>Deluxe Inn Seligman</h4>
+      <p>En la calle principal de Seligman, donde se concentran todas las atracciones de la ciudad</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🥪 Cena · Seligman</div>
+      <h4>Subway</h4>
+      <p>A las afueras de Seligman.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — SOUTH RIM GRAND CANYON Y TUSAYAN ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Grand Canyon South Rim — Hermit Road · Miradores</h2>
+        <div class="day-subtitle">Sábado 18 de Diciembre · Seligman → Grand Canyon Village → Tusayan · 160 km / 1h45</div>
+      </div>
+    </div>
+   
+    <div class="place">
+      <div class="place-meta">📍 Seligman · Ruta 66 · 170 m del hotel</div>
+      <h3>Seligman — Ruta 66 por la mañana</h3>
+      <p>Desayunar en <strong>Westside LILO'S Café</strong>. Foto en la gran bandera de EEUU pintada en la fachada de <strong>The Historic Seligman Sundries</strong> (9:00–18:00h, 170 m del hotel): coches y camionetas clásicos americanos en el exterior. <strong>Copper Cart / Route 66 Motoporium:</strong> antigua gasolinera remodelada con aspecto vintage, colección de motos y coches de los 50, neón y furgoneta VW surfera "tuneada". <strong>Return to the 50s Museum</strong>. <strong>The Rusty Bolt</strong>: la tienda más rodeada de cultura de la ruta. <strong>Angel &amp; Vilma Delgadillo's Route 66 Gift Shop:</strong> la barbería más famosa de la Ruta 66, justo a la derecha del hotel.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Grand Canyon National Park:</strong> 160 km / 1h45 · Parking visitantes abajo, o parking arriba a 4 km · <strong>Entrada 35$ por vehículo</strong> (independientemente del nº de personas), válida una semana, incluye ambos lados (norte y sur) · Comprar online en recreation.gov/sitepass/74282 cuando se conozca la matrícula · <strong>Comprar comida en Williams</strong> antes de entrar al parque<br>
+      <strong>Amanecer/atardecer (15 dic):</strong> 07:32h / 17:15h · Total: 9h43 de luz<br>
+      <strong>Hermit Road (línea roja):</strong> Operativa de 5 am hasta 1h después del atardecer · En diciembre se puede ir con el coche propio (los buses pueden no funcionar) · Dejar el coche en el parking de arriba
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏔️ Hermit Road · 12 km · De Grand Canyon Village a Pima Point</div>
+      <h3>Hermit Road — Ruta de miradores (de este a oeste)</h3>
+      <p>Sendero que recorre los mejores miradores del Gran Cañón. Se puede hacer a pie o en el bus rojo (incluido en la entrada). En diciembre, ir en coche propio.<br><br>
+      <strong>Travelview Overlook</strong> (1ª parada): vistas del famoso Bright Angel Trail, una de las rutas de senderismo más conocidas del Gran Cañón.<br><br>
+      <strong>Maricopa Point</strong>: plataforma panorámica con barandilla. Vistas 180° al río Colorado serpenteando al Horn Creek y el butte Dana. Una de las fotografías más bonitas del Gran Cañón. Un hombre murió colocando la barandilla; algunos días puede verse una pequeña niebla negra que, según dicen, es su alma.<br><br>
+      <strong>Powell Point</strong>: parecido a Maricopa pero con más panorámica por el lado izquierdo y sin barandilla (permite fotos más guapas). Elegido por el gobierno de Arizona para homenajear al Parque en 1920.<br><br>
+      <strong>Hopi Point</strong>: caída de más de 2.000 metros. Vistas del Trinity Creek con tres formaciones bautizadas con nombres del antiguo Egipto: Isis, Horus y Osiris. Uno de los miradores más increíbles, con panorámica de izquierda a derecha sin ningún obstáculo visual.<br><br>
+      <strong>Dimishing View</strong>: justo al lado de Hopi Point. Perfecto para hacer picnic.<br><br>
+      <strong>Mohave Point</strong>: uno de los mejores lugares para fotografiar el Gran Cañón. Vistas del río Colorado y los rápidos de Boucher y Granite. Más de 100 km de visibilidad con 1.000 m de caída. Las vistas de Monument Creek son posiblemente las mejores de todos los miradores.<br><br>
+      <strong>Pima Point</strong>: último punto, pero no supera las vistas de Mohave. Se puede dejar de lado.</p>
+    </div>
+
+    <!-- FOTO DÍA 9 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia9.jpg" alt="Grand Canyon South Rim" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia9.jpg</span></div>
+      <div class="foto-caption">Grand Canyon South Rim · Hermit Road</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌅 Este del parque · 15 km del parking de visitantes</div>
+      <h3>Yavapai Point + Museo de Geología</h3>
+      <p>Uno de los miradores más bonitos del South Rim, a 2.100 m de altura. Junto al mirador, el <strong>Museo de Geología Yavapai</strong> (8:00–18:00h, construido en 1928): balcón acristalado, mapa 3D de la zona, se ve el río Colorado. También valorar <strong>Grandview Point</strong> (15 km del parking) y los miradores de Moran Point (11 km), Lipan Point (9,3 km) y <strong>Desert View</strong> (para ver la puesta de sol junto a la Watchtower de Mary Colter, 1916). En días claros se divisa el paisaje hasta 100 km a la redonda.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Tusayan · 3 personas · 157 € / 178 $  · Desayuno incluido</div>
+      <h4>Holiday Inn Express Grand Canyon</h4>
+      <p>A 45 km del South Rim · 11 km antes está el <strong>Papillon Grand Canyon Helicopters</strong> (219$/persona, vuelos de 25-30 min, de 9h a 13h30) — si se quiere hacer el helicóptero, comprar tickets para el domingo 19 a las 09h00</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍕 Cena · Tusayan</div>
+      <h4>Canyon Pizza</h4>
+      <p>Cenar en Canyon Pizza, Tusayan.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — PAGE Y GLEN CANYON ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Page — Horseshoe Bend · Lago Powell · Glen Canyon Dam</h2>
+        <div class="day-subtitle">Domingo 19 de Diciembre · Tusayan → Navajo Bridge → Horseshoe Bend → Page · 222 km / 2h48</div>
+      </div>
+    </div>
+    
+    <div class="tip">
+      <div class="tip-label">🚁 Opción helicóptero (si no se hizo ayer)</div>
+      <p>Si no se hizo el helicóptero sobre el Grand Canyon, ir a ver la salida del sol: aparcar en el parking del centro de visitantes (11 km / 14 min) y subir al <strong>Mather Point</strong> (uno de los mejores lugares del South Rim para ver el amanecer). Estar allí sobre las 7:15h. Si hay mucha gente, caminar un poco hacia la izquierda.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> Tusayan → Page · 222 km / 2h48 · Antes de llegar a Page, girar a la izquierda y desviarse 26 km (ida) para ver <strong>Lees Ferry</strong> (el punto más somero del río Colorado) y las <strong>Vermillion Cliffs</strong> o las rocas de Balanced Rock
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 A 7,3 km antes de Page · Parking 10$ (tarjeta) · 1,3 km al mirador · 15-20 min</div>
+      <h3>Horseshoe Bend</h3>
+      <p>Curva que dibuja el río Colorado con forma de herradura: una de las imágenes más espectaculares de la Costa Oeste. 2 millones de turistas al año. Hay salientes y recovecos para quien no quiera compartir selfie, pero <strong>cuidado: todos los años muere alguien</strong>, no arriesgarse. Llevar buenos zapatos y agua. Ahora tiene parking de pago, pérgolas de sombra y mirador delimitado.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍳 Comida · Page</div>
+      <h4>Denny's — Page</h4>
+      <p>Comer en Denny's en Page.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">💧 Presa Glen Canyon Dam · 3,8 km del hotel · Visitor Center 5$</div>
+      <h3>Lago Powell + Glen Canyon Dam</h3>
+      <p>El segundo lago artificial de EEUU, creado por la presa Glen Canyon Dam (1963). Tardó 17 años en llenarse. Más de 3.000 km de costa, 300 km de largo, 3 millones de visitantes anuales. Empezar en el <strong>Carl B. Hayden Visitor Center</strong> (junto al puente, justo al salir de la presa, 5$): historia de la construcción a través de láminas a más de 160 m de profundidad; contador digital con el dinero recaudado por los 56 millones de litros de agua por minuto que pasan por sus turbinas. La presa se construyó con 10 millones de toneladas de hormigón (220 m de altura, 100 m de ancho en la base).</p>
+    </div>
+
+   <!-- FOTO DÍA 10 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia10.jpg" alt="Lago Powell" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia10.jpg</span></div>
+      <div class="foto-caption">Lago Powell</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛵ Wahweap Marina · 9,2 km / 16 min · Abierto 6:30–20:00h · Lake Shore Drive · 30$</div>
+      <h3>Wahweap Marina — Excursiones en barco</h3>
+      <p>Puerto deportivo más popular del Lago Powell. Dos excursiones posibles (salidas desde aquí, ahora cerradas en Lake Powell Resort): <strong>Antelope Canyon Tour</strong> (48,33$ · 2h): sección inundada del famoso cañón. <strong>Canyon Adventure Boat Tour</strong> (77$ · 3h): visita los dos cañones más famosos, Antelope y Navajo. También se puede ir a <strong>Antelope Point Marina</strong> (28 km / 39 min) para alquilar lancha (75-100$/hora). Parar antes en el <strong>Navajo ViewPoint</strong>.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Page · 55 € / 62,65 $</div>
+      <h4>Best Western View of Lake Powell Hotel</h4>
+      <p>Page, Arizona</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 11 — ANTELOPE CANYON Y BRYCE CANYON ═══ -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Lower Antelope Canyon · Bryce Canyon</h2>
+        <div class="day-subtitle">Lunes 20 de Diciembre · Page → Antelope Canyon (09:00h) → Bryce Canyon (253 km / 3h16) → Ruby's Inn</div>
+      </div>
+    </div>
+   
+    <div class="place">
+      <div class="place-meta">🌀 Ken's Tours · 8,8 km del hotel · 36.9026, -111.4112 · Tours cada 30 min · Llegar 30 min antes</div>
+      <h3>Lower Antelope Canyon — Ken's Tours</h3>
+      <p>El cañón de ranura más famoso de la Costa Oeste. Permaneció oculto a pocos kilómetros de Page hasta que un par de fotógrafos dieron con él. Tour obligatorio con guías Navajos. El mejor momento es al mediodía cuando entran los rayos de sol. Tour dura 45 min – 1h, longitud total 1 milla, todo a pie.<br><br>
+      <strong>Entradas:</strong> 2 tickets comprados por 64,66$ (59,86€) cada uno, incluyendo impuestos y entrada (8$) en la reserva Navajo · Tours para las 09:00h · Recordar que estamos en <strong>ARIZONA TIME</strong><br>
+      <strong>Cancelación:</strong> 72h antes para reembolso (el 6% de recargo no es reembolsable). Sin reembolso en menos de 72h. Si se cancela por lluvia, reembolso total.<br>
+      Si Ismael viene, comprar otra entrada en kens.avtrax.com</p>
+    </div>
+
+    <div class="transport">
+      <strong>Bryce Canyon:</strong> 253 km / 3h16 · Utah · Entrada 35$ por vehículo (1 semana) · Visitor Center 8:00–16:30h · Comprar online en recreation.gov/sitepass/74334 con la matrícula · Imprimir o guardar en el móvil (sin cobertura en el parque)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏔️ Utah · Anfiteatro principal · 2.400–2.700 m de altitud</div>
+      <h3>Bryce Canyon — Anfiteatro principal</h3>
+      <p>No es un cañón propiamente dicho: es una sucesión de anfiteatros naturales creados en la ladera de una meseta de roca sedimentaria. Famoso por sus <strong>hoodoos</strong> (columnas irregulares de roca formadas por erosión del viento, agua y hielo): la mayor concentración del mundo. Los colores rojo, naranja y blanco crean vistas espectaculares. Más alto que el vecino Parque Nacional Zion y que el Gran Cañón. Parque nacional desde 1928, ocupa 145 km².<br><br>
+      <strong>Centrarse en:</strong> miradores de <strong>Inspiration Point</strong> y <strong>Sunset Point</strong> (salen senderos circulares de 1-2h entre las chimeneas). Entre Sunset y Sunrise Point: <strong>Queens Garden Trail + Navajo Loop</strong>, uno de los trekkings más bonitos de la Costa Oeste (5 km total). Hacer solo el tramo de Sunrise Point a Queen Victoria Benchmark (1,4 km ida + vuelta) · Del parking de Sunrise al mirador: 530 m.<br>
+      <em>Nota: ya no está operativo el servicio de bus ni los caballos.</em></p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Bryce Canyon · 5,7 km / 7 min del parque</div>
+      <h4>Best Western PLUS Ruby's Inn</h4>
+      <p>Cenar antes en un restaurante mexicano de la zona.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 12 — BRYCE CANYON A DEATH VALLEY ═══ -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Bryce Canyon — Death Valley · Longstreet Inn</h2>
+        <div class="day-subtitle">Martes 21 de Diciembre · Bryce Point · Mossy Cave → Death Valley · 566 km / 5h47</div>
+      </div>
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">🌅 Bryce Canyon · Amanecer</div>
+      <h3>Bryce Point + Sunrise Point</h3>
+      <p>Últimas vistas del anfiteatro de Bryce Canyon al amanecer desde los dos mejores miradores.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧊 500 m / 9 min caminando desde el parking</div>
+      <h3>Mossy Cave</h3>
+      <p>Cueva que en invierno congela el agua y forma témpanos en su cavidad. Corta caminata desde el parking.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Death Valley:</strong> 566 km / 5h47 · Comer en <strong>Mountain Bistro</strong> en Parowan, de camino
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Amargosa Valley · En mitad del desierto</div>
+      <h4>Longstreet Inn &amp; Casino</h4>
+      <p>Auténtico casino-motel en mitad de la nada con música en directo country por la noche. Habitaciones con balcón propio y vistas al estanque con patos. Piscina climatizada y jacuzzi gratuitos hasta las 22h al aire libre. Pequeña granja con vacas, burros y ovejas. Dos buenos restaurantes y supermercado abierto 24h. Buena señal wifi. <em>Ojo con las moscas al llegar: avisar en recepción, te cambian de habitación sin problema.</em> Desayuno: hamburguesas, burritos y carne a la parrilla.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 13 — DEATH VALLEY ═══ -->
+  <section class="day-section" id="dia13">
+    <div class="day-header">
+      <div class="day-number">13</div>
+      <div class="day-info">
+        <h2>Death Valley National Park</h2>
+        <div class="day-subtitle">Miércoles 22 de Diciembre · Zabriskie Point · Furnace Creek · Mesquite Dunes · Badwater Basin · 86 km / 1h23 vuelta</div>
+      </div>
+    </div>
+   
+    <div class="tip">
+      <div class="tip-label">⚠️ Consejos Death Valley</div>
+      <p>El lugar más caluroso de la Tierra (récord: 57°C en julio de 1913). En diciembre: máx. 18°C / mín. 3°C. Llevar y beber <strong>al menos 1 galón (4 litros) de agua</strong>. Sin cobertura de móvil. El GPS frecuentemente recomienda "atajos" por caminos sin asfaltar (ilegal y multa de 750$ mínimo). <strong>Pase de 7 días: 30$</strong>. Dark Sky Park con rating Gold: miles de estrellas visibles de noche.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏜️ 53 km / 56 min del hotel · 300 m al mirador</div>
+      <h3>Zabriskie Point</h3>
+      <p>Vistas de un lago muerto. Hace 5 millones de años todo este paisaje era agua; ahora quedan los sedimentos en forma de tonos amarillos intensos, los más vivos de todo el parque. La tierra se ha "arrugado" dejando al descubierto capas geológicas fascinantes.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 8 km / 7 min · Centro de Visitantes · 8:00–17:00h</div>
+      <h3>Furnace Creek — Centro de Visitantes + Borax Museum</h3>
+      <p>Registrar visita mostrando el Annual Pass (Death Valley no tiene garita de entrada). Visitar el Borax Museum.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏭 2,9 km / 4 min · 240 m del aparcamiento</div>
+      <h3>Harmony Borax Works</h3>
+      <p>Planta de extracción de bórax abandonada que se utilizaba para fabricar jabón.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 34 km / 29 min · Dunas como el Sahara</div>
+      <h3>Mesquite Flat Sand Dunes</h3>
+      <p>Lugar precioso por el contraste entre las dunas y las montañas al otro lado del valle. Recuerda al Sahara africano. Antes de llegar hay un punto de localización brutal (a 17 km del parking).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⭐ 42 km / 36 min · Del parking a Red Cathedral Junction: 1,6 km</div>
+      <h3>Golden Canyon</h3>
+      <p>Buen lugar para refugiarse en las horas centrales del día, a la sombra de las paredes del cañón. Fue utilizado en varias escenas de La Guerra de las Galaxias.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 18 km / 22 min · 9 millas de recorrido</div>
+      <h3>Artist Drive + Artist's Palette</h3>
+      <p>Carretera que fluye suavemente durante 9 millas hasta el punto más famoso: la "paleta del artista", donde las rocas muestran una gama extraordinaria de colores.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧂 21 km / 24 min · 2,5 km de tierra al parking + 1,1 km / 23 min andando</div>
+      <h3>Devils Golf Course + Dry Fall Cascada</h3>
+      <p>El punto más extraño del parque: la evaporación del Lago Manly dejó al descubierto toda la sal, que el tiempo y la erosión han tallado en formas curiosas. Seguir 2,5 km hasta el parking (tramo de tierra) y luego 1,1 km andando hasta Dry Fall Cascada.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌡️ 8,1 km / 9 min · 84 m por debajo del nivel del mar · Récord: 58°C</div>
+      <h3>Badwater Basin</h3>
+      <p>Uno de los lugares más bajos del planeta: 84 metros por debajo del nivel del mar. Caminar sobre unas salinas protegidas donde se registran las temperaturas más altas del parque. La belleza hexagonal que las salinas dibujan en el suelo embellece el paisaje de forma única.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelta al hotel:</strong> 86 km / 1h23 · Cenar en el Longstreet Inn
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 14 — DE DEATH VALLEY A LOS ÁNGELES ═══ -->
+  <section class="day-section" id="dia14">
+    <div class="day-header">
+      <div class="day-number">14</div>
+      <div class="day-info">
+        <h2>De Death Valley a Los Ángeles — Farmers Market</h2>
+        <div class="day-subtitle">Jueves 23 de Diciembre · 437 km / 5h08 · Noche en casa de Ismael</div>
+      </div>
+    </div>
+    
+    <div class="transport">
+      <strong>Ruta:</strong> Death Valley (Longstreet Inn) → Los Ángeles · 437 km / 5h08
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎄 8,3 km del apartamento de Ismael · Decoración navideña · Coros dickesianos</div>
+      <h3>Farmers Market — Navidad</h3>
+      <p>En diciembre y enero celebra la Navidad con decorado especial, luces, música clásica, elementos artesanos y karaoke navideño. Coros que cantan villancicos con trajes Dickensianos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌮 Justo enfrente del Angels Flight · Lleno de carteles de neón artísticos</div>
+      <h3>Grand Central Market</h3>
+      <p>Concentra muchos puestos gastronómicos: italiana, mexicana, tailandesa, asiática, pizzerías, puestos de dulces y bebidas. Tanto fast-food como restaurantes reconocidos.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Los Ángeles · Última noche</div>
+      <h4>The Chadvick — Apartamento de Ismael</h4>
+      <p>3333 W 2nd · APT 54-216</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 15 — VUELTA A BARCELONA ═══ -->
+  <section class="day-section" id="dia15">
+    <div class="day-header">
+      <div class="day-number">15</div>
+      <div class="day-info">
+        <h2>Vuelta a Barcelona — LAX → CDG → BCN</h2>
+        <div class="day-subtitle">Viernes 24 de Diciembre · Salida LAX 15:25h → París → Barcelona 14:10h (D+1)</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Devolución coche:</strong> Ir al aeropuerto a las 10:00h · Entregar coche en oficina FOX a las 11:30h · Coger bus de cortesía a Terminal B de salidas (4,1 km)<br><br>
+      <strong>Vuelo LAX → CDG:</strong> Salida 15:25h · Terminal B, puerta habitual 221 · Vuelo AF0065 operado por Air France · Check-in límite: 14:25h · Llegada 11:15h (D+1) · Aéroport Charles de Gaulle Terminal 2E<br><br>
+      <strong>Vuelo CDG → BCN:</strong> Salida 12:25h · Terminal 2F · Vuelo AF1648 · Check-in límite: 11:45h · Llegada 14:10h · Aeropuerto Barcelona Terminal 1<br><br>
+      <strong style="color: var(--accent);">🎉 Fin del viaje</strong>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEO -->
+<div class="video-section">
+  
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/FSuWREIO-sQ" title="Fotos del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DEL VIAJE</div>
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/Dq48ZlHPTek" title="Video del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+  </div>
+   
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · California 2021</strong> &nbsp;·&nbsp; 10 – 25 Diciembre 2021 · 15 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // Añadir aquí las rutas a las fotos de la galería
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/galeria/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto California ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

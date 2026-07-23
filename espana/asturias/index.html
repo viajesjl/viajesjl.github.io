@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asturias 2024 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.70) 0%, rgba(21,101,192,0.38) 60%, rgba(10,31,61,0.80) 100%),
+        url('https://images.unsplash.com/photo-1559127898-2a67ad2680fe?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.75rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 0.07em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .ruta { background: white; border-left: 4px solid var(--accent); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; }
+    .ruta-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.5rem; }
+    .ruta h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.6rem; }
+    .ruta-stats { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.7rem; }
+    .ruta-stat { background: var(--accent-pale); color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; padding: 0.2rem 0.7rem; }
+    .ruta p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.3rem; }
+      .ruta-stats { gap: 0.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+ <a class="nav-back" href="../../viajes.html#sec-espana">🇪🇸 España</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Asturias</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">🌿 España · Asturias · Picos de Europa</p>
+  <h1 class="hero-title">Asturias</h1>
+  <p class="hero-date">14 — 21 Septiembre 2024 · 8 días</p>
+  <div class="hero-pills">
+    <span class="pill">Picos de Europa</span>
+    <span class="pill">Bulnes · Naranjo</span>
+    <span class="pill">Lagos Covadonga</span>
+    <span class="pill">Somiedo</span>
+    <span class="pill">Gijón · Oviedo</span>
+    <span class="pill">Llanes · Ribadesella</span>
+    <span class="pill">Altamira</span>
+    <span class="pill">Logroño</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1</a>
+  <a href="#dia2">Día 2</a>
+  <a href="#dia3">Día 3</a>
+  <a href="#dia4">Día 4</a>
+  <a href="#dia5">Día 5</a>
+  <a href="#dia6">Día 6</a>
+  <a href="#dia7">Día 7</a>
+  <a href="#dia8">Día 8</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Laguardia · Poncebos</h2>
+        <div class="day-subtitle">Sábado 14 de Septiembre · Rioja Alavesa → Picos de Europa</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Destino final:</strong> Hostal Poncebos · 782 km · 7h 42 min<br>
+      <strong>Parada a comer:</strong> Laguardia · 475 km · 4h 39 min
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento · 1 noche</div>
+        <h3>Hostal Poncebos · Poncebos (Cabrales)</h3>
+        <p>Cenar en la habitación. Antes de llegar, comprar queso y cena en un súper en Las Arenas.</p>
+      </div>
+    </div>
+
+    <div class="section-title">🍷 Parada · Laguardia (Rioja Alavesa)</div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Reservar antes</div>
+      <h3>EntreViñas y Olivos · Laguardia</h3>
+      <p>Calle Cuatro Cantones 12 · Tel. <strong>945 60 09 11</strong><br>
+      Antigua casa con bodega donde se bebe buen vino, tostas y pizza vegetariana.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Villa medieval · S. XIII · Muralla con 5 puertas · Único pueblo de Euskadi en "Pueblos más bonitos de España"</div>
+      <h3>Laguardia — Capital de la Rioja Alavesa</h3>
+      <p>En lo alto de una colina con vistas espectaculares a la Sierra de Cantabria y sus viñedos. Muralla del S.XIII con piedra arenisca y 5 puertas: Páganos (oeste), Mercadal (sur), San Juan (sureste), Santa Engracia (nordeste) y Carnicerías (este, abierta en el S.XV). Entrada por la <strong>Puerta de San Juan</strong>.<br><br>
+      <strong>Iglesia de San Juan Bautista</strong>: portada sur gótica con columnas de la Anunciación; retablo barroco; la torre fue una puerta de la muralla reformada en el S.XVI como campanario.<br><br>
+      <strong>Calles señoriales</strong>: Calle Mayor, Paganos y Santa Engracia con edificios medievales, renacentistas, barrocos y neoclásicos. Destaca la <strong>Casa de la Primicia</strong> (S.XIV, almacén de diezmos) y la <strong>Casa Palacio de Samaniego</strong> (S.XVII, donde nació el fabulista Félix Mª Sánchez Samaniego).<br><br>
+      <strong>Plaza del Gaitero</strong>: la más curiosa, donde desembocan las tres calles. Escultura metálica <em>"Viajeros"</em> de Koko Rico: dos placas de bronce con bolsos, maletas y zapatos.<br><br>
+      <strong>Iglesia Santa María de los Reyes</strong>: pórtico policromado gótico, uno de los pocos en España, con imágenes de la vida de la Virgen (visita a través de la oficina de turismo).<br><br>
+      <strong>Torre Abacial</strong> (S.XIII): antigua torre defensiva convertida en campanario. Se puede visitar con vistas a la Rioja Alavesa.<br><br>
+      <strong>Plaza Mayor</strong>: ayuntamiento del S.XIX con reloj de carrillos cuyos muñequitos bailan a las 12, 14, 17 y 20h. El Antiguo Ayuntamiento del S.XVI tiene una placa con las antiguas medidas de vara, teja y ladrillo.<br><br>
+      <strong>Calados</strong>: el suelo de la villa está horadado por decenas de bodegas subterráneas visitables con cata de vinos.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Bulnes y el Naranjo de Bulnes</h2>
+        <div class="day-subtitle">Domingo 15 de Septiembre · Picos de Europa</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Hotel y Apartamentos La Lonja</h3>
+        <p>47,5 km · 58 min desde Poncebos</p>
+      </div>
+    </div>
+
+    <div class="ruta">
+      <div class="ruta-label">🥾 Ruta de senderismo · Circular</div>
+      <h3>Ruta Canal del Texu — Bulnes e Invernales de Armandes</h3>
+      <div class="ruta-stats">
+        <span class="ruta-stat">11,5 km</span>
+        <span class="ruta-stat">1178 m desnivel +</span>
+        <span class="ruta-stat">6 horas</span>
+        <span class="ruta-stat">Circular</span>
+        <span class="ruta-stat">Dificultad: Fácil</span>
+      </div>
+      <p><strong>Inicio:</strong> Puente de Poncebos (junto al parking del funicular). Subir 700 m a pie hasta donde termina la carretera; a la izquierda, indicación de la subida a Bulnes por La Canal del Texu.<br><br>
+      El sendero (GR-202 El Reconquista / PR.PNPE-18 / PR.PNPE-19) discurre a media ladera del desfiladero del río Tejo, 4 km · ~1h 30 min de subida. Es muy posible cruzarse con rebaños de ovejas y cabras.<br><br>
+      <strong>Bulnes de Abajo (La Villa)</strong>: restaurantes, bares, ermita de la Virgen de Las Nieves. A 600 m, <strong>Bulnes de Arriba (El Castillo)</strong>: zona más antigua.<br><br>
+      <strong>Mirador de Bulnes</strong>: preciosa visual del Naranjo de Bulnes (Picu Urriellu, 2519 m), la cima más emblemática de los Picos de Europa, lugar de culto alpinista mundial por sus difíciles verticalidades (cara Oeste).<br><br>
+      <strong>Tramo extra recomendado</strong>: continuar por el GR-202 hacia el Collado de Pandemules. Antes de las cabañas de Cantiellu, desviarse a los <strong>Invernales de Armandes</strong> (~880 m altitud): mejor visual del Urriellu que desde el propio mirador. +2,2 km · +620 m desde Bulnes.<br><br>
+      ⚠️ En la subida hay una senda antigua marcada con piedras que tiene un tramo peligroso (ha cedido hacia el río). Señalizada con una aspa de piedras en el inicio.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena · Reservada 20:30h</div>
+      <h3>Restaurante Hotel Alto Sella · 3,4 km · 5 min</h3>
+      <p>Tel. <strong>+34 985 94 49 03</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Lagos de Covadonga · Tirolinas Vidosa</h2>
+        <div class="day-subtitle">Lunes 16 de Septiembre · Picos de Europa</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Hotel Puente Vidosa · Vidosa</h3>
+        <p>Literalmente dentro del Desfiladero de los Beyos, Parque Natural de Ponga. 40 km · 30 min desde el parking de Covadonga.</p>
+      </div>
+    </div>
+
+    <div class="section-title">🏔️ Mañana · Lagos de Covadonga</div>
+
+    <div class="transport">
+      <strong>Parking P4 El Repelao:</strong> 20 km · 28 min · 2€ todo el día<br>
+      <strong>Bus:</strong> Billetes comprados (9€/día) · Parada en rotonda a 270 m del parking<br>
+      Sale: 08:01 / 08:06 / 08:11 / 09:53 · Llega ~10:26h (13,4 km · 33 min)<br>
+      <strong>Vuelta:</strong> 12:50 / 13:05 / 14:50 / 15:05<br>
+      Senda peatonal desde el parking: 860 m · 18 min hasta la Santa Cueva
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Basílica · Santa Cueva · 1,7 km andando desde P4</div>
+      <h3>Basílica de Covadonga y Santa Cueva</h3>
+      <p>La Basílica de Covadonga, la Santa Cueva y el museo. La Santa Cueva es el santuario donde la tradición sitúa la victoria de Don Pelayo sobre los musulmanes en el año 722, inicio de la Reconquista.</p>
+    </div>
+
+    <div class="ruta">
+      <div class="ruta-label">🥾 Ruta circular · PR-PNPE2</div>
+      <h3>Lagos de Covadonga — Enol y Ercina</h3>
+      <div class="ruta-stats">
+        <span class="ruta-stat">6,5 km</span>
+        <span class="ruta-stat">~3 horas</span>
+        <span class="ruta-stat">Circular</span>
+        <span class="ruta-stat">Fácil</span>
+      </div>
+      <p>Conjunto de los lagos <strong>Enol</strong> y <strong>Ercina</strong> (origen glaciar) y el <strong>Bricial</strong> (solo con agua en el deshielo). Ruta circular marcada con PR-PNPE2. Sentido recomendado: agujas del reloj, empezando en el Centro de Visitantes y el <strong>Mirador Entrelagos</strong>.</p>
+    </div>
+
+    <div class="section-title">🎿 Tarde · Tirolinas Vidosa (16:00h)</div>
+
+    <div class="place">
+      <div class="place-meta">🎿 Aventura · 6 tirolinas · 2h · 55€ · Ya pagados 22€, faltan 88€</div>
+      <h3>Vidosa Multiaventura — Tirolinas sobre el río Sella</h3>
+      <p>Web: <a href="https://vidosamultiaventura.com/tirolinas/" style="color:var(--accent);">vidosamultiaventura.com</a> · Tel. <strong>985 94 47 35</strong><br><br>
+      Se empieza en la tirolina más larga (~500 m · 250 m de altura sobre el río Sella) y se va descendiendo hasta las más pequeñas (~70 m · 85 m de altura). A medida que se acortan, se gana velocidad.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena · Cangas de Onís · 11 km · 14 min</div>
+      <h3>Sidrería Lantares de Pelayo · Cangas de Onís</h3>
+      <p>C. San Pelayo 22 · Tel. <strong>984 843 020</strong> · Menú fin de semana variado 20€ · La sidra estaba riquísima.<br>
+      Alternativa: Sidrería La Caldera — sin reservas, llegar sobre las 20:30h para coger mesa.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 4 ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Oviedo · Lagos de Saliencia · Somiedo</h2>
+        <div class="day-subtitle">Martes 17 de Septiembre · Oviedo → Parque Natural de Somiedo</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Pensión Casa Miño · Pola de Somiedo</h3>
+        <p>Parking al lado · Enfrente, Centro de Interpretación del Parque de Somiedo<br>
+        Cena en el restaurante del hotel o en el <strong>Restaurante Parrilla Carión</strong> (el mejor de Pola, 300 m · 5 min).</p>
+      </div>
+    </div>
+
+    <div class="section-title">🏛️ Mañana · Oviedo — Free Tour Civitatis (11:00h)</div>
+
+    <div class="transport">
+      <strong>Desde el hotel:</strong> 83 km · 1h 14 min · Parking El Vasco<br>
+      <strong>Punto de encuentro:</strong> Estatua La Regenta · Plaza Alfonso II · frente a la Catedral
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗺️ Free Tour · 2 horas · Civitatis · Desde la estatua La Regenta</div>
+      <h3>Oviedo — Free Tour por el centro histórico</h3>
+      <p><strong>Plaza de Alfonso II El Casto:</strong> La <em>Regenta</em>, dama de bronce protagonista de la obra maestra de Clarín, descansa elegante en un lateral de la plaza.<br><br>
+      <strong>Plaza de la Constitución:</strong> fachada del Ayuntamiento e iglesia de San Isidoro El Real (antiguo colegio jesuita).<br><br>
+      <strong>Plaza del Fontán:</strong> el contraste de colores de sus edificios y el incesante ambiente de sus terrazas la convierten en uno de los rincones con más encanto de la ciudad.<br><br>
+      <strong>Plaza de la Escandalera:</strong> <em>La Maternidad</em> de Fernando Botero, flanqueada por edificios de estilo burgués y el <strong>Teatro Campoamor</strong>, donde se entregan los Premios Princesa de Asturias.<br><br>
+      <strong>Catedral de Oviedo:</strong> fachada y pórtico, símbolo de la capital asturiana.</p>
+    </div>
+
+    <div class="section-title">🏔️ Tarde · Lagos de Saliencia · Parque Natural de Somiedo</div>
+
+    <div class="transport">
+      <strong>Desde Oviedo:</strong> 72 km · 1h 25 min · Parking Alto de la Farrapona (1708 m · el puerto de montaña más alto de Asturias accesible por carretera)
+    </div>
+
+    <div class="ruta">
+      <div class="ruta-label">🥾 Ruta · 4 Lagos de Saliencia</div>
+      <h3>Lagos de Saliencia — Desde el Alto de la Farrapona</h3>
+      <div class="ruta-stats">
+        <span class="ruta-stat">Inicio a 1708 m</span>
+        <span class="ruta-stat">4 lagos</span>
+        <span class="ruta-stat">Ruta circular</span>
+      </div>
+      <p><strong>Lago de la Cueva:</strong> primero en encontrarse; protegido al sur por un paredón rocoso como anfiteatro natural. <strong>Mirador de Peña la Cueva</strong> con panel explicativo de la riqueza natural. A su lado, los restos de la antigua <strong>Mina de Santa Rita</strong> (mineral de hierro, explotada hasta 1978): cuando llueve mucho, sus escombros tiñen el lago de rojizo.<br><br>
+      <strong>Lago de la Mina o de Almagrera:</strong> el más pequeño, puede secarse en veranos de mucho calor.<br><br>
+      <strong>Lago de Cerveriz:</strong> en la bonita <strong>Pradera de Cerveriz</strong>, tras el cual se yerguen los <strong>Picos Albos</strong> con sus cumbres de blanca piedra caliza.<br><br>
+      <strong>Lago de la Calabazosa (Lago Negro):</strong> el mayor y más profundo de los Lagos de Saliencia. Su color oscuro se debe a su gran profundidad, que supera el medio centenar de metros, haciéndolo el <strong>lago más profundo de la Cordillera Cantábrica</strong>.<br><br>
+      💡 Desde el aparcamiento del Alto de la Farrapona, hacia el oeste: impresionante valle glaciar de subida; hacia el este: el Macizo de las Ubiñas. En la ruta, una pareja de águilas reales estuvo sobrevolando la zona.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏡 Museo · 11:00-14:00 y 16:00-20:00h · 2€ · 14,8 km · 24 min</div>
+      <h3>Ecomuseo de Somiedo La Casa</h3>
+      <p>Recorrido por las casas tradicionales de Somiedo dejándote transcurrir en aquella época. Visita guiada a las tres casas. Tiempo de espera: 30-60 min.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 5 ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Playa del Silencio · Cudillero · Cabo Peñas · Luanco · Gijón</h2>
+        <div class="day-subtitle">Miércoles 18 de Septiembre · Costa Asturiana</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Hotel Imperial · Tazones</h3>
+        <p>Aldea San Miguel 6, San Miguel · 38 min · 31 km desde Gijón</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ Playa · 88,8 km · 1h 27 min desde Somiedo · Solo ver desde arriba</div>
+      <h3>Playa del Silencio · Cudillero</h3>
+      <p>Una de las playas más espectaculares de Asturias. Se puede aparcar a los lados del camino o en un parking algo alejado. No bajamos: solo la contemplamos y seguimos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Puerto · 17 km · 17 min · Parking en el puerto gratis</div>
+      <h3>Cudillero</h3>
+      <p>Aparcar en el puerto (no en el puerto viejo, que es para residentes). Subir al <strong>mirador del Baluarte</strong>, pasar por el Ayuntamiento y la <strong>Plaza de La Marina</strong>. Subir al <strong>mirador de la Garita-Atalaya</strong> (200 m · 5 min).<br><br>
+      <strong>Parroquia de San Pedro</strong>: iglesia renacentista del S.XVI con estilo gótico y numerosas reformas. Sufragada por los propios vecinos. En su interior, dos valiosas tallas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔦 Faro · 51 km · 48 min · El punto más al norte de Asturias</div>
+      <h3>Faro Cabo de Peñas</h3>
+      <p>El punto más septentrional de todo Asturias. Hay un circuito con vistas muy bonitas para recorrer andando.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Puerto pesquero · 9 km · 13 min desde Cabo Peñas · Parking en el puerto</div>
+      <h3>Luanco</h3>
+      <p>Pueblo pesquero con historia ballenera desde el S.XIV. La <strong>Torre del Reloj</strong> (más de 300 años) y las casas de pescadores de la <strong>Cuesta del Reloj</strong> son la imagen más típica. La calle une la playa con la iglesia parroquial bordeando el mar. Cada año se celebra aquí el <strong>Torneo Internacional de Tenis "Playa de Luanco"</strong>, único en el mundo en pista de arena de playa.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏙️ Ciudad · 21,6 km · 26 min desde Luanco · Parking Playa de Poniente</div>
+      <h3>Gijón — Free Tour Civitatis (17:00h)</h3>
+      <p><strong>Punto de encuentro: Las Letronas</strong> (las grandes letras rojas del Puerto Deportivo). Llegar 10 min antes.<br><br>
+      <strong>Palacio de Revillagigedo</strong> (S.XVIII): sus dos torres parecen gemelas pero una es 300 años más antigua. Frente a él, la estatua de <strong>Don Pelayo</strong>, primer rey astur.<br><br>
+      <strong>Barrio de Cimadevilla</strong>: el barrio de pescadores con la más pura esencia gijonesa. Las calles más antiguas de la ciudad, con vestigios romanos mezclados con el ambiente marinero.<br><br>
+      <strong>Elogio del Horizonte</strong> (Eduardo Chillida, 1990): escultura de hormigón de 500 toneladas en el Cerro de Santa Catalina. Costó 1200 millones de pesetas. Símbolo de la ciudad, popularmente conocida como "el váter de King Kong".<br><br>
+      <strong>Muro de Gijón</strong>: amplia avenida paralela al Cantábrico junto a la Playa de San Lorenzo.<br><br>
+      <strong>Plaza Mayor</strong>: última parada del free tour.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Reservar 15:00h</div>
+      <h3>Club Marítimo Astur · Gijón</h3>
+      <p>C. Rodríguez San Pedro 15 · Tel. <strong>984 490 761</strong> · Un poco más allá del parking Playa de Poniente.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🚂 Si hay tiempo · 700 m de Las Letronas</div>
+      <h3>Museo del Ferrocarril · Gijón</h3>
+      <p>En el paseo del puerto, al lado del parking de la Playa de Poniente.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena</div>
+      <h3>Restaurante Mar-Bella · Tazones</h3>
+      <p>Barrio San Miguel 4 · Tel. <strong>985 89 70 03</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 6 ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Tazones · Lastres · Museo Dinosaurios · Ribadesella · Llanes</h2>
+        <div class="day-subtitle">Jueves 19 de Septiembre · Costa Asturiana Oriental</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Hotel Miraolas · Llanes</h3>
+        <p>Desayuno en el hotel: 9€</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐚 Pueblo marinero · Desembarco de Carlos V en 1517</div>
+      <h3>Tazones — Casas pintadas y Casa de las Conchas</h3>
+      <p>Casas pintadas de colores y la curiosa <strong>Casa de las Conchas</strong>, cuya fachada está completamente decorada con conchas y elementos marineros. Playa de Tazones (~200 m) a los pies del pueblo. Carlos V tuvo un accidentado desembarco aquí en 1517.<br><br>
+      Parada para ver la <strong>Ría de Villaviciosa</strong> de camino.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👁️ Mirador · 28,2 km · 30 min · Uno de los más famosos de Asturias</div>
+      <h3>Mirador de San Roque · Puerto de Lastres</h3>
+      <p><strong>Mirador de San Roque</strong>: vistas espectaculares del pueblo de Lastres, la playa de la Griega y los Picos de Europa al fondo.<br><br>
+      <strong>Puerto de Lastres</strong>: desde el S.XVI destacó por la caza de ballenas, la pesca y el comercio marítimo. Exportaban sardinas, besugos, bonito y merluza a Galicia y Portugal. En el S.XX se remodeló el puerto: 33 amarres, 1,5 m de calado, lonja con pescado fresco.<br><br>
+      <strong>Torre del Reloj</strong> (450 m · 8 min): construida en 1751, origen en el S.XV. Vigilaba el puerto y la bahía contra ataques piratas. Adosada a ella, la primera escuela de Lastres para hijos de pescadores. Aún se le da cuerda diariamente: un señor jubilado se encarga, y solo en una ocasión desde su construcción el reloj no marcó la hora correcta.<br><br>
+      <strong>Capilla del Buen Suceso</strong> (S.XVI): la ermita más antigua de Lastres, en el barrio de los Balleneros. Los pescadores se encomendaban a la Virgen del Buen Suceso antes de bajar al mar.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦕 Museo · Entradas compradas 12:00h · 4,4 km · 9 min desde Lastres</div>
+      <h3>Museo de los Dinosaurios · Colunga</h3>
+      <p>Entradas reservadas para las 12:00h.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Villa marinera · 28,5 km · 25 min · Parking Estación Autobuses El Sella</div>
+      <h3>Ribadesella</h3>
+      <p>Situada en la desembocadura del río Sella y a orillas del Cantábrico. Famosa por el <strong>Descenso Internacional del Sella</strong> (primer sábado de agosto después del día 2).<br><br>
+      <strong>Paseo de los Vencedores del Sella</strong>: paralelo al río, con escultura homenaje al Descenso Internacional.<br><br>
+      <strong>Barrio del Portiellu</strong> (el más antiguo): calles como la calle Oscura y la calle Infante. En la parte alta, la <strong>Escalera de Colores</strong> de Jonathan Hevia: 56 peldaños pintados, 54 de ellos por vecinos, del verso de Van Gogh al final de Camilo José Cela.<br><br>
+      <strong>Plaza de la Reina María Cristina</strong>: Palacio de Prieto Cutre del S.XVI (el edificio más antiguo). La Casa de Ardines y el camino a la <strong>Plaza de la Iglesia</strong> con la Iglesia de Santa María Magdalena.<br><br>
+      <strong>Calle Manuel Fernández Juncos</strong>: Casa de González Prieto y Casa de Collado con escudos familiares en piedra. La <strong>Plaza de la Atalaya</strong> y la <strong>Torre de la Atalaya</strong> medieval cubierta por enredadera.<br><br>
+      <strong>Playa de Santa Marina</strong>: paseo por el Paseo Marítimo con palacetes de indianos y casas modernistas. El <strong>Chalé de la Marquesa de Argüelles</strong> y el Hotel Villa Rosario. En el <strong>Mirador Punta del Pozu</strong>, huellas de dinosaurios en un estrato casi vertical sobre un acantilado.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕳️ Cueva · 250 m de longitud · 7,4 km · 16 min · Llevar linterna y chaqueta</div>
+      <h3>La Cuevona — Cuevas de Agua</h3>
+      <p>Cueva de 250 m de longitud hasta llegar al pueblo de Cuevas de Agua. Dos rutas de senderismo (con puente colgante) y el pueblo al salir. Fantástico chiringuito a la salida de la cueva. ⚠️ Cuidado con el tren, pasa muy cerca de la ruta. Dentro hace frío.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Bufones · 17 km · 32 min · Volviendo hacia Ribadesella</div>
+      <h3>Bufones de Pria</h3>
+      <p>Grietas en los acantilados donde el agua entra con fuerza cuando el mar está agitado. Espectacular cuando hay oleaje.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ Playa interior · 11,5 km · 21 min · Solo con marea alta</div>
+      <h3>Playa de Gulpiyuri</h3>
+      <p>Única en su tipo: playa interior sin acceso directo al mar. El agua salada se cuela entre los acantilados cuando sube la marea, creando esta playa interior. En marea baja no hay playa. Próxima bajamar: 19:36h.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena</div>
+      <h3>Sidrería Salero · Llanes</h3>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 7 ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Llanes · Altamira · Gaztelugatxe · Logroño</h2>
+        <div class="day-subtitle">Viernes 20 de Septiembre · Cantabria → País Vasco → La Rioja</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento</div>
+        <h3>Hotel San Camilo · Navarrete</h3>
+        <p>6 km de Logroño · 160 km · 2h desde Gaztelugatxe</p>
+      </div>
+    </div>
+
+    <div class="section-title">🏛️ Mañana · Llanes y Altamira</div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Cubos · 700 m del hotel · Paseo</div>
+      <h3>Llanes — Cubos de la Memoria y Paseo de San Pedro</h3>
+      <p><strong>Cubos de la Memoria</strong>: enormes cubos pintados en el Parking del Sablón (700 m · 10 min). <strong>Banco más guapu de Llanes</strong> por el Paseo de San Pedro. <strong>Playa del Sablón</strong> (550 m).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦬 Cueva · Entradas 11:30h · 69 km · 47 min · Dejar localizador en el Museo</div>
+      <h3>Cuevas de Altamira — Santillana del Mar</h3>
+      <p>Entradas compradas para las 11:30h. Dejar el coche en el parking y enseñar el localizador en el Museo: allí darán hora para entrar en la <strong>Neocueva</strong>, la reproducción a escala real de la cueva con sus famosas pinturas rupestres del Paleolítico.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Bakio</div>
+      <h3>Restaurante Urzabal Taberna · Bakio</h3>
+    </div>
+
+    <div class="section-title">⛪ Tarde · Ermita de San Juan de Gaztelugatxe</div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Ermita · S. X · 155 km · 1h 48 min · 237 escalones · Escenario de Juego de Tronos</div>
+      <h3>Ermita de San Juan de Gaztelugatxe</h3>
+      <p>Construida sobre un pequeño islote en el Cantábrico al que se accede por una hilera de escaleras sobre la roca. Escenario de <em>Juego de Tronos</em>. Dejar el coche en el parking señalizado. Tras bajar por el camino de acceso, el puente peatonal y 237 escalones dan acceso a la ermita. Las vistas de la costa son espectaculares.<br><br>
+      Según la tradición, hay que <strong>tocar tres veces la campana</strong> para pedir un deseo o ahuyentar los malos espíritus. La iglesia está dedicada a la Degollación de San Juan y alberga exvotos de marinos que se salvaron de naufragios.</p>
+    </div>
+
+    <div class="section-title">🍷 Noche · Calle Laurel · Logroño</div>
+
+    <div class="place">
+      <div class="place-meta">🍷 Tapeo · Logroño · 840 m del hotel</div>
+      <h3>Calle Laurel — "La calle del Elefante"</h3>
+      <p>Una de las mejores calles de tapeo de España. El nombre "laurel" tiene su historia: las prostitutas que vivían aquí colgaban una rama de laurel en el balcón para avisar de que estaban libres. Lo de "calle del elefante" es más reciente.<br><br>
+      Bares recomendados: <strong>Tabernal del Laurel</strong> (patatas bravas) · <strong>Bar Calderas</strong> (pizarras) · <strong>Bar Paganos</strong> (pinchos morunos) · <strong>Blanco y Negro</strong> (el "matrimonio") · <strong>Taberna de Correos</strong> (preñaditos)</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 8 ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Logroño — Centro histórico · Regreso</h2>
+        <div class="day-subtitle">Sábado 21 de Septiembre · Logroño → Casa</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗺️ Centro histórico · Paseo matutino</div>
+      <h3>Logroño — Monumentos y calles históricas</h3>
+      <p><strong>Monumento al General Espartero</strong>: militar de las guerras carlistas. Punto de inicio del paseo.<br><br>
+      <strong>Museo de La Rioja</strong>: antigua residencia de Espartero.<br><br>
+      <strong>Concatedral de Santa María de la Redonda</strong> (Lun-Sáb 8:30-13:00 y 18:00-20:45h · Dom 9:00-14:00 y 18:00-20:45h): dos torres barrocas gemelas del S.XVI-XVIII sobre una antigua iglesia románica circular. Interior con Capilla de Nuestra Señora de La Paz, Retablo Mayor y el <em>"Calvario de La Rioja"</em>, atribuido a Miguel Ángel.<br><br>
+      <strong>Muralla del Revellín</strong>: el tramo mejor conservado de la muralla medieval. La única puerta de la muralla conservada y el Cubo del Revellín (antiguo cubo artillero). Enorme parking gratuito.<br><br>
+      <strong>Calle Portales</strong>: la calle comercial más conocida, con soportales y locales históricos como <em>La Mariposa de Oro</em>, confitería de más de 100 años.<br><br>
+      <strong>Iglesia de Santiago el Real</strong>: parada obligatoria del Camino de Santiago. Alberga la Virgen de la Esperanza (patrona de Logroño) y la cripta de los Condenados.<br><br>
+      <strong>Calle Ruavieja</strong>: repleta de calados (bodegas subterráneas del S.XVI). El Calado de San Gregorio es el más conocido. A finales del S.XVI se prohibió el paso de carruajes para no deteriorar los vinos.<br><br>
+      <strong>Puente de Piedra</strong> (Puente de San Juan Ortega): símbolo de Logroño, en el escudo de la ciudad y punto de entrada del Camino de Santiago. El original del S.XII fue reconstruido en el S.XIX.</p>
+    </div>
+
+    <div class="section-title">🚗 Regreso a casa</div>
+    <div class="transport">
+      <strong>Desde Logroño:</strong> 466 km · 4h 33 min
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/nv5P7CTGtjQ" title="Asturias 2024 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/86ueYQn5mdU" title="Asturias 2024 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Asturias 2024</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ─── GALERÍA ──────────────────────────────────────────────────────────────
+  // Añade los nombres de las fotos en fotos/ y ponlos aquí:
+  const photos = ['fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Asturias ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  // ─── NAV ACTIVO ───────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

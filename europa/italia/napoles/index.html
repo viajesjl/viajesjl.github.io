@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nápoles 2025 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(21,101,192,0.40) 60%, rgba(10,31,61,0.82) 100%),
+        url('https://images.unsplash.com/photo-1728988120174-1bdf6ef22603?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* Pompeya itinerary timeline */
+    .timeline { background: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; border-left: 4px solid var(--accent); }
+    .timeline h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; }
+    .timeline-item { display: flex; gap: 1rem; margin-bottom: 0.8rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--paper-dark); }
+    .timeline-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .timeline-time { font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; font-weight: 700; color: var(--accent); letter-spacing: 0.05em; min-width: 90px; padding-top: 0.1rem; }
+    .timeline-content { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.7; }
+    .timeline-content strong { color: var(--ink); font-weight: 700; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+      .timeline-item { flex-direction: column; gap: 0.3rem; }
+      .timeline-time { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../../viajes.html#sec-italia">🇮🇹 Italia</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Nápoles</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">✈ Italia · Campania · Nápoles · Capri · Pompeya</p>
+  <h1 class="hero-title">Nápoles</h1>
+  <p class="hero-date">26 — 28 Abril 2025 · 3 días</p>
+  <div class="hero-pills">
+    <span class="pill">Capri · Anacapri</span>
+    <span class="pill">Pompeya UNESCO</span>
+    <span class="pill">Nápoles histórica</span>
+    <span class="pill">Cristo Velado</span>
+    <span class="pill">Nápoles Subterránea</span>
+    <span class="pill">Castel dell'Ovo</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1 · Capri</a>
+  <a href="#dia2">Día 2 · Pompeya</a>
+  <a href="#dia3">Día 3 · Nápoles</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Capri — Anacapri · Grotta Azzurra · Monte Solaro</h2>
+        <div class="day-subtitle">Sábado 26 de Abril · Capri</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento · 3 noches · Barrio de Chiaia</div>
+        <h3>Cico B&B · Via Chiaia 168 · Nápoles</h3>
+        <p>Tel. <strong>+39 351 050 3642</strong> · Check-in: 10:30-13:30h · Check-out: 10:00h<br>
+        Desde el puerto: 1,5 km · 20 min a pie, o metro L6 desde Municipio (1,30€)</p>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Viladecans → Aeropuerto:</strong> Bus N19 a las 05:35h (el siguiente L99 a las 05:55h)<br>
+      <strong>Vuelo:</strong> Vueling PLVJXQ · VY6500 · T1 Barcelona 07:20h → Nápoles Capodichino 09:20h<br>
+      <strong>Alibus Shuttle (billetes comprados):</strong> Parada 290 m a la derecha de la salida · P3 · Viale F. Ruffo di Calabria 12 · Cada 15 min<br>
+      Recorrido: Aeropuerto → Piazza Garibaldi (15 min) → Immacolatella/Porta di Massa → <strong>Molo Angioino/Beverello (35 min)</strong> · Bajar aquí<br>
+      <strong>Metro:</strong> App Unico Campania · Billete Unico Napoli 90 min (metro + bus + funicular + tranvía): activar en "I miei biglietti" → código QR para tornos
+    </div>
+
+    <div class="section-title">⛴️ Capri · Hidroala desde Molo Beverello</div>
+
+    <div class="transport">
+      <strong>Naviera NLG → Capri:</strong> Reservado las 12:40h · Si se puede, cambiar por web al de 11:35h o 11:55h · Llegar 30 min antes<br>
+      <strong>Vuelta:</strong> 19:10h · Naviera SNAV<br>
+      <strong>Distancia Nápoles-Capri:</strong> ~28 km · Llegada a <strong>Marina Grande</strong>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Plaza · Corazón de Capri · Via Vittorio Emanuele III</div>
+      <h3>La Piazzetta (Piazza Umberto I) — El corazón chic de Capri</h3>
+      <p>Plaza popular llena de terrazas y rodeada de edificios históricos: el Ayuntamiento, la Torre del Reloj y una terraza con vistas a la Marina Grande.<br><br>
+      <strong>Subir desde el puerto:</strong><br>
+      · <strong>Funicular</strong> (3€): taquilla a la derecha de la salida del muelle · 5 min · Cada 15 min de 7:30 a 21:15h<br>
+      · <strong>Bus ATC desde Marina Grande</strong> (billetes en app ATC GO): preguntar si <em>"la prossima fermata è Piazza della Pace"</em><br>
+      · A pie: 750 m de escaleras</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚌 Bus · Desde la Piazzetta · 240 m · Cada 10 min desde en punto · 2,40€</div>
+      <h3>Anacapri — Subir en bus ATC Capri</h3>
+      <p>Sale desde la estación de autobuses cerca de la Piazza Umberto I. Llega a la <strong>Piazza Vittoria</strong> (o pedir parada en Piazza della Pace, más cerca del restaurante). Solo 3,2 km pero la carretera es sinuosa: 30 min. Los domingos sale cada 10 min desde en punto.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Reserva confirmada 14:00h</div>
+      <h3>La Zagara · Anacapri · Via Giuseppe Orlandi 180 · 500 m · 7 min de la Piazza Vittoria</h3>
+      <p>Horario: 12:30-15:30h. Terraza al aire libre bajo un limonar. Italiana tradicional con toques modernos. Especialidades: ravioli capresi, tagliolini alla Nerano (calabacín y queso), mozzarella di bufala, tiramisú casero. Precio medio 25-35€.<br>
+      Alternativa más cerca: <strong>Sciue' Sciue'</strong> (Via Orlandi 73, 80 m de Piazza Vittoria, hasta 14:45h): ravioli capresi al limone (16€) y polpette di melanzane della nonna (15€).</p>
+    </div>
+
+    <div class="section-title">🔵 Tarde · Opciones en Anacapri</div>
+
+    <div class="place">
+      <div class="place-meta">🔵 Gruta · Abre 9:00-17:00h · Mejor al mediodía · Solo con mar tranquilo</div>
+      <h3>Grotta Azzurra — La Cueva Azul</h3>
+      <p>Historia romana: era la piscina natural de una villa decorada con estatuas de Neptuno y Tritón, halladas en 1964 (en el museo de Anacapri). La visita al interior dura solo 5 minutos en pequeñas embarcaciones. Cola habitual de más de 1 hora en temporada alta.<br><br>
+      <strong>Cómo llegar desde La Zagara:</strong> minibús "Grotta Azzurra" desde Piazza della Pace (240 m · 3 min del restaurante) · 10-15 min · 2,40€. Bajada a pie por escaleras hasta el embarcadero.<br>
+      <strong>Precios:</strong> Barquita de remo 10€ + Entrada obligatoria por separado 14€</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia · 360 m del restaurante · El "Paraíso Terrenal" en mayólica</div>
+      <h3>Iglesia de San Michele — Si no vamos a la Gruta Azul</h3>
+      <p>Conocida como la iglesia del paraíso terrenal por su impresionante suelo de mayólica que representa la expulsión de Adán y Eva del Paraíso. Cerca, la <strong>Iglesia de Santa Sofia</strong>, de fachada blanca barroca con interior de mármol de Carrara.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Telesilla · 589 m · El punto más alto de Capri · 14€ ida y vuelta</div>
+      <h3>Monte Solaro — Vistas al Vesubio, Sorrento y los Faraglioni</h3>
+      <p>Subida de 15 min. ⚠️ No apto para vértigo: sillas individuales con los pies suspendidos en el aire y una sola barra de sujeción. Prestar especial atención al subirse y bajarse (habitual que haya caídas). Al lado, el <strong>Viale Axel Munthe</strong>, calle peatonal muy agradable con tiendas, cafés y ambiente local. Ideal para comprar limoncello.</p>
+    </div>
+
+    <div class="section-title">🌺 Tarde · Capri ciudad</div>
+
+    <div class="place">
+      <div class="place-meta">🌺 Jardines · 10 min andando desde la Piazzetta · Entradas 2,50€ COMPRADAS · 9:30-19:30h</div>
+      <h3>Jardines de Augusto — Faraglioni y Via Krupp</h3>
+      <p>Conjunto de terrazas neoclásicas con vistas fantásticas al Mar Tirreno, los <strong>Faraglioni</strong>, la Marina Piccola y la Via Krupp. Construidos por el industrial alemán Friedrich Alfred Krupp a principios del S.XX, llamados "Jardines de Augusto" desde 1918.<br><br>
+      Los <strong>Faraglioni</strong>: 3 formaciones rocosas (Saetta, Stella y Scopolo) icono de Capri. Stella, de 109 m, tiene una apertura natural en el centro que se puede cruzar en barco. Mencionadas en la Odisea de Homero. Famosas por el anuncio de Dolce & Gabbana.<br><br>
+      La serpenteante <strong>Via Krupp</strong> (cerrada a veces por desprendimientos, pero se puede ver desde arriba).<br><br>
+      <strong>Piazzetta:</strong> Chiesa de Santo Stefano, miradores y Museo Arqueológico Ignazio Cerio. La <strong>Via Camerelle</strong>, repleta de tiendas de lujo.</p>
+    </div>
+
+    <div class="section-title">⛵ Regreso · Marina Grande</div>
+
+    <div class="narrative">
+      El antiguo puerto pesquero conserva casas de marineros pintadas de colores vivos, barcas en la arena y restaurantes con terrazas al mar. Tiempo relajado en la playa de Marina Grande, la más grande de la isla, mientras se espera el ferry de vuelta.
+    </div>
+
+    <div class="section-title">🍕 Noche · Cena en Chiaia</div>
+
+    <div class="transport">
+      <strong>Desde el puerto:</strong> 1,3 km andando hasta Municipio (izquierda por Via San Carlo)<br>
+      <strong>Supermercado:</strong> Sole365 · Via Incoronata 14 (cierra 22h) · Minimarket pakistaní · Plebiscito 53 (220 m del hotel)
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍕 Opciones de cena en Chiaia</div>
+      <h3>Pizzerías y restaurantes cerca del hotel</h3>
+      <p><strong>Pizzeria Dona Sofia a Chiaia</strong>: económica, una de las mejores de Nápoles. Muy buena la pizza fritta (frita clásica) y la sfiziosa. También para llevar.<br>
+      <strong>Antica Taverna a Chiaia</strong>: Salita Sant'Anna di Palazzo 7 · 280 m del hotel · Gastronomía napolitana tradicional.<br>
+      <strong>Antica Osteria Da Tonino</strong>: Via Santa Teresa a Chiaia 47 · 710 m · Fundada en 1880, referente de la cocina napolitana.<br>
+      <strong>Sette Passi a Chiaia</strong>: Salita S. Anna Di Palazzo 24 · Al lado de la Antica Taverna · Mediterránea y napolitana.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Pompeya — La ciudad sepultada por el Vesubio</h2>
+        <div class="day-subtitle">Domingo 27 de Abril · Pompeya</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Metro L6 azul</strong> Chiaia → Municipio (1 parada) + <strong>L1 amarilla</strong> Municipio → Piazza Garibaldi (3 paradas)<br>
+      <strong>Tren Trenitalia 21309:</strong> Sale Nápoles 08:57h → Llega Pompei 09:36h · Billetes comprados · (El siguiente a las 09:27h)<br>
+      <strong>Alternativa: Campania Express</strong> (más caro, 25€ ida y vuelta): Sale Napoli Garibaldi andén 3 a las 08:26h · Con asientos garantizados, aire acondicionado. Bajarse en <strong>Pompei Scavi - Villa dei Misteri</strong> (puerta Porta Marina, literalmente a unos pasos).<br>
+      <strong>Vuelta:</strong> Tren 21350 desde Pompeya a las 19:50h → Nápoles 20:33h. También a las 20:20, 20:50 y 21:50h.
+    </div>
+
+    <div class="narrative">
+      Pompeya quedó sepultada el 24 de agosto del año 79 d.C. (aunque podría haber sido el 24 de octubre: Plinio en sus cartas quizás confundió los números romanos) por la erupción del Vesubio. Solo se ha desenterrado el 60% del total: el yacimiento arqueológico más importante de la Antigua Roma. Curiosidades del recorrido: las piedras entre calles son pasos de peatones que permiten el paso de carros; el Termopolium vendía comida caliente guardada en agujeros; el pene es símbolo de fertilidad y protección, muy representado; en el Lupanar, <em>lupa</em> (loba) era como se conocía a las prostitutas; en el anfiteatro actuó Pink Floyd.
+    </div>
+
+    <div class="transport">
+      <strong>Entrada:</strong> Piazza Anfiteatro (extremo este, cerca del anfiteatro y el famoso mural "Cave Canem") · 1,1 km · 15 min desde la estación por Via Sacra y Via Roma<br>
+      <strong>Entradas Pompeii+:</strong> Ciudad de Pompeya + Villa de los Misterios + Villa de Diomedes + Villa Regina en Boscoreale con Antiquarium<br>
+      <strong>Pompeii Arte Bus (gratuito):</strong> Piazza Esedra → Villa dei Misteri (5 min) → Boscoreale. Salidas aprox. cada hora desde 9:30 hasta 18:00h (pausa 13:00-14:00h)
+    </div>
+
+    <div class="timeline">
+      <h3>🗺️ Itinerario por Pompeya — Seguir la flecha azul</h3>
+      <div class="timeline-item">
+        <div class="timeline-time">9:00 – 10:00</div>
+        <div class="timeline-content">
+          <strong>Anfiteatro:</strong> El más antiguo del mundo romano (70 a.C.), capacidad para 20.000 personas. En 59 d.C. una reyerta lo cerró 10 años.<br>
+          <strong>Palestra Grande:</strong> 140×105 m, piscina central, pórtico toscano. Uno de los últimos grandes edificios públicos antes de la erupción.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">10:00 – 11:00</div>
+        <div class="timeline-content">
+          <strong>Casa della Venere in Conchiglia:</strong> El fresco de Venus reclinada sobre una concha con dos cupidos es uno de los más icónicos. Conservado in situ. Excavada en los años 50.<br>
+          <strong>Casa del Frutteto:</strong> Habitación envolvente decorada con árboles frutales, pájaros y flores (granados, limoneros, higueras...). Ambiente ritual o devocional. Reabierta en 2015 tras restauración.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">11:00 – 12:00</div>
+        <div class="timeline-content">
+          <strong>Via dell'Abbondanza:</strong> La calle principal, con huellas de carros en las losas y pasos de peatones elevados.<br>
+          <strong>Casa di Octavius Quartio:</strong> Gran jardín con dos canales de agua (euripi) y frescos de Narciso, Píramo y Tisbe, Diana y Acteón. El nombre viene de un sello hallado en las excavaciones.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">12:00 – 13:00</div>
+        <div class="timeline-content">
+          <strong>Foro:</strong> Centro político y comercial.<br>
+          <strong>Santuario de Apolo</strong> (S.VI a.C.): el culto más antiguo de la ciudad.<br>
+          <strong>Basílica</strong> (S.II a.C.): tribunal y centro de negocios, modelo para las basílicas romanas posteriores.<br>
+          <strong>Macellum</strong> (S.II a.C.): mercado con tholos central para venta de pescado.<br>
+          <strong>Templo de Júpiter:</strong> Domina el norte del Foro con el Vesubio de fondo. El Capitolium de Pompeya con estatuas de Júpiter, Juno y Minerva.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">13:00 – 14:00</div>
+        <div class="timeline-content">
+          <strong>Pausa para comer:</strong> Se puede salir temporalmente (pedir reingreso en taquilla) o llevar algo ligero y aprovechar zonas con sombra.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">14:00 – 15:00</div>
+        <div class="timeline-content">
+          <strong>Termas Estabianas</strong> (S.II a.C., las más antiguas del mundo romano): apodyterium (vestuario), frigidarium (fría), tepidarium (media), calidarium (caliente). Sistema de calefacción por tuberías en las paredes. La sección de mujeres tenía entrada separada marcada con "Mulier".<br>
+          <strong>Lupanar:</strong> Dos plantas, 5 habitaciones con camas de obra en el piso inferior, frescos eróticos en la parte superior de las puertas. No se abrió al público hasta 2006.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">15:00 – 16:00</div>
+        <div class="timeline-content">
+          <strong>Casa del Fauno</strong> (3.000 m², S.II a.C.): la más grande de Pompeya. La inscripción HAVE en la entrada. Copia del mosaico de la Batalla de Alejandro Magno contra Darío (el original en el Museo Arqueológico de Nápoles).<br>
+          <strong>Casa dei Vettii</strong> ("Capilla Sixtina de Pompeya", reabierta en 2023 tras 20 años de restauración): el friso de Amorcillos con actividades de la época. La prostituta Eutychis trabajaba en la cocina por "dos asnos" (según grafito).
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">16:00 – 17:30</div>
+        <div class="timeline-content">
+          <strong>Teatro Grande</strong> (S.II a.C., 5.000 espectadores): aprovecha la pendiente natural de la colina. En verano sigue activo.<br>
+          <strong>Odeón</strong> (~1.500 espectadores, cubierto): para música, poesía y actos íntimos. Excelente acústica.<br>
+          <strong>Villa de los Misterios:</strong> Fuera de las murallas. Frescos de la "Sala de los Misterios" (iniciación en el culto a Dionisio). Uno de los edificios menos dañados de Pompeya.<br>
+          <strong>Villa de Diomedes</strong> (reabierta 2021): la segunda más grande. Se encontraron 36 cuerpos, uno con bolsa de monedas de oro, plata y bronce.<br>
+          <strong>Orto dei Fuggiaschi (Huerto de los Fugitivos):</strong> Los 13 moldes de yeso más conmovedores del complejo: adultos y niños con rostros de terror y posiciones retorcidas al morir.
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">17:30 – Regreso</div>
+        <div class="timeline-content">
+          Regreso a la salida por Porta Anfiteatro.<br>
+          <strong>Pompeya moderna</strong> (410 m de la estación): Santuario de la Beata Virgen del Rosario de Pompeya con campanario y vistas al Vesubio. Arte urbano por los alrededores.
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title">🌊 Noche · Lungomare y Castel dell'Ovo</div>
+
+    <div class="transport">
+      <strong>Desde Pompeya → Nápoles:</strong> Tren 21350 · Sale 19:50h → Nápoles 20:33h<br>
+      <strong>Desde Piazza Garibaldi:</strong> L1 roja dirección Piscinola → bajar en Municipio (3 estaciones) → caminar 1,4 km · 19 min al Lungomare
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Panorámica · Ascensor Monte Echia · 3€</div>
+      <h3>Castel dell'Ovo y Lungomare</h3>
+      <p>Al lado del metro Municipio, el <strong>ascensor Monte Echia</strong> ofrece una vista panorámica de la ciudad por 3€.<br><br>
+      El <strong>Castel dell'Ovo</strong> (entrada gratuita, actualmente cerrado por restauración): según la leyenda, Virgilio escondió un huevo mágico en sus cimientos. Si el huevo llegara a romperse, la ciudad sufriría una catástrofe.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Nápoles — Centro histórico · Nápoles Subterránea</h2>
+        <div class="day-subtitle">Lunes 28 de Abril · Nápoles</div>
+      </div>
+    </div>
+
+    <div class="section-title">🗺️ Mañana · Free Tour Civitatis (10:15h)</div>
+
+    <div class="transport">
+      <strong>Punto de encuentro:</strong> Gran Caffè Gambrinus · Esquina Piazza del Plebiscito / Via Chiaia 1 · 400 m del hotel · 5 min<br>
+      Presentarse <strong>10 minutos antes</strong> · Duración: 2-3h · Acaba en la Plaza San Domenico Maggiore (al lado de Sansevero)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Free Tour · Piazza del Plebiscito · La plaza más importante de la ciudad</div>
+      <h3>Nápoles centro histórico — Recorrido del Free Tour</h3>
+      <p><strong>Plaza del Plebiscito:</strong> La más importante de la ciudad. <strong>Palacio Real</strong> (9:00-20:00h · 15€ con museos): Teatro di San Carlo al lado — opulento auditorio en U inaugurado en 1737 con fresco en el techo (visitas guiadas: 11:30 y 15:30h en inglés · 9€, entradas reservadas).<br><br>
+      <strong>Basílica de San Francisco de Paula:</strong> Estilo neoclásico inspirado en el Panteón de Roma.<br><br>
+      <strong>Castel Nuovo</strong> (580 m · 9 min · 6€): Monumento que transporta a otra época.<br><br>
+      <strong>Galería Humberto I</strong> (640 m): Tan elegante como la Galería Vittorio Emanuele de Milán, aunque algo más deteriorada.<br><br>
+      <strong>Via Toledo:</strong> Arteria principal, considerada una de las más bonitas del mundo.<br><br>
+      <strong>Barrio Español</strong> (350 m de la Galería): Origen como zona residencial de soldados españoles, hoy 100% napolitano: caótico, ropa tendida, motos entre peatones. <strong>Mural dedicado a Maradona</strong>.<br><br>
+      <strong>Basílica de Santa Clara</strong> (1,2 km · 17 min): Precioso claustro principal y pinturas de Giotto en algunas salas del museo.<br><br>
+      <strong>Basílica de Santo Domingo Mayor</strong> (350 m · 5 min): Una de las iglesias mejor decoradas de la ciudad. <em>Guarda 45 sepulcros de la nobleza aragonesa, entre ellos el de Isabel de Aragón, decorado con frescos y columnatas de mayólica.</em></p>
+    </div>
+
+    <div class="section-title">🗿 Mediodía · Capilla Sansevero y alrededores</div>
+
+    <div class="place">
+      <div class="place-meta">🗿 Capilla · 9:00-19:00h · 12€ · Audioguías 6€ para 2 · Al acabar el tour ~13h</div>
+      <h3>Capilla de Sansevero — El Cristo Velado</h3>
+      <p>Uno de los lugares más famosos de Nápoles por la impresionante <strong>escultura del Cristo Velado</strong> en mármol, que emula la textura real de un velo con un grado de detalle absolutamente espectacular. El recorrido en audio dura ~25 minutos. Entrada permitida hasta 15 min después de la hora del billete.<br><br>
+      ⚠️ Puede que no haya entradas: buscar disponibilidad en <em>ticket.museosansevero.it</em> o en la billetería.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Vía Tribunali · Centro histórico · Calle más animada</div>
+      <h3>Via Tribunali · Via de San Gregorio Armeno · Arte urbano</h3>
+      <p><strong>Plaza Dante</strong> (620 m · 8 min): estatua del poeta, rodeada de edificios bonitos.<br><br>
+      <strong>Iglesia del Gesù Nuovo</strong> (~520 m): Joya arquitectónica por dentro, entrada gratis.<br><br>
+      <strong>Via de San Gregorio Armeno</strong>: puestos navideños todo el año. Una de las más bonitas del casco antiguo. Antiguamente un templo donde se ofrecían figuritas artesanales que luego dieron origen al pesebre napolitano.<br><br>
+      <strong>Via Tribunali</strong>: la más animada. En la <strong>Piazza dei Gerolomini</strong>, la <strong>Madonna de Banksy</strong>, obra estupenda del artista callejero (300 m · 4 min).<br><br>
+      <strong>Busto de Pulcinella</strong> (Vico del Fico Purgatorio): personaje de la Commedia dell'Arte con nariz prominente y sombrero puntiagudo. Tradición: frotar su nariz atrae la buena suerte.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer</div>
+      <h3>La Locanda Gesù Vecchio · Via Giovanni Paladino 4-4/A</h3>
+      <p>Excelente cocina italiana y napolitana.</p>
+    </div>
+
+    <div class="section-title">🕳️ Tarde · Nápoles Subterránea (17:00h)</div>
+
+    <div class="place">
+      <div class="place-meta">🕳️ Visita guiada · 17:00h · Llegar 30 min antes · Duración 1h 30min · Sin colas</div>
+      <h3>Nápoles Subterránea — 40 metros bajo tierra · 2.400 años de historia</h3>
+      <p><strong>Punto de encuentro:</strong> Entrada junto a la Pizzeria I Decumani · Piazza San Gaetano 69 · Al lado de la <strong>Basílica de San Paolo Maggiore</strong> (gratuita) · Banderas blancas y azules con "Napoli Sotterranea".<br><br>
+      Vaya directamente a la puerta antes de la hora de inicio y muestre el vale. Tras bajar ~100 escalones: laberinto de túneles y galerías con restos de un <strong>acueducto grecorromano</strong>, un <strong>teatro romano</strong>, una <strong>cisterna del S.IV</strong> y <strong>túneles usados como refugios antiaéreos en la Primera Guerra Mundial</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Catedral · Al lado de los túneles · Entrada gratuita</div>
+      <h3>Catedral de Nápoles — Duomo · Capilla del Tesoro de San Genaro</h3>
+      <p>Peculiar fachada neogótica encajada entre dos edificios. En su interior, la <strong>Capilla del Tesoro</strong> es muy bonita: conserva los recipientes con la sangre de <strong>San Genaro</strong>, patrón de Nápoles.</p>
+    </div>
+
+    <div class="section-title">✈ Regreso al aeropuerto</div>
+
+    <div class="transport">
+      <strong>Desde la Catedral al Alibus:</strong> 1,2 km · 16 min<br>
+      <strong>Parada Alibus:</strong> Piazza Garibaldi (frente a la Policía Municipal) · Billete comprado · Sale <strong>19:41h</strong><br>
+      <strong>Vuelo VY6503:</strong> Sale 21:50h → Llega Barcelona 23:55h<br>
+      <strong>Bus nocturno en Barcelona:</strong> N19 a las 00:30h o 01:00h
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/f6GuYj8nbFA" title="Nápoles 2025 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+       <iframe src="https://www.youtube.com/embed/5mXmIFuOnXc" title="Nápoles 2025 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Nápoles 2025</p>
+  <p style="margin-top:0.5rem;"><a href="../../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = ['fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',];
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Nápoles ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

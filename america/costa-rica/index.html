@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Costa Rica 2016 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1552727131-5fc6af16796d?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    /* FOTO INLINE */
+    .foto-inline-wrap { margin: 1rem 0; }
+    .foto-inline-wrap img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+    .foto-placeholder {
+      width: 100%; height: 220px;
+      background: var(--paper-dark); border: 2px dashed var(--accent-light);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+    .foto-placeholder .fp-icon { font-size: 2rem; opacity: 0.35; }
+    .foto-placeholder .fp-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    .foto-placeholder .fp-file { font-size: 0.72rem; color: var(--accent-light); font-family: monospace; margin-top: 0.1rem; }
+    .foto-caption { font-size: 0.72rem; color: var(--muted); font-style: italic; padding: 0.3rem 0.5rem; background: rgba(10,31,61,0.04); text-align: center; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-america">🌎 América</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Costa Rica 2016</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇨🇷 Costa Rica · Centroamérica</div>
+  <h1 class="hero-title">Costa Rica</h1>
+  <div class="hero-date">19 – 31 Agosto 2016 · 13 días</div>
+  <div class="hero-pills">
+    <span class="pill">Tortuguero</span>
+    <span class="pill">Volcán Poás</span>
+    <span class="pill">Volcán Arenal</span>
+    <span class="pill">Rincón de la Vieja</span>
+    <span class="pill">Monteverde</span>
+    <span class="pill">Manuel Antonio</span>
+    <span class="pill">Bahía Drake · Corcovado</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · San José</a>
+  <a href="#dia2">Día 2 · Tortuguero</a>
+  <a href="#dia3">Día 3 · Tortuguero</a>
+  <a href="#dia4">Día 4 · Volcán Poás</a>
+  <a href="#dia5">Día 5 · Arenal</a>
+  <a href="#dia6">Día 6 · Arenal · Fortuna</a>
+  <a href="#dia7">Día 7 · Rincón de la Vieja</a>
+  <a href="#dia8">Día 8 · Monteverde</a>
+  <a href="#dia9">Día 9 · Manuel Antonio</a>
+  <a href="#dia10">Día 10 · Bahía Drake</a>
+  <a href="#dia11">Día 11 · Corcovado</a>
+  <a href="#dia12">Día 12 · Alajuela</a>
+</div>
+
+<main class="content">
+
+    <div class="tip">
+    <div class="tip-label">🇨🇷 Consejos prácticos — Costa Rica</div>
+    <p><strong>Tiempo:</strong> Multiplicar ×2 los tiempos de Google Maps por carreteras no pavimentadas y atascos · <strong>Moneda:</strong> 1 € ≈ 600 colones · Aceptan dólares pero mejor pagar en colones · <strong>Enchufes:</strong> especiales, comprar adaptador en supermercado por 1 $ · <strong>Horario solar:</strong> Amanece ~5:00h · Anochece ~18:00h · <strong>Plato típico:</strong> El casado (frijoles, arroz, carne, ensalada y fruta) ~2.700 colones con bebida · <strong>Impuesto salida:</strong> 29 $ por persona en el aeropuerto</p>
+  </div>
+
+  <!-- ═══ DÍA 1 — SAN JOSÉ ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>San José — Llegada a Costa Rica</h2>
+        <div class="day-subtitle">Viernes 19 de Agosto · AF 3606 BCN 10:25 → Atlanta 14:38 → DL325 → San José 19:56</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo:</strong> Air France AF 3606 · Terminal 1 · Llevar documento ESTA · Conexión Atlanta Terminal I · DL325 17:55 → San José Terminal M<br>
+      <strong>Dinero:</strong> Cajero Banco Costa Rica (lobby puerta 6), Scotia Bank (reclamo cinta 5) o BAC San José (reclamo cinta 2, puerta 3)<br>
+      <strong>Recogida:</strong> Transfer al hotel con rótulo a la derecha al salir · Si retraso +45 min: +50625472323 ext. 1385 · Taxis oficiales: naranjas
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · San José · 83,70 $</div>
+      <h4>Tryp by Wyndham San José Sabana</h4>
+      <p>38th &amp; 40th Street, 3rd Avenue · Cerca del Parque Metropolitano La Sabana · No pasear de noche, mejor taxi al centro o descansar</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Cena · San José · Hasta las 22h</div>
+      <h4>Restaurante Machu Pichu / Pizza Hut</h4>
+      <p>Subiendo a la Avenida 3 a la derecha, bajando por la 1ª y luego a la izquierda por Av. 1 después de 2 calles. <strong>Alternativa:</strong> Pizza Hut bajando por la 38 perpendicular, Avenida 2, 5 calles a la izquierda.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — TORTUGUERO ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Tortuguero — Canales de la selva y tortugas marinas</h2>
+        <div class="day-subtitle">Sábado 20 de Agosto · San José → La Pavona (109 km/~5h) → Canoa → Tortuguero</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Coche:</strong> Economy Rental Car · Reserva EWEBE013DB15 · Avda. de las Américas, esquina Parque La Sabana (450 m del hotel) · Salir antes de las 08:00h<br>
+      <strong>Ruta:</strong> Carretera 32 → Parque Nacional Braulio Carrillo → Túnel Zurquí → Guápiles → Cariari → La Pavona (Rancho El Rio Suerte)<br>
+      <strong>Canoa:</strong> La Pavona → Tortuguero · 1.600 colones (~3$) · Dos compañías: Clic Clic y Coopetraca · Salidas: 7:30, 13:00 y 16:30h · Llegar 30 min antes · <strong>Coger la canoa de las 13:00h</strong><br>
+      <strong>Parking La Pavona:</strong> 10$/noche o 50$/semana con seguridad 24h
+    </div>
+
+    <!-- FOTO 1 -->
+    <div class="place">
+      <div class="place-meta">🛶 Río Suerte → Río Tortuguero · Cerro Tortuguero 119 m · ~1h15 en canoa</div>
+      <h3>Llegada a Tortuguero por los canales</h3>
+      <p>El viaje en barco dura aproximadamente una hora y 15 minutos. Durante los primeros 45 minutos se navega por la selva en el <strong>Río Suerte</strong>. Luego el río se encuentra con el <strong>río Tortuguero</strong>, mucho más ancho. Se pasa al <strong>Cerro Tortuguero</strong>, el punto más alto de la costa del Caribe (119 metros). Paradas en San Francisco y otros pueblos a lo largo del río.</p>
+      <div class="foto-inline-wrap">
+        <img src="fotos/foto01.jpg" alt="Canales de Tortuguero" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/foto01.jpg</span></div>
+        <div class="foto-caption">Los canales de la selva camino a Tortuguero</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐢 20:00h o 22:00h · 20$ + 5$ por persona · Tour máximo 2 horas</div>
+      <h3>Tour de las Tortugas Marinas — Playa nocturna</h3>
+      <p>Las tortugas marinas llegan a la playa de Tortuguero a anidar de noche. Una de las experiencias más emocionantes del viaje: ver a las <strong>tortugas baúl o verdes</strong> depositar sus huevos en la arena oscura, guiados por los rangers del parque que controlan el acceso para no perturbar el proceso.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Tortuguero · 2 noches · 40$/noche en EFECTIVO</div>
+      <h4>Casa Marbella</h4>
+      <p>A la izquierda por el río después del puesto de policía · Reservar aquí las excursiones de tortugas y canoas</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Restaurantes en Tortuguero</div>
+      <h4>Miss Junie's / Buddha Café / Miss Miriam's</h4>
+      <p><strong>Miss Junie's:</strong> Marisco con salsa de coco · 3ª a la derecha desde el hotel · <strong>Buddha Café:</strong> Pizza, crepes de gambas, Buddasalata (aguacate, maíz, palmito) · antes del hotel · <strong>Miss Miriam's:</strong> Langostas enteras, Gallo pinto · al lado del campo de fútbol · <strong>Super Morpho Pulpería:</strong> Supermercado con comida, frente al embarcadero</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — TORTUGUERO ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Tortuguero — Senderos acuáticos y bosque tropical</h2>
+        <div class="day-subtitle">Domingo 21 de Agosto · Excursión en canoa 5:45–9:00h · Sendero El Gavilán</div>
+      </div>
+    </div>
+
+    <!-- FOTO 3 -->
+    <div class="place">
+      <div class="place-meta">🚣 5:45–9:00h · 20$/persona · Motor eléctrico silencioso · Entrada parque 15$/día aparte</div>
+      <h3>Excursión con Daryl — Senderos acuáticos</h3>
+      <p>Lancha equipada con un silencioso motor fuera borda de 4 tiempos y un motor eléctrico que permite acercarse a la fauna sin asustarla. Tres horas por los canales del parque nacional, uno de los ecosistemas más biodiversos de Costa Rica: monos, caimanes, tortugas, tucanes, manatíes y cientos de especies de aves entre la vegetación densa.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 2 km · Parque Nacional · Paralelo a la playa · Botas de agua aconsejables</div>
+      <h3>Sendero El Gavilán — Bosque Tropical</h3>
+      <p>Sendero de solo 2 km que va paralelo a la playa dentro del Parque Nacional. Alquilar botas de agua en el hotel si hay lluvia. Alternativa más exigente: la <strong>caminata al Cerro de Barro</strong> (la colina más alta · 2h · con guía recomendado), desde donde se aprecia el paisaje de canales, el bosque tropical lluvioso, las lagunas y el mar Caribe. El punto de salida está en San Francisco, a 10-15 minutos en bote del centro.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — CATARATAS LA PAZ / VOLCÁN POÁS ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Cataratas de La Paz · Volcán Poás</h2>
+        <div class="day-subtitle">Lunes 22 de Agosto · Canoa 9:00h → La Pavona → Guápiles → Cataratas → Poasito</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta:</strong> Canoa embarcadero 9:00h → La Pavona → Carretera 32 → Guápiles → Carretera 4 → Carretera 126 → La Paz Waterfall Gardens<br>
+      <strong>Distancia:</strong> Tortuguero → Cataratas: ~155 km · ~3h30
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">💧 40$ entrada · 14$ almuerzo buffet · 8:00–17:00 · +100 especies animales</div>
+      <h3>La Paz Waterfall Gardens</h3>
+      <p>La atracción de las cataratas más famosas de Costa Rica, con la espectacular <strong>Catarata de La Paz</strong> como protagonista. Centro de rescate y reserva privada de vida silvestre con más de 100 especies de animales. Más de 3,5 km de senderos que incluyen <strong>Mariposario, Jardín de Colibríes, Serpentario, Ranario, Casita Típica y Lago de las Truchas</strong>. Almuerzo buffet en el Restaurante Colibrí. Llegar antes de las 15:00h para hacer el recorrido completo.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Poasito · 45 €</div>
+      <h4>Churrasco Hotel y Restaurante</h4>
+      <p>Justo después de pasar el pueblo de Poasito · 13 km / 20 min de las Cataratas · Bajar por la 126 y coger la 120 a la derecha</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — VOLCÁN POÁS / LA FORTUNA ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Volcán Poás · Volcán Arenal — La Fortuna</h2>
+        <div class="day-subtitle">Martes 23 de Agosto · 8:00–15:30h · 2.708 m · Ruta 108 km / 2h18 hasta La Fortuna</div>
+      </div>
+    </div>
+
+    <!-- FOTO 5 -->
+    <div class="place">
+      <div class="place-meta">🌋 2.708 m · 8:00–15:30 · Cráter 1.320 m diámetro · Laguna Botos · Fumarolas</div>
+      <h3>Parque Nacional del Volcán Poás</h3>
+      <p>Uno de los volcanes más activos de Costa Rica. El cráter principal tiene forma semicircular con un diámetro norte-sur de 1.320 metros y una profundidad de 300 metros. Desde el mirador (2.560 m) se ven las fumarolas activas y la laguna cratérica de color verde ácido.<br><br>
+      El <strong>Sendero Botos</strong> parte del lado derecho del cráter con un recorrido circular de aproximadamente 1 hora que llega a la <strong>laguna Botos</strong>, un lago tranquilo en el interior de un cráter antiguo cubierto de bosque nuboso. En junio de 2016 registró varias erupciones freáticas.</p>
+      <div class="foto-inline-wrap">
+        <img src="fotos/foto05.jpg" alt="Cráter del Volcán Poás con fumarolas" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/foto05.jpg</span></div>
+        <div class="foto-caption">Cráter del Volcán Poás — Fumarolas y laguna cratérica</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Volcán Arenal · 96 € · Cena 18:00–20:30h incluida</div>
+      <h4>Arenal Observatory Lodge &amp; Spa</h4>
+      <p>Lat: 10.434215 / Long: -84.701500 · Desde La Fortuna por la 142 durante 14,3 km y girar a la izquierda hacia Cerro Chato · Pista de 2,2 km · Siempre a la izquierda en los cruces · 350 hectáreas · 11 km de senderos · Caminatas diarias con guías naturalistas</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — ARENAL / CATARATAS FORTUNA ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Volcán Arenal · Catarata La Fortuna · Liberia</h2>
+        <div class="day-subtitle">Miércoles 24 de Agosto · Parque 8:00–16:00 · Catarata 70 m · Ruta → Liberia 129 km</div>
+      </div>
+    </div>
+
+    <!-- FOTO 6 -->
+    <div class="place">
+      <div class="place-meta">🌋 8:00–16:00 · 10$ · Sendero Las Coladas · Corriente de lava 1992</div>
+      <h3>Parque Nacional Volcán Arenal</h3>
+      <p>Seguir el <strong>Sendero Las Coladas</strong> (1,7 km) llegando hasta la corriente de lava solidificada de 1992. Camino muy bonito con vistas al volcán y a la laguna de Arenal. Para volver al aparcamiento, el <strong>Sendero del Cedro</strong> (2,3 km), con un imponente árbol de Ceibo de gran altura. Ambos senderos son relativamente planos.</p>
+      <div class="foto-inline-wrap">
+        <img src="fotos/foto06.jpg" alt="Volcán Arenal y sus coladas de lava" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/foto06.jpg</span></div>
+        <div class="foto-caption">Ruta al Volcán Arenal — El volcán más activo de Centroamérica</div>
+      </div>
+    </div>
+
+    <!-- FOTO 7 -->
+    <div class="place">
+      <div class="place-meta">💧 8:00–17:00 · 10.000 colones · 5 km del pueblo · 70 m de caída · Baño posible</div>
+      <h3>Catarata La Fortuna</h3>
+      <p>Caída espectacular de <strong>70 metros</strong> en medio del bosque tropical. Desde el parking: pasar por la caseta de pago (10.000 colones) y por las tiendas de recuerdos y agua. Antes de la bajada, un mirador ofrece una vista preciosa de media catarata entre la vegetación. Luego bajan casi <strong>quinientos escalones</strong> hasta el pie de la cascada, donde el agua es perfecta para un baño refrescante. Excursión a caballo disponible (3,5h · 45$).</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">💡 Parada opcional — Catarata Llanos de Cortés</div>
+      <p>Al pasar por Bagaces, a unos 4 km a la izquierda por carretera de tierra (2 km). Parking de 1.000-2.000 colones y entrada voluntaria de 1.000 colones. Fácil de bajar hasta la catarata. Vale mucho la pena si hay tiempo.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Liberia · Hotel antes de entrar en la ciudad · Calle Real</div>
+      <h4>Hotel Las Espuelas</h4>
+      <p>129 km / 2h29 desde La Fortuna · Por la 142 hasta Cañas y la 1 hacia Liberia · Hotel justo antes de entrar en Liberia por la Calle Real · Por la tarde ir a Liberia a cenar y comprar bocatas para el día siguiente</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 7 — RINCÓN DE LA VIEJA ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Parque Nacional Rincón de la Vieja</h2>
+        <div class="day-subtitle">Jueves 25 de Agosto · 27,2 km / 57 min · Martes–Domingo 7:00–15:00h · Sector Las Pailas</div>
+      </div>
+    </div>
+
+    <!-- FOTO 8 -->
+    <div class="place">
+      <div class="place-meta">🌋 7:00–15:00 · 10.200 colones · Sendero circular · Poza para baño · Fumarolas</div>
+      <h3>Sector Las Pailas — Volcán activo y fuentes termales</h3>
+      <p>El sendero circular por el sector Las Pailas pasa por las zonas más interesantes del parque: <strong>fumarolas activas</strong> con fuerte olor a azufre, <strong>pozas de barro hirviendo</strong>, <strong>géiseres</strong> y una preciosa <strong>catarata</strong> con poza para bañarse. El camino discurre entre bosque seco y vegetación volcánica.<br><br>
+      Nota: se pasa por una finca privada donde hay que pagar 700 colones por persona para que abran una valla. El olor a azufre es intenso en las zonas volcánicas pero desaparece en la catarata y durante gran parte del camino.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🏖️ Tarde opcional — Playa Panamá</div>
+      <p>A 29 min / 28 km desde Liberia: por la 21 hacia la izquierda en Liberia, en Guardia a la derecha por la 253 y enseguida a la izquierda por la 254 hasta Playa Panamá. Alternativa tranquila para descansar después de la mañana volcánica.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 8 — MONTEVERDE ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Monteverde — El Bosque Nuboso</h2>
+        <div class="day-subtitle">Viernes 26 de Agosto · 114 km / 2h24 · Reserva 20$ · Bosque Eterno · Ranario</div>
+      </div>
+    </div>
+
+    <!-- FOTO 9 -->
+    <div class="place">
+      <div class="place-meta">🌿 20$ · 13 km de senderos · La Ventana · Puente colgante Wilford Guindon</div>
+      <h3>Reserva Biológica del Bosque Nuboso de Monteverde</h3>
+      <p>Uno de los ecosistemas más especiales del planeta: el bosque nuboso, donde la niebla es constante y la vegetación absolutamente densa. La caminata hasta <strong>"La Ventana"</strong>: un mirador donde se puede sentir la fuerza de los vientos alisios cargados de humedad que provienen de la costa atlántica y descienden hacia el Pacífico.<br><br>
+      El puente colgante <strong>"Wilford Guindon"</strong>: bromelias, orquídeas, helechos y musgos habitando las copas de los árboles. El circuito recomendado (máximo 8 km): <em>Quebrada Cuecha → Sendero el Río → Sendero Pantanoso → La Ventana → Sendero Wilford Guindon → Sendero Chomogo → Sendero Roble → Sendero Camino → Sendero Bosque Nuboso</em>.</p>
+     </div>
+
+    <div class="resto">
+      <div class="resto-label">🥗 Comida · 450 m de la entrada del Bosque Eterno</div>
+      <h4>Stella's Bakery</h4>
+      <p>Pedir el <strong>casado</strong> y un bocadillo de ensalada de pollo con agua grande — todo por 6.000 colones. Bajando desde el Bosque Eterno de los Niños, un poco a la izquierda.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐸 Ranario · Horarios: 14:00–19:30 · 300 m oeste de Monteverde Lodge</div>
+      <h3>Ranario de Monteverde y Bosque Eterno de los Niños</h3>
+      <p>El <strong>Bosque Eterno de los Niños</strong> (3.500 colones · 1,4 km del hotel): la reserva privada más grande del país con 20.000 hectáreas de bosque tropical. Bordea el Parque Nacional Volcán Arenal y la parte alta de Monteverde. El <strong>Ranario</strong>: tour guiado mostrando las diversas especies de ranas en sus micro-hábitats naturales, con las pequeñas y coloridas ranas venenosas como protagonistas.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Monteverde · Muy cerca de la entrada del parque</div>
+      <h4>Hotel Mariposa B&amp;B</h4>
+      <p>N 10° 18.060, W 84° 48.332 · Por la 1 → pasado Matapalo coger la 145 a la izquierda → Carretera 606 hacia Reserva Monteverde → continuar por la 620</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — MANUEL ANTONIO ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Selvatura · Manuel Antonio — La playa más bonita de Centroamérica</h2>
+        <div class="day-subtitle">Sábado 27 de Agosto · Puentes colgantes → 201 km / 4h → Playa Espadilla</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌳 7:00–16:00 · Desde 30$ · 3 km · Bosque sobre las copas de los árboles</div>
+      <h3>Selvatura Park — Puentes colgantes de Santa Elena</h3>
+      <p>El recorrido de los <strong>Treetop Walkways</strong> (1,9 millas · ~3 km) atraviesa el Bosque Nuboso de Monteverde a nivel de las copas de los árboles, sobre puentes colgantes con vistas únicas a la flora y fauna del bosque. Situado junto a la reserva Cloud Forest de San Gerardo. Alternativa más emocionante: el <strong>Zip Line Canopy Tour</strong> (50$ · 15 cables · 18 plataformas · Tarzan Swing al final). La mejor empresa de canopy: <strong>Monteverde Extremo</strong>.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🐊 Parada en el Puente del Río Tárcoles</div>
+      <p>Al pasar por el puente del río Tárcoles, parar en el arcén para ver los <strong>cocodrilos</strong> en el río. No dejar el coche solo ya que suelen robar en esa zona.</p>
+    </div>
+
+    <!-- FOTO 10 -->
+    <div class="place">
+      <div class="place-meta">🏖️ Playa Espadilla · Playa Manuel Antonio · "La más bonita de Centroamérica"</div>
+      <h3>Manuel Antonio — Playa y Parque Nacional</h3>
+      <p>El hotel Jungle Beach está a 200 metros antes de la Playa Espadilla. La <strong>Playa Manuel Antonio</strong>, en el margen derecho de Punta Central, tiene fama de ser la playa más bonita de toda Centroamérica. Aguas tranquilas, arena fina y la selva tropical llegando hasta el borde del mar. Dar una vuelta por la playa Espadilla o meterse en la piscina del hotel si el tiempo no acompaña.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Manuel Antonio</div>
+      <h4>Jungle Beach Hotel</h4>
+      <p>Carretera al Parque Nacional Manuel Antonio, 200 m antes de la Playa Espadilla · Mano izquierda</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — BAHÍA DRAKE ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Parque Manuel Antonio · Bahía Drake — La costa salvaje</h2>
+        <div class="day-subtitle">Domingo 28 de Agosto · Parque 7:00–16:00 → Sierpe 125 km → Bote → Bahía Drake</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐒 7:00–16:00 · 10$ · 1,1 km andando desde el hotel · Entrar a las 7h</div>
+      <h3>Parque Nacional Manuel Antonio</h3>
+      <p>Red de senderos que llevan a todas las playas del parque: la famosa <strong>Playa Manuel Antonio</strong> y el mirador sobre la <strong>Playa de Puerto Escondido</strong>, accesible solo según las mareas. Monos capuchinos, perezosos, mapaches y una biodiversidad extraordinaria. <em>Consejo:</em> entrar a las 7h; a las 9h ya está lleno y a las 10h las playas rebosan de veraneantes.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta a Sierpe:</strong> 125 km / 1h49 · Por la 618 → 235 → 34 → pasar por Dominical, Uvita → Palmar Norte → 223 hasta Sierpe<br>
+      <strong>Bote Sierpe → Bahía Drake:</strong> 11:30h (15$) o <strong>15:30h (20$)</strong> · 1h15 de duración · Dejar el coche en Hotel Oleaje Sereno o en el Rest. Las Vegas<br>
+      <strong>Atención:</strong> En Bahía Drake no hay embarcadero; hay que subirse los pantalones y quitarse las zapatillas para llegar a la orilla con el equipaje
+    </div>
+ 
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Bahía Drake</div>
+      <h4>Pacheco Tours &amp; Cabins</h4>
+      <p>Estarán esperando al llegar en bote · Cenar en el restaurante <strong>La Cocina</strong> a la izquierda del hotel si no es posible en el propio hotel</p>
+    </div>
+
+   <!-- FOTO 07 -->
+    <div class="foto-inline-wrap">
+        <img src="fotos/foto07.jpg" alt="Itinerario al Pacheco Tours & Cabins" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/foto07.jpg</span></div>
+        <div class="foto-caption">Itinerario al Pacheco Tours & Cabins</div>
+      </div>
+  </section>
+
+  <!-- ═══ DÍA 11 — CORCOVADO ═══ -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Parque Nacional de Corcovado · Isla del Caño</h2>
+        <div class="day-subtitle">Lunes 29 de Agosto · Aprox. 80$/persona · Reserva biológica marina o selva primaria</div>
+      </div>
+    </div>
+
+    <!-- FOTO 11 -->
+    <div class="place">
+      <div class="place-meta">🦁 ~80$/persona · Selva primaria · Biodiversidad única en el mundo</div>
+      <h3>Parque Nacional de Corcovado</h3>
+      <p>Considerado por National Geographic como <em>"el lugar de mayor biodiversidad del planeta"</em>. La <strong>Península de Osa</strong> alberga el 2,5% de la biodiversidad mundial en solo el 0,001% de la superficie terrestre. Cuatro especies de monos, tapires, jaguares, pumas, delfines, ballenas jorobadas y más de 400 especies de aves viven aquí. Contratar la visita con el hotel (guía obligatorio desde 2013).</p>
+      <div class="foto-inline-wrap">
+        <img src="fotos/foto11.jpg" alt="Parque Nacional de Corcovado - selva primaria" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/foto11.jpg</span></div>
+        <div class="foto-caption">Parque Nacional de Corcovado — Selva primaria en la Península de Osa</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🤿 Reserva marina · 20 km de la costa · Snorkeling 1h · Caminata Mirador 1h</div>
+      <h3>Alternativa: Isla del Caño — Reserva biológica marina</h3>
+      <p>Ubicada a 20 km de la costa de la Península de Osa. Antiguo cementerio precolombino de 300 hectáreas. El tour incluye: barco 45 min (posibles avistamientos de tortugas, ballenas, delfines, aves marinas y peces voladores), snorkeling en "El Jardín" (~1h), caminata al sendero "Mirador" (~1h) y almuerzo en la playa. Segundo snorkeling de vuelta en "Roca de los Jureles" (30-40 min).</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 12 — ALAJUELA ═══ -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Vuelta — Bahía Drake · Uvita · San José · Alajuela</h2>
+        <div class="day-subtitle">Martes 30 de Agosto · Bote 7:15h → Sierpe → Uvita → San José → Alajuela</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Bote Drake → Sierpe:</strong> 7:15h (15$) — coger este para poder visitar Uvita<br>
+      <strong>Ruta vuelta:</strong> Carretera 34 → parar en Playa Uvita (comer) → 27 a la derecha en Cerro Alto → Autopista Próspero Fernández → San José → Carretera 39 → Autopista 1 → Parque La Sabana (dejar el coche)<br>
+      <strong>Alternativa más larga:</strong> Por el Cerro Chirripó (254 km / 4h48, carretera mala y montañosa)
+    </div>
+
+    <!-- FOTO 12 -->
+    <div class="place">
+      <div class="place-meta">🐳 Parque Nacional Marino Ballena · Cola de ballena · Playa virgen</div>
+      <h3>Playa Uvita — El Parque Nacional Marino Ballena</h3>
+      <p>Una parada imprescindible en el camino de vuelta. La <strong>Punta Uvita</strong> forma con la marea baja la silueta perfecta de una cola de ballena de arena, dando nombre al Parque Nacional Marino Ballena. Aguas cristalinas, snorkeling posible y avistamiento de ballenas jorobadas (julio a noviembre). Una de las costas más vírgenes del Pacífico costarricense.</p>
+      
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍗 Cena · San José · Cerca de la Calle 48</div>
+      <h4>Rostipollos / Tierra Gaucha</h4>
+      <p><strong>Rostipollos:</strong> 200 m recto antes de llegar a la calle 48. Si está cerrado, <strong>Tierra Gaucha</strong> en la misma calle 48 subiendo.</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Alajuela · Cerca del aeropuerto · Taxi desde San José</div>
+      <h4>Airport Costa Rica B&amp;B</h4>
+      <p>N 10° 0.321, W 84° 11.258 · Calle 2, Rio de Alajuela · Subiendo por la calle La Empacadora, segunda esquina a la derecha · 16 km / 16 min del aeropuerto por la 1 · El hotel lleva al aeropuerto (2,8 km / 6 min) — Salir a las 4:45h</p>
+    </div>
+    
+  </section>
+
+</main>
+
+<!-- VÍDEO -->
+<div class="video-section">
+  
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/8u381xHd4Bw" title="Fotos del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DEL VIAJE</div>
+      <div class="video-wrap"><iframe src="https://www.youtube.com/embed/VW93X12IiNU" title="Video del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+    </div>
+  </div>
+   
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Costa Rica 2016</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg','fotos/26.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Costa Rica ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

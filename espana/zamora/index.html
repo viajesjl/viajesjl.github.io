@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zamora 2018 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* ── NAV FIJA ── */
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.70) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.80) 100%),
+        url('https://images.unsplash.com/photo-1670239218352-00df0f1d244f?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    /* ── NAV SECCIONES ── */
+    .days-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.1rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* ── CONTENIDO ── */
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* ── RUTA A PIE ── */
+    .ruta-paso {
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      background: white; border-left: 4px solid var(--accent-pale);
+      padding: 1rem 1.5rem; margin-bottom: 0.6rem; transition: border-color 0.2s;
+    }
+    .ruta-paso:hover { border-left-color: var(--accent); }
+    .paso-num {
+      background: var(--accent); color: white;
+      font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700;
+      min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 0.15rem;
+    }
+    .paso-body .paso-dist {
+      font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.2rem;
+    }
+    .paso-body h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.35rem; }
+    .paso-body p { font-size: 0.96rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    /* ── RESTAURANTES ── */
+    .resto { background: white; border-left: 4px solid #e8a838; padding: 1.1rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .resto:hover { border-left-color: #c47d10; }
+    .resto-meta { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: #c47d10; font-weight: 700; margin-bottom: 0.3rem; }
+    .resto h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+    .resto p { font-size: 0.95rem; font-weight: 500; line-height: 1.75; color: var(--muted); }
+
+    /* ── VÍDEOS ── */
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    /* ── GALERÍA ── */
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-espana">🇪🇸 España</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Zamora 2018</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇪🇸 España · Castilla y León</div>
+  <h1 class="hero-title">Zamora</h1>
+  <div class="hero-date">31 Agosto 2018 · 1 día</div>
+  <div class="hero-pills">
+    <span class="pill">Románico</span>
+    <span class="pill">Catedral</span>
+    <span class="pill">Río Duero</span>
+    <span class="pill">Calle Balborraz</span>
+    <span class="pill">Castillo</span>
+    <span class="pill">Seña Bermeja</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por secciones">
+  <a href="#ruta">Ruta a pie</a>
+  <a href="#catedral">Catedral y Castillo</a>
+  <a href="#comer">Dónde comer</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ SECCIÓN INTRO ═══ -->
+  <section class="day-section" id="ruta">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Zamora — La ciudad del Románico</h2>
+        <div class="day-subtitle">Viernes 31 de Agosto 2018 · Ruta a pie por el centro histórico</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desde el pueblo:</strong> 132 km · 1h 27 min<br>
+      <strong>Aparcamiento:</strong> Parking del Parque de la Marina (recomendado) · o Plaza de la Constitución si llueve<br>
+      <strong>Regreso:</strong> Aeropuerto de Valladolid · 106 km · 1h · Vuelo a Barcelona a las 19:50h (salir sobre las 18:30h)
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🏳️ La Seña Bermeja</div>
+      <p>La bandera de Zamora, la <strong>"Seña Bermeja"</strong>, está compuesta de 8 tiras de tela roja y una verde. Las rojas se deben a <strong>Viriato</strong>, el gran guerrero lusitano: se dice que en cada victoria frente a los romanos desgarraba su capa roja cogiendo una tira y colocándola en su lanza. La tira verde fue añadida por <strong>Fernando el Católico</strong> para rendir homenaje a Zamora en la batalla de Toro. Zamora alberga la mayor concentración de iglesias románicas mejor conservadas de toda Europa, por eso se la conoce como <em>"la ciudad del Románico"</em>.</p>
+    </div>
+
+    <div class="section-title">🚶 Ruta a pie desde el aparcamiento</div>
+
+    <!-- PASO 1 -->
+    <div class="ruta-paso">
+      <div class="paso-num">1</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Inicio · 600 m desde el parking</div>
+        <h3>Mercado de Abastos</h3>
+        <p>Bajando por la calle peatonal de Santa Clara. <strong>Horario: 8h a 14h.</strong> Ocupa la plaza donde antes estaba la Iglesia del Salvador, por eso se llamó inicialmente <em>Mercado del Salvador</em>. Construido en <strong>1902</strong> y diseñado por el arquitecto Segundo Viloria. Edificio modernista de dos niveles: el superior para la comercialización de alimentos y el inferior para almacenes. Construido en ladrillo, con arcos cubiertos por vidrieras a los laterales que permiten una gran iluminación interior.</p>
+      </div>
+    </div>
+
+    <!-- PASO 2 -->
+    <div class="ruta-paso">
+      <div class="paso-num">2</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Pavos · a la derecha de la Plaza de la Constitución</div>
+        <h3>Iglesia de Santiago del Burgo</h3>
+        <p>Recientemente rehabilitada. Bastante pequeña y de acceso <strong>gratuito</strong>. Una joya del románico zamorano en pleno corazón del centro histórico.</p>
+      </div>
+    </div>
+
+    <!-- PASO 3 -->
+    <div class="ruta-paso">
+      <div class="paso-num">3</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Plaza Sagasta · girando a la derecha</div>
+        <h3>Palacio de los Momos</h3>
+        <p>Edificio del siglo XV que hoy alberga los juzgados de la ciudad. Tiene una bonita <strong>puerta ornamentada con escudos y detalles florales</strong>. Llama especialmente la atención la fuente que hay enfrente del palacio. Antes de llegar a la Plaza Mayor, en la Plaza Sagasta, merece la pena ponerse de espaldas al Stradivarius para disfrutar del edificio de enfrente: tiene unos <strong>balcones con cariátides</strong> muy llamativos.</p>
+      </div>
+    </div>
+
+    <!-- PASO 4 -->
+    <div class="ruta-paso">
+      <div class="paso-num">4</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Centro de la ciudad</div>
+        <h3>Plaza Mayor e Iglesia de San Juan de Puerta Nueva</h3>
+        <p>En la plaza: a la derecha el Ayuntamiento, a la izquierda la policía. En el centro, la <strong>Iglesia de San Juan de Puerta Nueva</strong> (siglos XII-XIII) con la <strong>Estatua del Merlú</strong> a su vera. Un <em>Merlú</em> en Zamora es el par de congregantes de la Cofradía de Jesús Nazareno encargados de congregar a los nazarenos: uno toca la trompeta y otro el tambor.<br><br>
+        Fíjate en el suelo enlosado: hay un <strong>trazado paralelo a la iglesia</strong> con losas colocadas en diferente orientación que marcan donde estuvo el primer recinto amurallado de la ciudad, incluida una semicircunferencia que señala uno de sus cubos defensivos. En 1484 comenzó la edificación del Ayuntamiento Viejo; en 1879 un gran incendio destruyó la plaza y se construyó el actual. La plaza es de planta cuasi-rectangular en la que desembocan <strong>nueve calles</strong>.</p>
+      </div>
+    </div>
+
+    <!-- PASO 5 -->
+    <div class="ruta-paso">
+      <div class="paso-num">5</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 A la izquierda de la Plaza Mayor</div>
+        <h3>Calle Balborraz (o Calle de los Herreros)</h3>
+        <p>Una de las calles más típicas y características de Zamora, justo al lado del edificio de la policía. Es una <strong>cuesta bastante empinada</strong> con edificios muy coloridos, tiendas artesanales y bares. Desde el siglo X fue una calle de artesanos: herreros, laneros, carpinteros y un largo etcétera de oficios acabados en <em>-eros</em>.</p>
+      </div>
+    </div>
+
+    <!-- PASO 6 (opcional) -->
+    <div class="ruta-paso">
+      <div class="paso-num">+</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Opción al norte · Calle de la Reina / Calle Corral Pintado · 280 m desde la Plaza Mayor</div>
+        <h3>Museo de la Semana Santa <span style="font-family:'Barlow',sans-serif;font-size:0.85rem;font-weight:500;color:var(--muted);">(opcional)</span></h3>
+        <p>Horario: 10h a 14h · Entrada: <strong>4 €</strong>. Un recorrido por la impresionante tradición procesional de Zamora, una de las más importantes de España.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ SECCIÓN CATEDRAL Y CASTILLO ═══ -->
+  <section class="day-section" id="catedral">
+    <div class="day-header">
+      <div class="day-number" style="font-size:1rem;letter-spacing:-1px;">CAT</div>
+      <div class="day-info">
+        <h2>Catedral, Mirador del Troncoso y Castillo</h2>
+        <div class="day-subtitle">990 m desde la Plaza Mayor · por la calle Ramos Carrión</div>
+      </div>
+    </div>
+
+    <!-- PASO 7 -->
+    <div class="ruta-paso">
+      <div class="paso-num">6</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Desviación antes de llegar a la Catedral · 720 m desde el Museo de la Semana Santa</div>
+        <h3>Puerta de Olivares y Mirador del Troncoso</h3>
+        <p>Antiguamente se usaba para entrar directamente del viejo puente a la catedral. Hoy da paso al <strong>Mirador del Troncoso</strong>, desde donde se contempla el <strong>río Duero desfilando bajo los 16 arcos del Puente de Piedra</strong>. El puente es transitable y desde el otro lado se ven las murallas que guardan la ciudad vieja. Se dice que Zamora fue defendida por <strong>tres murallas</strong>, de ahí su nombre: <em>Zamora significa "la bien cercada"</em>.</p>
+      </div>
+    </div>
+
+    <!-- PASO 8 -->
+    <div class="ruta-paso">
+      <div class="paso-num">7</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Junto a la Catedral · Entrada gratuita · Mar–Dom 10h–14h</div>
+        <h3>Castillo de Zamora (siglo XIII)</h3>
+        <p>Situado en la parte más alta de la ciudad, ofrece <strong>bonitas vistas del Duero</strong> y de los barrios situados debajo. Del castillo solo queda su perímetro, algunos muros, el patio de armas y la <strong>torre del homenaje</strong>. Los jardines que lo rodean están muy cuidados. <strong>Entrada gratuita.</strong></p>
+      </div>
+    </div>
+
+    <!-- PASO 9 - CATEDRAL -->
+    <div class="place">
+      <div class="place-meta">⛪ Románico · Siglo XII · 5 € · 10h–14h</div>
+      <h3>Catedral de Zamora — El Salvador</h3>
+      <p>Dedicada al Salvador, es la <strong>más pequeña y más antigua</strong> de las once catedrales de la Comunidad de Castilla y León. Construida en tan solo <strong>23 años (1151-1174)</strong> bajo el patrocinio de Alfonso VII de León y su hermana, la infanta-reina Sancha Raimúndez.<br><br>
+      El elemento más llamativo y verdadero símbolo de la ciudad es su <strong>cimborrio</strong>: un tambor de 16 ventanas sobre el que se levanta una cúpula de gallones revestidos con escamas de piedra, soportada con pechinas de clara influencia bizantina. Los tres ábsides originales fueron sustituidos por una cabecera gótica en el siglo XVI.<br><br>
+      La <strong>Portada del Obispo</strong> es la única de las tres originales que se mantiene completa y la pieza más valiosa de todo lo románico de la Catedral. Se divide en tres calles divididas en dos pisos: los inferiores contienen arquillos con lo mejor de la escultura románica zamorana —uno con <em>San Juan y San Pablo</em> y otro con una <em>Virgen Theotokos</em>— y en el piso superior una arquería ciega.</p>
+    </div>
+
+  </section>
+
+  <!-- ═══ SECCIÓN RESTAURANTES ═══ -->
+  <section class="day-section" id="comer">
+    <div class="day-header">
+      <div class="day-number" style="font-size:1.1rem;">🍽️</div>
+      <div class="day-info">
+        <h2>Dónde comer</h2>
+        <div class="day-subtitle">Sobre las 14:45h · Taxi desde la Catedral (2,6 km) o 1,9 km andando · Calle Cervantes, 7</div>
+      </div>
+    </div>
+
+    <div class="resto">
+      <div class="resto-meta">🍺 Tapas · Calle Cervantes, 7</div>
+      <h3>El Portillo de la Traición</h3>
+      <p>Tapas en la calle Cervantes, 7. Una de las dos opciones recomendadas para la pausa de mediodía tras la ruta por el centro histórico.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-meta">🍽️ Menú 12 € · Calle Cervantes, 7 · Reserva: 980 515 642 / 618 909 241</div>
+      <h3>La Flaca</h3>
+      <p>Menú del día a <strong>12 €</strong> (cambia cada martes). Reservar días antes para las <strong>15:00h</strong>. Misma calle que el Portillo, número 7.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- VÍDEO -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeo del viaje</div>
+
+  <!-- UN SOLO VÍDEO: descomenta y pon el ID de YouTube -->
+  <!--
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/TU_ID_AQUI" title="Zamora 2018" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  -->
+
+  <!-- DOS VÍDEOS: descomenta y pon los IDs -->
+  
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">📹 Vídeo 1 — Título</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/5jbsnP4NsfY" title="Video de fotos del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">📹 Vídeo 2 — Título</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/j-57oayfLSY" title="Vídeo del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Zamora 2018</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ── FOTOS ──────────────────────────────────────────────────────────────
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+     'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Zamora ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  // ── NAV ACTIVO ────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

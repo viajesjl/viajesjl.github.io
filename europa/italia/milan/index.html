@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Milán · Lago di Como 2022 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+      --white: #f0f8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(21,101,192,0.40) 60%, rgba(10,31,61,0.82) 100%),
+        url('https://images.unsplash.com/photo-1610016302534-6f67f1c968d8?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1.05; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.45rem 0.9rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* location badge */
+    .location-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent); color: white; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; padding: 0.3rem 0.9rem; margin-bottom: 1.2rem; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../../viajes.html#sec-italia">🇮🇹 Italia</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Milán</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">✈ Italia · Lombardía · Lago di Como</p>
+  <h1 class="hero-title">Milán &<br>Lago di Como</h1>
+  <p class="hero-date">7 — 12 Mayo 2022 · 6 días</p>
+  <div class="hero-pills">
+    <span class="pill">Duomo di Milano</span>
+    <span class="pill">Lago di Como</span>
+    <span class="pill">Bellagio · Varenna</span>
+    <span class="pill">Villa Balbianello</span>
+    <span class="pill">Marqués de Riscal</span>
+    <span class="pill">Última Cena</span>
+    <span class="pill">Pet Shop Boys</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1</a>
+  <a href="#dia2">Día 2</a>
+  <a href="#dia3">Día 3</a>
+  <a href="#dia4">Día 4</a>
+  <a href="#dia5">Día 5</a>
+  <a href="#dia6">Día 6</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada · Como · Brunate · Lezzeno</h2>
+        <div class="day-subtitle">Sábado 7 de Mayo · Lago di Como</div>
+      </div>
+    </div>
+
+    <div class="section-title">✈ Vuelo y llegada</div>
+    <div class="transport">
+      <strong>Salida:</strong> 08:00h al aeropuerto · Vueling VY6332 · T1 Barcelona 10:30h · Llegada Milán Malpensa 12:15h · Puerta A8 o B31<br>
+      <strong>Coche:</strong> Centauro Rent a Car · Reserva 220419-619687 · Tipo B<br>
+      Salir al hall de llegadas → salida 6/Uscita 6 → minibús de cortesía cada 10-15 min
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento · 3 noches · Lago di Como</div>
+        <h3>B&B Val Valerna · Lezzeno</h3>
+        <p>Lezzeno, Lago di Como · 23 km · 36 min desde Como</p>
+      </div>
+    </div>
+
+    <div class="location-badge">🏛️ Como</div>
+
+    <div class="transport">
+      <strong>Desde Malpensa a Como:</strong> 48 km · 36 min<br>
+      <strong>Aparcar:</strong> Parking Como 1 (si no hay sitio, Como 2)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Catedral · Gótico · 1396-1770 · Sábado hasta 16:30h</div>
+      <h3>Catedral de Como — Santa Maria Assunta</h3>
+      <p>Construida a partir de 1396 bajo la supervisión de Lorenzo degli Spazzi di Laino. La cúpula no fue terminada hasta 1770 por el arquitecto Filippo Juvara: casi cuatro siglos de construcción. Estilo gótico con mezcla de influencias. Alberga una pintura muy importante de <strong>San José</strong> por Giambattista Pittoni.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer</div>
+      <h3>Restaurante La Vita è Bella · Como</h3>
+      <p>640 m andando desde el aparcamiento 1.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚡 Funicular · Vistas al lago</div>
+      <h3>Funicular a Brunate</h3>
+      <p>Subir en funicular desde Como hasta Brunate para disfrutar de las vistas panorámicas del Lago di Como.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena</div>
+      <h3>Restaurante Crotto · Lezzeno</h3>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Bellagio · Varenna · Menaggio en Ferry</h2>
+        <div class="day-subtitle">Domingo 8 de Mayo · Lago di Como</div>
+      </div>
+    </div>
+
+    <div class="location-badge">⛴️ Lago di Como · Zona 3</div>
+
+    <div class="transport">
+      <strong>Dejar el coche en Bellagio</strong> (parking) y caminar 570 m hasta el ferry.<br>
+      <strong>Ticket de libre circulación:</strong> ~15€/persona · Zona 3 (Bellagio, Lenno, Menaggio, Tremezzo, Varenna)<br>
+      Horarios: 8:00-17:00h · Compra en taquillas al aire libre
+    </div>
+
+    <div class="section-title">⛴️ Bellagio → Varenna (15 min · 4,60€)</div>
+    <div class="transport">
+      <strong>Horarios:</strong> 9:20 · 10:00 · 10:50 · 11:20
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏘️ Pueblo · Casas de colores · A orillas del lago</div>
+      <h3>Varenna</h3>
+      <p>Muchas casas pequeñas de colores muy llamativos situadas a lo largo del lago. Desde cualquier punto del pueblo se distingue el campanario de la <strong>Iglesia de San Giorgio</strong>.</p>
+    </div>
+
+    <div class="section-title">⛴️ Varenna → Menaggio (15 min · 4,60€)</div>
+    <div class="transport">
+      <strong>Horarios:</strong> 11:10 · 11:40 · 12:20 · 13:35
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia · Una de las más antiguas de Menaggio · 450 m</div>
+      <h3>Iglesia Parroquial San Esteban · Menaggio</h3>
+      <p>Estructura original visible en su interior pese a las restauraciones. La pintura interior fue realizada en 1899 por Tagliaferri. En el altar, la representación del martirio de San Esteban en varios cuadros de grandes pintores de la época.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia · 1885 · Al lado de San Esteban</div>
+      <h3>Chiesa di Santa Marta</h3>
+      <p>Pequeña iglesia con una sola nave y varias capillas laterales. En la entrada se muestran trozos de escritos romanos que sirven para ubicarla históricamente.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia en ladrillo · 1614 · En lo alto de la colina · 530 m · 49 m desnivel</div>
+      <h3>Antiga Iglesia Chiesa di San Carlo</h3>
+      <p>Para los amantes de las estructuras antiguas: majestuosa obra en ladrillo del año 1614. Acceso poco conocido por los turistas por su ubicación en lo alto de la colina. Se accede por una plaza poco visitada y varios escalones. Tiene campanario y una fachada inacabada, que por alguna razón nunca se culminó. Junto a ella, los restos del <strong>Castello di Menaggio</strong>, destruido en 1521.</p>
+    </div>
+
+    <div class="narrative">
+      Llegar a la <strong>Piazza Garibaldi</strong>, centro de Menaggio.
+    </div>
+
+    <div class="section-title">⛴️ Menaggio → Bellagio (35 min · 4,60€)</div>
+    <div class="transport">
+      <strong>Horarios:</strong> 14:50 · 15:20 · 16:15 · 16:45
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Magreglio · Lago Pusiano · Como · Cernobbio</h2>
+        <div class="day-subtitle">Lunes 9 de Mayo · Lago di Como</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚴 Santuario · Patrona de los ciclistas</div>
+      <h3>Santuario della Madonna del Ghisallo · Magreglio</h3>
+      <p>Santuario dedicado a la patrona de los ciclistas, uno de los lugares más especiales para los amantes del ciclismo en todo el mundo. Situado en lo alto de un puerto de montaña con vistas espectaculares al lago.</p>
+    </div>
+
+    <div class="narrative">
+      Continuar a <strong>Erba</strong> para ver el <strong>Lago Pusiano</strong>. Volver a Como para visitar de nuevo la ciudad y el <strong>Templo Voltiano</strong> (museo dedicado a Alessandro Volta, inventor de la batería eléctrica).
+    </div>
+
+    <div class="narrative">
+      Tarde: coger el ferry desde <strong>Torno</strong> a <strong>Cernobbio</strong>, dar una vuelta por el pueblo y regresar en ferry a Torno.
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena</div>
+      <h3>Restaurante Vapore · Torno</h3>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 4 ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Villa Balbianello · Eataly · Milán · Pet Shop Boys</h2>
+        <div class="day-subtitle">Martes 10 de Mayo · Lenno → Milán</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento · Milán</div>
+        <h3>Hotel CasaTitta · Milán</h3>
+      </div>
+    </div>
+
+    <div class="section-title">🌿 Mañana · Villa Balbianello</div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Villa · Mar-Dom 10:00-18:00h · Solo parque 11€ · Villa 22€ · Lenno</div>
+      <h3>Villa del Balbianello</h3>
+      <p>La villa más famosa del Lago di Como. Dejar el coche en el parque y caminar 1,1 km (21 min) en alto. Horarios de visita: 10:15 / 11:00 / 12:00h.<br><br>
+      Construida en 1787 por el cardenal Angelo Maria Durini sobre un monasterio franciscano anterior. En el S.XX fue comprada por el explorador Guido Monzino, que la llenó de objetos de sus expediciones. Monzino la dejó al Fondo per l'Ambiente Italiano al morir en 1988.<br><br>
+      🎬 <strong>Escenarios de cine:</strong> <em>Star Wars Episodio II: El Ataque de los Clones</em> (residencia de Padmé Amidala en Naboo) · <em>Casino Royale</em> (lugar de convalecencia de James Bond) · <em>Piccolo mondo antico</em> · <em>A Month by the Lake</em></p>
+    </div>
+
+    <div class="transport">
+      <strong>Desde Lenno a Milán:</strong> 75,7 km · 1h 01 min<br>
+      <strong>Ferry intermedio:</strong> Griante → Bellagio (si se desea)
+    </div>
+
+    <div class="section-title">🍽️ Mediodía · Eataly Milán</div>
+
+    <div class="place">
+      <div class="place-meta">🍽️ Gastronomía italiana</div>
+      <h3>Eataly Milán</h3>
+      <p>Centro comercial con todos los productos culinarios típicos de Italia y restaurantes en la planta superior. La mejor introducción gastronómica a la ciudad.</p>
+    </div>
+
+    <div class="section-title">🎶 Noche · Pet Shop Boys</div>
+
+    <div class="place">
+      <div class="place-meta">🎶 Concierto</div>
+      <h3>Pet Shop Boys · Teatro degli Arcimboldi</h3>
+      <p>En coche: 3,8 km · 12 min. En metro: línea 5 (4 paradas), bajarse en Bicocca.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 5 ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Duomo · Castello Sforzesco · Última Cena · Navigli</h2>
+        <div class="day-subtitle">Miércoles 11 de Mayo · Milán</div>
+      </div>
+    </div>
+
+    <div class="location-badge">🏙️ Milán</div>
+
+    <div class="section-title">🏛️ Mañana · Centro histórico</div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Catedral · 9:00-19:00h · Escaleras 8€ · Ascensor 13€ · La Madonina</div>
+      <h3>Duomo di Milano</h3>
+      <p>Uno de los edificios de referencia de Milán. Gótico colosal iniciado en 1386 y no terminado hasta 1965: casi seis siglos de obras. Bajo el Duomo, los restos de la catedral de Santa Tecla y un baptisterio del S.IV.<br><br>
+      La estatua más conocida en el interior es la de <strong>San Bartolomé</strong>, donde la túnica es su propia piel. En lo alto, la <strong>Madonina</strong>, estatua de cobre dorado, símbolo de la ciudad. Subir para disfrutar de las vistas sobre Milán.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Galería · 1861-1863 · Centro comercial histórico</div>
+      <h3>Galería Vittorio Emanuele II</h3>
+      <p>Imponentes cristaleras junto al Duomo. Dos pasillos perpendiculares coronados por una bóveda acristalada con las tiendas más prestigiosas de Milán y restaurantes. En el suelo, el famoso <strong>mosaico del toro de Milán</strong>: hay que pisar los genitales del toro y dar 3 vueltas para volver a Milán.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Palacio Real · 460 m del Duomo</div>
+      <h3>Palacio Real · Iglesia de San Bernardino alle Ossa</h3>
+      <p>El Palacio Real está al lado del Duomo con la sala de cariátides. A 460 m, la <strong>Iglesia de San Bernardino alle Ossa</strong>, famosa por su interior recubierto de huesos y calaveras.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plazas históricas · Desde el Duomo</div>
+      <h3>Piazza Mercanti · Piazza Affari · Torre Velasca</h3>
+      <p>La Piazza Mercanti a la izquierda del Duomo. A 460 m, la Piazza Affari. Cerca, la <strong>Torre Velasca</strong>, construida en 1960 y con 106 m de altura, uno de los iconos del brutalismo italiano.</p>
+    </div>
+
+    <div class="section-title">🏰 Mediodía · Castello Sforzesco</div>
+
+    <div class="transport">
+      <strong>Desde el Duomo:</strong> Tranvía 2 o 4 (400 m en Via Farini / Vle Stelvio) → 8 paradas → bajar en Lanza → 160 m · 20 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Castillo · 1368 · Entrada gratuita 7:00-19:30h · Museos: Mar-Dom 10:00-17:30h · 5€</div>
+      <h3>Castello Sforzesco</h3>
+      <p>Gran fortaleza que de pronto parece fuera de lugar en la moderna ciudad. Comenzó a construirse en 1368 y se convirtió en palacio ducal. Estuvo a punto de destruirse dos veces: a manos de Napoleón a principios del S.XIX, y a mediados del S.XX cuando muchos milaneses querían echarlo abajo para construir un barrio residencial.<br><br>
+      Alberga multitud de museos: Arte Antiguo, Arte Egipcio (con momias del 650 a.C.), Artes Decorativas, Museo del Mueble. Y la joya: la <strong>Pietà Rondanini de Miguel Ángel</strong>, última obra incompleta del maestro (1475-1564). Una meditación sobre la muerte y la salvación del alma, donde abandona la perfección del cuerpo humano y transforma al Cristo muerto en un emblema del sufrimiento.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌳 Parque · 386.000 m² · Arco de la Paz · Jardines ingleses · 1890</div>
+      <h3>Parque Sempione</h3>
+      <p>Justo al lado del Castello Sforzesco. Espacio verde de más de 386.000 m² en pleno casco antiguo de Milán. Inspirado en jardines ingleses, creado en 1890. Pequeño lago y el <strong>Arco de la Paz</strong>, empezado en el S.XIX para conmemorar las victorias de Napoleón y terminado en 1826 para conmemorar la paz de 1815.</p>
+    </div>
+
+    <div class="section-title">🎨 Tarde · Santa Maria delle Grazie · Navigli</div>
+
+    <div class="place">
+      <div class="place-meta">🎨 La Última Cena · Entradas 17:45h · Llegar 30 min antes · 1,2 km del Parco Sempione</div>
+      <h3>Santa Maria delle Grazie — La Última Cena de Leonardo</h3>
+      <p>En el refectorio del convento adyacente a la iglesia. La <em>Última Cena</em> de Leonardo da Vinci es una de las obras de arte más célebres del mundo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🍷 Barrio alternativo · Canales · Aperitivo · Arte</div>
+      <h3>Navigli</h3>
+      <p>Dos canales artificiales que en su día fueron vías de transporte (uno diseñado por Leonardo da Vinci). Hoy son la zona alternativa de Milán: bares de copas, restaurantes, el típico aperitivo italiano, murales, galerías de arte y artistas callejeros.<br><br>
+      <strong>Desde Santa Maria delle Grazie:</strong> Metro 2 en Cadorna (590 m) → bajar en P.ta Genova FS (3 paradas) → caminar 600 m hasta el restaurante.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena en Navigli</div>
+      <h3>Restaurante Al Coniglio Bianco · Navigli</h3>
+      <p>Volver al hotel en taxi.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 6 ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Pinacoteca di Brera · La Scala · Quadrilatero · Regreso</h2>
+        <div class="day-subtitle">Jueves 12 de Mayo · Milán → Barcelona</div>
+      </div>
+    </div>
+
+    <div class="section-title">🎨 Mañana · Pinacoteca di Brera</div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Museo · Entradas 10:00-10:15h · 8:30-19:15h · 15€ · La mejor colección de arte de Italia</div>
+      <h3>Pinacoteca di Brera</h3>
+      <p>Seguramente el museo más destacable de Milán: la mejor colección de arte de toda Italia. Obras del románico, el Renacimiento y la Edad Media: Rafael, Rembrandt, Caravaggio, Tiziano, Van Dyck, El Greco, Rubens.<br><br>
+      Ubicada en un antiguo palacio jesuita de los siglos XVI-XVII, que funcionó como escuela con biblioteca y observatorio astronómico muy avanzado para su tiempo. Las obras están ordenadas cronológicamente, lo que permite observar las transformaciones del arte a lo largo de los siglos. El patio interior es de una belleza imperdible.<br><br>
+      <strong>Metro:</strong> Maciachini → Montenapoleone (6 paradas) → caminar 600 m · 20 min</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎭 Ópera · Desde 1778 · 610 m de la Pinacoteca</div>
+      <h3>Teatro La Scala · Estatua de Leonardo da Vinci</h3>
+      <p>Uno de los teatros de ópera más conocidos y famosos del mundo. Lleva abierto desde 1778 y ha sido reconstruido un par de veces. Al lado, la <strong>Estatua de Leonardo da Vinci</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛍️ Lujo · 810 m del teatro</div>
+      <h3>Arco de Puerta Nueva · Vía della Spiga</h3>
+      <p>El Arco de Puerta Nueva marca el inicio de la <strong>Vía della Spiga</strong>, la calle de las tiendas de lujo de Milán. El <strong>Giardino Indro Montanelli</strong>, al lado de la puerta, es un agradable jardín al norte.</p>
+    </div>
+
+    <div class="section-title">✈ Regreso a Barcelona</div>
+
+    <div class="transport">
+      <strong>Desde el Duomo al aeropuerto:</strong> Metro → buscar el coche → 50 km · 1h · Salida ~18:30h<br>
+      <strong>Devolver el coche:</strong> 20:00h<br>
+      <strong>Vuelo VY6337:</strong> Salida 21:25h T1 · Puerta A · Llegada Barcelona T1 23:05h
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/ot_cTE9Qf9E" title="Milán 2022 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/SRTrC64_zdo" title="Milán 2022 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Milán · Lago di Como 2022</p>
+  <p style="margin-top:0.5rem;"><a href="../../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/10228867491142548.jpg','fotos/10228867491222550.jpg','fotos/10228867491622560.jpg',
+    'fotos/10228867492262576.jpg','fotos/10228867492502582.jpg','fotos/10228867492542583.jpg',
+    'fotos/10228867492782589.jpg','fotos/10228867492942593.jpg','fotos/10228867493662611.jpg',
+    'fotos/10228867494062621.jpg','fotos/10228867494142623.jpg','fotos/10228867494662636.jpg',
+    'fotos/10228867495102647.jpg','fotos/10228867495262651.jpg','fotos/10228867495822665.jpg',
+    'fotos/10228867496222675.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.onclick = () => openLightbox(i);
+    const img = document.createElement('img');
+    img.src = src; img.alt = `Foto Milán ${i+1}`; img.loading = 'lazy';
+    item.appendChild(img);
+    gallery.appendChild(item);
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

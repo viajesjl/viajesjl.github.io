@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Londres 1999 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.85; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.85; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .quote { border-left: 3px solid var(--accent-light); padding: 0.6rem 1.2rem; margin: 0.8rem 0 0; font-style: italic; font-size: 0.92rem; color: var(--accent); line-height: 1.7; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Londres 1999</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇬🇧 Reino Unido</div>
+  <h1 class="hero-title">Londres</h1>
+  <div class="hero-date">30 Marzo – 2 Abril 1999 · 4 días</div>
+  <div class="hero-pills">
+    <span class="pill">Big Ben</span>
+    <span class="pill">St. Paul's</span>
+    <span class="pill">Westminster</span>
+    <span class="pill">Churchill War Rooms</span>
+    <span class="pill">Buckingham</span>
+    <span class="pill">Tower Bridge</span>
+    <span class="pill">Torre de Londres</span>
+    <span class="pill">Windsor</span>
+    <span class="pill">Oxford</span>
+    <span class="pill">British Museum</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Westminster · St Paul's · Churchill War Rooms</a>
+  <a href="#dia2">Día 2 · City · Buckingham · Trafalgar · Tower Bridge · Windsor</a>
+  <a href="#dia3">Día 3 · Oxford</a>
+  <a href="#dia4">Día 4 · Madame Tussauds · British Museum</a>
+</div>
+
+<main class="content">
+
+  <div class="leyenda">
+    <div class="leyenda-item"><div class="leyenda-dot place"></div> Lugar de interés</div>
+  </div>
+
+  <!-- ═══ DÍA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Westminster · Catedral de San Pablo · Abadía · Churchill War Rooms</h2>
+        <div class="day-subtitle">Martes 30 de Marzo · Westminster, Londres</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕰️ Westminster · Elizabeth Tower · Inaugurada 1859</div>
+      <h3>Big Ben — Elizabeth Tower</h3>
+      <p>De frente con la silueta más icónica del horizonte londinense. <strong>No se llama Big Ben:</strong> su nombre oficial era Clock Tower (hoy Elizabeth Tower). El verdadero Big Ben es la campana de más de <strong>13 toneladas</strong> escondida detrás de las esferas del reloj, que suena en la nota Mi — el latido oficial de la nación. El nombre honra a Sir Benjamin Hall, el gigantesco comisario de obras públicas que supervisó su instalación en 1859. Cada una de las cuatro esferas mide <strong>7 metros de diámetro</strong>, hechas con un marco de hierro que sostiene 312 piezas de cristal de ópalo como un vitral de iglesia.</p>
+      <div class="quote">La torre está levemente inclinada hacia el noroeste unos 23 centímetros, por los cambios en el suelo arenoso y las excavaciones de las líneas del metro a lo largo del siglo XX.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Ludgate Hill · Christopher Wren · Gran Incendio de Londres 1666</div>
+      <h3>Catedral de San Pablo</h3>
+      <p>La estatua de mármol blanco de la Reina Ana sostiene el cetro y el orbe real ante la majestuosa arquitectura de <strong>Christopher Wren</strong>: dos niveles de columnas corintias gemelas y un gran frontón triangular con un relieve de la conversión de San Pablo. Justo arriba: un ave fénix tallada con la inscripción latina <em>"Resurgam"</em> (Resucitaré). Wren la puso a propósito — la antigua catedral medieval quedó completamente destruida por el Gran Incendio de 1666, y para construir la nueva, la primera piedra que encontró entre los escombros quemados era un fragmento de lápida con esa misma palabra grabada.</p>
+      <div class="quote">La famosa Galería de los Susurros (Whispering Gallery): si te pones pegado a la pared circular y susurras hacia la piedra, alguien exactamente en el lado opuesto de la cúpula, a más de 30 metros de distancia, te escucha perfectamente.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Transepto Norte · Gótico · Más de 3.300 personas enterradas</div>
+      <h3>Abadía de Westminster</h3>
+      <p>Uno de los puntos más sagrados de Gran Bretaña. El espectacular rosetón norte fue diseñado en el siglo XIII (reconstrucción del XVIII): los cristales de colores representan a los doce apóstoles rodeando a Cristo junto a un coro de ángeles tocando instrumentos medievales. En el altar mayor se esconde el tesoro mueble más importante del país: la <strong>Silla de Coronación de San Eduardo</strong>, usada para coronar prácticamente a todos los monarcas británicos desde 1308 — un trono de roble medieval desgastadísimo, con grafitis de estudiantes de Westminster grabados en los siglos XVIII y XIX, que incluso sobrevivió un atentado de las sufragistas en 1914. Bajo las baldosas descansan Charles Darwin, Isaac Newton y Charles Dickens.</p>
+      <div class="quote">Hay tantas celebridades enterradas — más de 3.300 personas — que los monjes medievales tuvieron que enterrar a algunos de forma vertical para ahorrar espacio bajo las baldosas.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Abadía de Westminster · Cultivado sin interrupción desde 1065</div>
+      <h3>College Garden — El jardín más antiguo del país</h3>
+      <p>El jardín cultivado de forma continua más antiguo de toda Gran Bretaña. Los monjes benedictinos empezaron a trabajar esta tierra alrededor del año 1065 — era un huerto de supervivencia donde cultivaban verduras, frutas y plantas medicinales para el hospital del monasterio.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Flanco sur del Palacio de Westminster · 98 metros · Charles Barry</div>
+      <h3>Victoria Tower Gardens — Victoria Tower</h3>
+      <p>Parque público que bordea el sur del Palacio de Westminster. La Victoria Tower es la estructura más alta de todo el Palacio, con 98 metros, diseñada por Charles Barry a mediados del siglo XIX como homenaje a la Reina Victoria. El gran arco ojival gótico de su base es la <strong>Entrada del Soberano</strong>, por donde el monarca entra al Parlamento en carruaje durante la ceremonia de apertura anual. En sus doce pisos de estanterías metálicas se guardan todos los manuscritos originales de las leyes aprobadas en el Reino Unido desde la Edad Media.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪖 Búnker subterráneo · Segunda Guerra Mundial · Conservado como en 1945</div>
+      <h3>Churchill War Rooms</h3>
+      <p>La Sala de Conferencias del Gabinete, conservada exactamente como quedó el día que se apagaron las luces en 1945. Un búnker diseñado para resistir los bombardeos de la aviación alemana. El mapa cartográfico permanece en su lugar: Churchill tenía obsesión con el orden durante las crisis — exigía que todos los lápices estuvieran perfectamente afilados antes de cada sesión de gabinete a las 22:00. Las reuniones eran secretas y los ministros debatían durante horas mientras las bombas V-1 y V-2 hacían temblar las vigas de hierro rojas del techo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>La City · Buckingham · Horse Guards · Trafalgar · Tower Bridge · Torre de Londres · Windsor</h2>
+        <div class="day-subtitle">Miércoles 31 de Marzo · De la City al Castillo de Windsor</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏙️ Centro financiero · Tower 42 (NatWest Tower) · 183 m · Richard Seifert</div>
+      <h3>La City de Londres</h3>
+      <p>Dominando el cielo, la <strong>Tower 42</strong> (NatWest Tower) con su distintiva forma de planta de tres hojas — la estructura tiene la silueta del logotipo de tres puntas del banco. Con 183 metros de altura, pasó muchos años siendo el rascacielos más alto del Reino Unido hasta que los perdió frente a las torres de Canary Wharf. El Támesis tiene mareas brutales que suben y bajan hasta <strong>7 metros dos veces al día</strong>, arrastrando toneladas de lodo desde el mar; barcazas dragan el fondo constantemente para que los barcos de turistas no queden encallados.</p>
+      <div class="quote">En abril de 1993, una bomba del IRA estalló en la calle Bishopsgate, a solo unos metros de la base, y destrozó prácticamente todas las ventanas de la Torre 42.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👑 Residencia oficial de la monarquía · Neoclásico · Balcón del primer piso</div>
+      <h3>Palacio de Buckingham</h3>
+      <p>La ventana central del primer piso, justo arriba del pórtico de columnas principales, es el balcón más famoso del mundo — idea de la Reina Victoria a mediados del siglo XIX para conectarse directamente con las masas en los momentos de fiesta nacional. <strong>Cómo saber si la reina está dentro:</strong> si ondea la Union Jack, no está en el edificio; si ondea el Estandarte Real (rojo, azul y amarillo con leones heráldicos), Su Majestad está adentro.</p>
+      <div class="quote">En el siglo XVII, el rey Jacobo I compró este terreno para plantar miles de árboles de morera y competir con el mercado de seda francés. El negocio fue un fracaso porque compró la especie de morera equivocada que los gusanos de seda no querían comer. Años más tarde, el Duque de Buckingham compró el lugar barato para hacer su casa.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Frente al Palacio · 2.300 toneladas de mármol de Carrara · Sir Aston Webb y Thomas Brock</div>
+      <h3>Victoria Memorial — "The Wedding Cake"</h3>
+      <p>Colosal estructura de mármol blanco con la gran estatua de la Reina sentada en su trono mirando hacia The Mall, sosteniendo el cetro y el orbe imperial. Resalta la <strong>Victoria Alada de bronce dorado</strong> en lo alto. Apodado "The Wedding Cake" (La Tarta de Bodas) por su forma escalonada, sus niveles circulares y el mármol blanco reluciente traído directamente de las canteras de Carrara, Italia. Con 2.300 toneladas de mármol, es el monumento más grande dedicado a un monarca británico.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐴 Whitehall · William Kent · Siglo XVIII · Entrada ceremonial a los palacios reales</div>
+      <h3>Horse Guards — Blues and Royals y Life Guards</h3>
+      <p>En Londres, dos regimientos custodian a la familia real a caballo: los <strong>Blues and Royals</strong> (túnica azul oscuro, penacho rojo) y los <strong>Life Guards</strong> (túnica roja, penacho blanco). Los caballos son de una raza especial criada en Irlanda exclusivamente para la caballería real. El arco de piedra diseñado por William Kent es históricamente la entrada oficial y ceremonial al Palacio de St. James y al de Buckingham — solo los miembros de la familia real o carrozas autorizadas con pases especiales pueden cruzar por debajo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦁 Columna de Nelson · National Gallery · St Martin-in-the-Fields</div>
+      <h3>Trafalgar Square</h3>
+      <p>Al fondo, la fachada neoclásica de la <strong>National Gallery</strong> con su imponente cúpula gris y pórtico corintio. A la derecha, la iglesia <strong>St Martin-in-the-Fields</strong> (1726, James Gibbs), precedida por el monumento ecuestre del rey Jorge IV. Detrás, las fuentes y la Columna de Nelson custodiada por cuatro leones gigantes de bronce.</p>
+      <div class="quote">El escultor Sir Edwin Landseer modeló los leones usando los cañones de bronce fundidos capturados a los barcos franceses y españoles en la batalla de Trafalgar en 1805.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 Inaugurado 1894 · Neogótico · Piedra caliza de Portland y granito de Cornualles</div>
+      <h3>Tower Bridge</h3>
+      <p>Las pasarelas peatonales superiores conectan las torres en lo alto, mientras las cadenas de suspensión de acero caen hacia las orillas. La piedra caliza y el granito son solo decorativos — por dentro el puente tiene un esqueleto de acero. El arquitecto <strong>Horace Jones</strong> lo diseñó así para que combinara visualmente con la histórica Torre de Londres de la orilla opuesta.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗡️ Jewel House · Beefeaters · Torre Blanca · Armería Real</div>
+      <h3>Torre de Londres — Beefeaters y Armería Real</h3>
+      <p>Custodiada por los <strong>Beefeaters</strong> (literalmente "comedores de carne") con su uniforme azul oscuro y rojo, las iniciales "ER" (Elizabeth Regina) bordadas en rojo y el característico sombrero de copa plano. El apodo viene de los tiempos de Enrique VIII, cuando estos guardias personales tenían el privilegio de comer toda la carne de res que quisieran de la mesa del rey. Hoy, para ser Beefeater hay que ser sargento mayor retirado con expediente intachable y 22 años de servicio activo.</p>
+      <p style="margin-top:0.8rem;">La <strong>Torre Blanca</strong>, mandada a construir por Guillermo el Conquistador en la década de 1070, fue levantada con piedra traída directamente desde Caen, su Normandía natal — Guillermo no se fiaba de los materiales ingleses. En la Armería Real, la espectacular <strong>armadura del rey Enrique VIII</strong>, fabricada en los talleres reales de Greenwich que el propio rey fundó trayendo artesanos alemanes e italianos. Durante la Guerra Civil Inglesa del siglo XVII, las tropas parlamentarias fundieron casi todos los tesoros de oro de la monarquía para convertirlos en monedas — sin embargo, respetaron esta colección de armaduras.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Tren desde el centro de Londres</strong> hasta Windsor para visitar el castillo.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 El castillo habitado más grande y antiguo del mundo · ~1.000 años de historia · Guillermo el Conquistador</div>
+      <h3>Castillo de Windsor — Capilla de San Jorge · Torre Redonda</h3>
+      <p>La arquitectura gótica de la <strong>Capilla de San Jorge</strong> con sus inmensos ventanales arqueados y contrafuertes tallados. La Reina Isabel II suele pasar casi todos sus fines de semana aquí — cuando está en el castillo, la bandera de la Torre Redonda cambia de inmediato. La Capilla de San Jorge, además de escenario de grandes bodas reales, alberga en sus criptas a algunos de los reyes más famosos de la historia, entre ellos <strong>Enrique VIII</strong> y el decapitado <strong>Carlos I</strong>.</p>
+      <div class="quote">En noviembre de 1992, el castillo sufrió un incendio que destruyó más de 100 salones históricos, incluido el monumental St George's Hall.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 Puente peatonal · Torre del Toque de Queda · Siglo XIII</div>
+      <h3>Puente de Windsor — Torre del Toque de Queda</h3>
+      <p>Al fondo del puente peatonal, los torreones cilíndricos de piedra y los tejados cónicos de la mítica <strong>Torre del Toque de Queda</strong>, una de las estructuras más antiguas de las murallas bajas de Windsor (siglo XIII), usada durante siglos como calabozo para los prisioneros de la corte.</p>
+      <div class="quote">Desde los tiempos de Guillermo el Conquistador, esa campana suena todas las noches a las 8 en punto para anunciar el toque de queda — la orden real para que todos los habitantes del pueblo apagaran las velas y los fogones de madera para evitar incendios accidentales.</div>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Oxford — Christ Church · Brasenose · Puente de los Suspiros · Teatro Sheldonian</h2>
+        <div class="day-subtitle">Jueves 1 de Abril · Tren desde Paddington</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Tren desde la estación de Paddington</strong> para dejar atrás la capital y adentrarse en Oxford.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Christ Church · Tom Tower · Christopher Wren · 1681</div>
+      <h3>Tom Quad — Christ Church, Oxford</h3>
+      <p>El Gran Patio, el patio cuadrado más grande de toda la Universidad de Oxford. Dominando el centro de la fachada: la inconfundible <strong>Tom Tower</strong> con su cúpula ogival y linterna octogonal. La puerta inferior (Tom Gate) fue comenzada en el siglo XVI por el Cardenal Thomas Wolsey, pero cuando cayó en desgracia ante Enrique VIII, el edificio quedó a medio terminar y sin techo durante más de 150 años — fue en 1681 cuando llamaron a Sir Christopher Wren para completarla. Dentro de la torre se esconde <strong>Great Tom</strong>, la campana más ruidosa de Oxford: cada noche, a las 9:05 exactas, suena 101 veces de forma ininterrumpida, representando a los primeros 101 estudiantes que fundaron el colegio.</p>
+      <div class="quote">A las 9:05 y no a las 9:00 porque Oxford se rige por su propio huso horario local, basado en el meridiano de la ciudad, que corre con 5 minutos de retraso respecto al huso oficial de Greenwich.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Christ Church · Primera Guerra Mundial · John Bunyan</div>
+      <h3>Jardines de la Catedral de Christ Church</h3>
+      <p>Diseñado a principios del siglo XX como monumento vivo en honor a todos los estudiantes e investigadores de Christ Church que murieron en las trincheras de la Primera Guerra Mundial. En los senderos empedrados de la entrada hay grabada una inscripción poética de John Bunyan. Los jardineros cuidan el césped de rayas con una disciplina casi militar.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Fundado 1509 · "Nariz de Bronce" · Cámara Radcliffe · James Gibbs</div>
+      <h3>Brasenose College — La Nariz de Bronce</h3>
+      <p>Arquitectura de piedra caliza alrededor del patio. Uno de los nombres más curiosos de Oxford: <em>Brasenose</em> significa literalmente "Nariz de Bronce", por un llamador de puerta medieval con forma de cabeza de león de nariz enorme. En el siglo XIV, los estudiantes se pelearon con los locales y se escaparon a Stamford llevándose el llamador como amuleto — el colegio pasó siglos intentando recuperarlo hasta que, a finales del XIX, compraron toda la propiedad de Stamford solo para recuperar la nariz. Hoy la tienen colgada con orgullo en el gran comedor. La inmensa cúpula en el patio es la <strong>Cámara Radcliffe</strong>, construida por James Gibbs a mediados del siglo XVIII para albergar una biblioteca científica.</p>
+      <div class="quote">En el ala este, las habitaciones más embrujadas de Oxford: en el siglo XVII, un joven noble llamado Lord Lovell murió encerrado en una habitación secreta, y su fantasma se la pasa caminando por los tejados.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 New College Lane · Sir Thomas Jackson · Estilo neobarroco</div>
+      <h3>Puente de los Suspiros</h3>
+      <p>Estructura flotante que cruza por encima de New College Lane. Diseñado por Sir Thomas Jackson a principios del siglo XX inspirándose más en el Puente de Rialto de Venecia que en el original veneciano de los Suspiros. Los jóvenes de Hertford College tenían que cruzar obligatoriamente este pasillo elevado para ir a rendir los exámenes finales del año.</p>
+      <div class="quote">Los muchachos soltaban unos suspiros tremendos de pura desesperación y pánico por no haber estudiado lo suficiente — de ahí el nombre.</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎭 Christopher Wren · 1664 · Ceremonias de graduación de Oxford</div>
+      <h3>Teatro Sheldonian</h3>
+      <p>Fachada semicircular de piedra caliza dorada con geometría perfecta que evoca los teatros de la Antigua Roma. Coronado por los famosos y misteriosos bustos de filósofos o emperadores con barbas esculpidas. Diseñado por <strong>Christopher Wren</strong> en 1664 — nunca se representó aquí ninguna obra de teatro ni ópera. Desde el siglo XVII es el lugar oficial donde la Universidad de Oxford celebra sus ceremonias de graduación y matriculación.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗿 Cruce de St Giles con Magdalen Street · Sir George Gilbert Scott · 1840 · Obispos mártires</div>
+      <h3>Monumento a los Mártires</h3>
+      <p>Monumental estructura neogótica que conmemora a tres obispos anglicanos — <strong>Cranmer, Ridley y Latimer</strong> — quemados vivos en la hoguera a la vuelta de la esquina en 1555, durante el reinado de la católica María Tudor, apodada "Bloody Mary".</p>
+      <div class="quote">Por su forma de aguja hueca con escaleras circulares, durante los siglos XIX y XX corría el mito clásico entre los novatos de que el monumento era en realidad la entrada oculta a una inmensa piscina subterránea para los académicos del Christ Church College.</div>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Madame Tussauds · British Museum</h2>
+        <div class="day-subtitle">Viernes 2 de Abril · Marylebone · Bloomsbury · Londres</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🪆 Marylebone · Una de las atracciones más antiguas de Londres</div>
+      <h3>Madame Tussauds</h3>
+      <p>Museo de cera histórico de Londres. Su fundadora aprendió el arte del modelado en la Francia del siglo XVIII. Durante la sangrienta Revolución Francesa, la obligaron a tomar máscaras de cera mortuorias directamente de las cabezas decapitadas de Luis XVI y María Antonieta. Escapó a Inglaterra con sus moldes y abrió esta exhibición permanente.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Bloomsbury · Fundado 1753 · Primer museo público nacional del mundo · Más de 8 millones de objetos</div>
+      <h3>British Museum</h3>
+      <p>Fundado en 1753 gracias al legado del médico Sir Hans Sloane, abrió sus puertas en 1759. A diferencia del Louvre o la National Gallery (centrados en artes plásticas), el Museo Británico es un templo de arqueología, etnografía e historia de las civilizaciones — una máquina del tiempo con dos millones de años del saber humano distribuidos en un imponente edificio neoclásico.</p>
+
+      <p style="margin-top:0.9rem;font-weight:600;color:var(--ink);">Colecciones imprescindibles:</p>
+      <p style="margin-top:0.4rem;"><strong>Antiguo Egipto</strong> — La colección más grande del mundo fuera de El Cairo. La estrella principal es la <strong>Piedra de Rosetta</strong>, el trozo de granodiorita negra descubierto en 1799 que sirvió de clave definitiva para descifrar los jeroglíficos. Y el cuerpo momificado de <strong>"Ginger" (el Hombre de Gebelein)</strong>, que vivió en Egipto alrededor del año 3400 a.C. Lo enterraron en una fosa poco profunda en la arena caliente del desierto — la arena absorbió toda la humedad tan rápido que detuvo la descomposición, momificándolo a la perfección. En la espalda, una pequeña marca oscura bajo el omóplato izquierdo: una herida de puñalada brutal con una cuchilla de sílex que le rompió una costilla y le perforó el pulmón.</p>
+      <p style="margin-top:0.6rem;"><strong>Grecia y Roma</strong> — Los controvertidos <strong>Mármoles del Partenón</strong>, traídos a principios del siglo XIX.</p>
+      <p style="margin-top:0.6rem;"><strong>Mesopotamia y Oriente Próximo</strong> — Relieves asirios de detalle asombroso, los monumentales <strong>Toros Alados con cabeza humana</strong> (Lamassu) traídos de la antigua Nimrud, y tesoros de Babilonia y Persia.</p>
+      <p style="margin-top:0.6rem;"><strong>Europa y Prehistoria</strong> — El monumental <strong>ajuar funerario anglosajón del barco de Sutton Hoo</strong>, descubierto justo antes de la Segunda Guerra Mundial.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎉 Fin del viaje</div>
+      <p>Cuatro días entre Big Ben y las torres de Oxford, los mármoles del Partenón y la momia de Ginger, el búnker de Churchill y el jardín más antiguo de Inglaterra.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    🎬 VÍDEOS DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/iye2Be5hRMI" title="Fotos Londres 1999"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph1"><span class="icon">▶</span><span>FOTOS DEL VIAJE</span><span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span></div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VÍDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/FDsiPVu1CQY" title="Vídeo Londres 1999"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph2"><span class="icon">▶</span><span>VÍDEO DEL VIAJE</span><span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Londres 1999</strong> &nbsp;·&nbsp; 30 Marzo – 2 Abril 1999 · 4 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
+    'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
+    'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.onclick = () => openLightbox(i);
+    const img = document.createElement('img');
+    img.src = src; img.alt = `Foto Londres 1999 ${i+1}`; img.loading = 'lazy';
+    img.onerror = function() {
+      const ph = document.createElement('div');
+      ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
+      ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto '+(i+1)+'</span>';
+      item.replaceChild(ph, this);
+    };
+    item.appendChild(img);
+    gallery.appendChild(item);
+  });
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) document.getElementById(id).style.display = 'none';
+  });
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

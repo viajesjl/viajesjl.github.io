@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Venecia 2023 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(21,101,192,0.40) 60%, rgba(10,31,61,0.82) 100%),
+        url('https://images.unsplash.com/photo-1514890547357-a9ee288728e0?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* Vaporetto info box */
+    .vaporetto { background: linear-gradient(135deg, #0a1f3d 0%, #1565c0 100%); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; border-radius: 2px; }
+    .vaporetto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .vaporetto h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: white; margin-bottom: 0.4rem; letter-spacing: 0.05em; }
+    .vaporetto p { font-size: 0.92rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.75; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../../viajes.html#sec-italia">🇮🇹 Italia</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Venecia</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">✈ Italia · Véneto · La Serenísima</p>
+  <h1 class="hero-title">Venecia</h1>
+  <p class="hero-date">9 — 11 Junio 2023 · 3 días</p>
+  <div class="hero-pills">
+    <span class="pill">Plaza San Marcos</span>
+    <span class="pill">Palacio Ducal</span>
+    <span class="pill">Biblioteca Marciana</span>
+    <span class="pill">Scala Contarini del Bovolo</span>
+    <span class="pill">Murano</span>
+    <span class="pill">Basílica della Salute</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1 · Llegada</a>
+  <a href="#dia2">Día 2 · Venecia</a>
+  <a href="#dia3">Día 3 · Murano</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada al aeropuerto · Lido di Venezia</h2>
+        <div class="day-subtitle">Viernes 9 de Junio</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento · 3 noches · Lido di Venezia</div>
+        <h3>Hotel Sorriso · Lido di Venezia</h3>
+        <p>Acceso con clave facilitada por el hotel. Bajarse en parada <strong>Gallo Torta</strong> (7ª parada, bus A o N desde SME).</p>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Parking aeropuerto Barcelona:</strong> Código PCE5A · Entrada desde las 15:30h<br>
+      <strong>Vuelo:</strong> Vueling VY6404 · T1 Barcelona 19:40h → Venecia 21:30h<br>
+      <strong>Tarjeta Venecia Única:</strong> Código PNR FC9FLXC · Vaporetos 48h + museos Plaza San Marcos + Scala Contarini del Bovolo + bus aeropuerto<br>
+      Recoger en expendedor amarillo ACTV (al fondo de la terminal de llegadas o en el centro) o en el puesto de venta frente al ferry en Lido SME B
+    </div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · Aeropuerto → Lido</div>
+      <h3>Línea Azul · Embarcadero del aeropuerto</h3>
+      <p>Salidas: <strong>21:50 · 22:20 · 23:20 · 00:20</strong><br>
+      6 paradas · 27 minutos · Bajar en <strong>Lido S.M.E "C"</strong><br>
+      Tickets: taquillas sala de llegadas (hasta las 23:20h) o dársena (hasta las 00:20h)<br>
+      Si se llega sin retraso, intentar coger el de las 21:50h.</p>
+    </div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">🚌 Bus · Lido SME → Hotel</div>
+      <h3>Bus A o N desde Santa Maria Elisabetta (SME)</h3>
+      <p>Bus A sale: <strong>23:08h</strong> · Bus N sale: <strong>23:25h</strong><br>
+      7 paradas · 6 minutos → Bajar en <strong>Gallo Torta</strong><br>
+      Alternativa a pie: 2,4 km · 30 min</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Venecia — San Marcos · Cannareggio · Palacio Ducal</h2>
+        <div class="day-subtitle">Sábado 10 de Junio</div>
+      </div>
+    </div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · Lido → San Marcos</div>
+      <h3>Línea 1 desde Lido SME D</h3>
+      <p>Salidas: y 8 · y 20 · y 32 · y 44 · y 56 → Llega a <strong>S. Marco en 16 min</strong><br>
+      Alternativa: Línea 5.2 (circular) desde SME B → S. Marco Zaccaria C en 14 min (salidas: y 12 · y 32 · y 52)<br>
+      Coger la <strong>línea 1</strong> que para justo en Plaza San Marcos · Último línea 1 desde San Marco: 00:38h · La N circula toda la noche</p>
+    </div>
+
+    <div class="section-title">📚 Primera hora · Biblioteca Marciana</div>
+
+    <div class="place">
+      <div class="place-meta">📚 Biblioteca · Sábados 8:20-13:30h · No abre domingos · Ir nada más llegar</div>
+      <h3>Biblioteca Marciana — Biblioteca Nazionale Marciana</h3>
+      <p>También conocida como Biblioteca Sansoviana. Origen en 1468, cuando el cardenal Bessarion donó su colección de 750 códices a los que luego añadió 250 manuscritos y obras impresas. La idea de una biblioteca pública nació durante la estancia de <strong>Francesco Petrarca</strong> en la ciudad: en 1362 decidió donar sus libros a la República para núcleo de una gran colección abierta a los estudiosos.<br><br>
+      Hoy cuenta con un <strong>millón de volúmenes</strong>, 13.000 manuscritos y más de 2.800 incunables. El edificio es una obra de arte en sí mismo: salones con esculturas y artesonados extraordinarios.</p>
+    </div>
+
+    <div class="section-title">🏛️ Mañana · Plaza San Marcos y alrededores</div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Plaza · Catedral · Campanile · El corazón de Venecia</div>
+      <h3>Plaza San Marcos — Basílica y Campanile</h3>
+      <p>Visitar por fuera la plaza, la <strong>Catedral de San Marcos</strong> y subir al <strong>Campanile</strong> si no hay cola y da tiempo. Ver por fuera el <strong>Palacio Ducal</strong> y el <strong>Puente de los Suspiros</strong>: la leyenda cuenta que los condenados se detenían aquí, suspirando, para disfrutar de sus últimos momentos de libertad antes de entrar en prisión.</p>
+    </div>
+
+    <div class="section-title">🗺️ Mediodía · Free Tour "Leyendas de Venecia" (Civitatis 11:00h)</div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · San Marcos → Ferrovia (para el free tour)</div>
+      <h3>Línea 2 desde S. Marco Giardinetti A</h3>
+      <p>1ª opción: sale <strong>9:55h</strong> → Ferrovia A a las <strong>10:24h</strong><br>
+      2ª opción: sale <strong>10:19h</strong> → llega <strong>10:48h</strong> (más justo)<br>
+      Alternativa a pie desde el embarcadero de Rialto: Ponte dei Dai + Calle S. Marco → 500 m · 6 min</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗺️ Free Tour · 11:00h · Punto de encuentro: escaleras de la Iglesia de San Simeone Piccolo · Llegar 10 min antes · Acaba en Rialto</div>
+      <h3>Leyendas de Venecia — Free Tour Civitatis</h3>
+      <p>El guía lleva un <strong>paraguas negro con bandera española</strong> y camiseta amarilla de tour Vivaldi.<br><br>
+      El recorrido pasa por algunos de los más bonitos <em>Campos</em> venecianos (nombre que reciben las plazas) y se adentra en el barrio de <strong>Cannareggio</strong>, uno de los más antiguos de la ciudad. Se visita el <strong>Gueto Judío</strong>, se descubre la historia de los edificios y se conocen los mitos y leyendas más populares de Venecia. Todo ello recorriendo zonas residenciales poco frecuentadas por los turistas.</p>
+    </div>
+
+    <div class="section-title">🐚 Tarde · Scala Contarini del Bovolo y Palacio Ducal</div>
+
+    <div class="place">
+      <div class="place-meta">🐚 Palacio · Entradas 15:00h · 530 m desde Rialto andando</div>
+      <h3>Palazzo Contarini del Bovolo — La Escalera de Caracol</h3>
+      <p>Palacio del S.XV construido por la familia Contarini, apodada <em>"bovolo"</em> (cáscara de caracol) por la llamativa escalera de caracol adosada a la fachada. La escalera de 26 metros, encerrada en un cilindro perforado como un encaje, ofrece desde la cima una perspectiva única de los tejados y las características <strong>altane</strong> (terrazas cubiertas de madera) de Venecia.<br><br>
+      En 1717 el edificio pasó a manos de Giovanni Minelli. La logia del segundo piso conduce a la Sala del Palacio Contarini con una exposición de pinturas, esculturas y objetos de artes aplicadas del S.XVI al XVIII.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Museo · Entradas entre 12h y 18h · Entrada prepagada con código de barras · 620 m · 9 min</div>
+      <h3>Palacio Ducal — Palazzo Ducale</h3>
+      <p>Sede del gobierno cuando Venecia era una potencia marítima temida en el mundo. Hoy museo y lugar simbólico. Obra maestra del <strong>gótico veneciano</strong> con la extraordinaria delicadeza de su columnata y la monumental <em>Scala dei Giganti</em> en el patio interior. Construido como sede de los Dogos, gobernantes de la República de Venecia.<br><br>
+      El recorrido atraviesa todos los pisos mostrando el <strong>Museo de la Ópera</strong>, el hermoso patio, el <strong>Apartamento Ducal</strong>, las <strong>Salas Institucionales</strong>, la <strong>Armería</strong> y las <strong>Cárceles</strong>. El <strong>Puente de los Suspiros</strong> conecta el cuerpo principal del palacio con las antiguas Prisiones.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Museo · 10:00-18:00h (noche hasta las 23h, última entrada 22h) · Al lado del campanile · 300 m del Palacio Ducal</div>
+      <h3>Museo Correr y Museo Arqueológico Nacional</h3>
+      <p>El <strong>Museo Correr</strong> tiene fondo de arte, documentos, objetos antiguos y mapas que reflejan la historia y vida cotidiana de Venecia. El Ala Napoleónica tiene suntuosa decoración neoclásica con obras de <strong>Antonio Canova</strong> y <strong>Giambattista Pittoni</strong>. Audioguía para 2 personas: 8€.<br><br>
+      El <strong>Museo Arqueológico Nacional</strong> se entra desde el Correr. Fundado en 1523 por el Cardenal Grimani con su colección de esculturas antiguas: ~200 esculturas griegas y romanas, incluyendo mármoles del Quirinale de Roma.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🚣 Experiencia · Góndola</div>
+      <h3>Paseo en Góndola</h3>
+      <p>Se puede coger una góndola por detrás de San Marcos. Precio medio: <strong>80€</strong>.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Murano · Basílica della Salute · Regreso</h2>
+        <div class="day-subtitle">Domingo 11 de Junio</div>
+      </div>
+    </div>
+
+    <div class="narrative">
+      Si nos levantamos pronto, posibilidad de ir a la playa de Lido antes de salir.
+    </div>
+
+    <div class="section-title">🔮 Mañana · Murano — La Isla del Cristal</div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · Lido → Murano</div>
+      <h3>Opción A: Línea 18 desde Lido SME E</h3>
+      <p>Salidas: y 18 · Duración: <strong>36 min</strong> → Murano Navagero</p>
+      <h3 style="margin-top:0.6rem;">Opción B: Línea B desde Lido SME C</h3>
+      <p>Domingos: salidas y 41 y y 11 · 4 paradas · <strong>29 min</strong> → Colonna C<br>
+      Desde Colonna: coger <strong>línea 4.1</strong> (cada 5 min) → 2 paradas → <strong>Murano Navagero</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔮 Isla · Famosa desde el S. XIII por el Cristal de Murano</div>
+      <h3>Murano — La isla del vidrio</h3>
+      <p>Fama mundial por sus objetos de vidrio, especialmente las lámparas en Cristal de Murano. La historia de la isla se remonta a la época romana. En 1291 la gran mayoría de fabricantes de vidrio de Venecia se trasladaron aquí, convirtiéndola en el centro de producción de cristalería más importante de Europa.<br><br>
+      Al llegar te encuentras un canal central similar al de Venecia, con casas de gran colorido a ambos lados. Por las calles y plazoletas hay grandes esculturas originales de vidrio: la <strong>gran escultura azul</strong> frente a la iglesia de San Pedro Mártir y la escultura junto a la Basílica de Santa María y Donato.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Basílica · 400 m desde Murano Navagero · Domingos solo abre por la tarde</div>
+      <h3>Basílica de Santa María y San Donato</h3>
+      <p>El monumento más importante de Murano. Sorprende por su arquitectura exterior: paredes de ladrillo visto y, sobre todo, la curiosa <strong>columnata exterior del ábside en dos plantas</strong>. Para llegar desde Colonna, seguir la calle principal junto al pequeño canal de sur a norte, cruzar el puente del gran canal y dirigirse a la derecha hasta el final de la Fondamenta Giustinian.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Museo · Palacio Giustinian · Entrada 10€ · Antes de llegar a la basílica</div>
+      <h3>Museo del Vidrio</h3>
+      <p>Visita vinculada al vidrio en el Palacio Giustinian, poco antes de llegar a la basílica.</p>
+    </div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · Murano → Venecia</div>
+      <h3>Regreso desde Murano</h3>
+      <p><strong>Línea 7</strong> desde Murano Colonna: salidas y 2 y y 22 → <strong>27 min</strong> → S. Marco-San Zaccaria D (luego 550 m a pie · 6 min a San Marcos)<br>
+      <strong>Línea 4.1</strong>: 2 paradas · 12 min → F.te Nove C (luego 1,7 km a pie · 21 min)</p>
+    </div>
+
+    <div class="section-title">⛪ Tarde · Basílica della Salute</div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · San Marcos → Basílica della Salute</div>
+      <h3>Línea 1 desde S. Marco San Zaccaria E</h3>
+      <p>Sale cada 12 min · <strong>8 min</strong> de trayecto · Parada: Salute</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Basílica · Todos los días 9:30-12:00 y 15:00-17:30h · Gratis (sacristía 4€)</div>
+      <h3>Basílica de Santa María della Salute</h3>
+      <p>Uno de los edificios religiosos más importantes de Venecia; su cúpula aparece en gran parte de las postales más icónicas de la ciudad. Construida desde 1631 para celebrar el fin de la peste que eliminó a gran parte de la población del Véneto. Las obras terminaron en 1687, 56 años después de su inicio. Planta octogonal con pequeñas capillas en cada lado.<br><br>
+      Interior con pinturas de <strong>Tiziano</strong> y <strong>Tintoretto</strong>. El cuadro más importante, en la sacristía: las <em>"Bodas de Caná"</em> de Tintoretto.</p>
+    </div>
+
+    <div class="section-title">✈ Regreso al aeropuerto · Piazzale Roma (14:15h)</div>
+
+    <div class="vaporetto">
+      <div class="vaporetto-label">⛵ Vaporeto · Basílica → Piazzale Roma</div>
+      <h3>Opción A: Línea 6 desde Spirito Santo</h3>
+      <p>450 m desde la basílica · Sale cada 20 min (y 38 y y 58) · <strong>15 min</strong> · 4 paradas → Piazzale Roma C</p>
+      <h3 style="margin-top:0.6rem;">Opción B: Volver a San Marcos → Línea 2</h3>
+      <p>S. Marco Vallaresso A → Línea 2 → <strong>32 min</strong> · 6 paradas → Ferrovia B · luego 110 m a pie → Piazzale Roma</p>
+    </div>
+
+    <div class="transport">
+      <strong>Aerobus línea 5 desde Piazzale Roma:</strong> Billetes comprados · Sale cada 15 min · <strong>20 min</strong> · 9 paradas hasta el aeropuerto<br>
+      <strong>Vuelo VY6403:</strong> Sale 16:45h · Llega Barcelona T1 18:45h
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📸 Fotos del viaje</div>
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <span class="icon">▶</span>
+          <span>Vídeo de fotos</span>
+        </div>
+        <iframe src="https://www.youtube.com/embed/f6GuYj8nbFA" title="Venecia 2023 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div class="video-label">🎬 Vídeo del viaje</div>
+      <div class="video-wrap">
+        <div class="video-placeholder">
+          <span class="icon">▶</span>
+          <span>Vídeo del viaje</span>
+        </div>
+        <iframe src="https://www.youtube.com/embed/D9WvKk2RsRE" title="Venecia 2023 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Venecia 2023</p>
+  <p style="margin-top:0.5rem;"><a href="../../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ─── GALERÍA ──────────────────────────────────────────────────────────────
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Venecia ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  // ─── NAV ACTIVO ───────────────────────────────────────────────────────────
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

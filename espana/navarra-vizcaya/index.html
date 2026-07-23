@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navarra · Vizcaya 2020 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+      --white: #f0f8ff;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); font-size: 0.8rem; }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(21,101,192,0.40) 60%, rgba(10,31,61,0.82) 100%),
+        url('https://images.unsplash.com/photo-1745415558507-b07aa223a746?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1.05; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .day-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 0; flex-wrap: wrap; }
+    .day-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.45rem 0.9rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .day-nav a:hover, .day-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .narrative { font-size: 1rem; font-weight: 500; line-height: 1.85; color: var(--muted); margin-bottom: 1.2rem; border-left: 3px solid var(--paper-dark); padding-left: 1rem; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip h3 { font-family: 'Barlow', sans-serif; font-size: 1rem; font-weight: 700; color: var(--ink); margin-bottom: 0.25rem; }
+    .tip p { font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .hotel { background: var(--ink); color: white; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; display: flex; align-items: flex-start; gap: 1rem; }
+    .hotel-icon { font-size: 2rem; flex-shrink: 0; margin-top: 0.2rem; }
+    .hotel-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.3rem; }
+    .hotel h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: white; margin-bottom: 0.25rem; }
+    .hotel p { font-size: 0.98rem; font-weight: 500; color: rgba(255,255,255,0.8); line-height: 1.65; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* Two video grid */
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; transition: opacity 0.2s; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-espana">🇪🇸 España</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Navarra · Vizcaya</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">✈ España · Norte · Verde y Medieval</p>
+  <h1 class="hero-title">Navarra<br>& Vizcaya</h1>
+  <p class="hero-date">17 — 24 Septiembre 2020 · 8 días</p>
+  <div class="hero-pills">
+    <span class="pill">Pamplona</span>
+    <span class="pill">Valle del Baztán</span>
+    <span class="pill">Brujas de Zugarramurdi</span>
+    <span class="pill">Gaztelugatxe</span>
+    <span class="pill">Gernika</span>
+    <span class="pill">Urdaibai</span>
+    <span class="pill">Olite</span>
+  </div>
+</header>
+
+<div class="day-nav">
+  <a href="#dia1">Día 1</a>
+  <a href="#dia2">Día 2</a>
+  <a href="#dia3">Día 3</a>
+  <a href="#dia4">Día 4</a>
+  <a href="#dia5">Día 5</a>
+  <a href="#dia6">Día 6</a>
+  <a href="#dia7">Día 7</a>
+  <a href="#dia8">Día 8</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ DIA 1 ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Pamplona · Valle del Baztán · Arizkun</h2>
+        <div class="day-subtitle">Jueves 17 de Septiembre · Navarra</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Salida:</strong> 08:00h · 444 km · 4h 46 min · Parking del Castillo, Pamplona
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏡</div>
+      <div>
+        <div class="hotel-label">Alojamiento · Casa Rural</div>
+        <h3>Casa Rural Gontxea · Arizkun</h3>
+        <p>Calle Tximindo 38, 31713 Arizkun · 55 km · 49 min desde Pamplona<br>
+        Al llegar a Arizkun, parar al lado del frontón y llamar al <strong>948 453 433</strong> (Mariam, la propietaria, es muy maja). Desayuno 4,5€.</p>
+      </div>
+    </div>
+
+    <div class="section-title">🏛️ Pamplona · Casco histórico</div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plaza · 280 m desde el parking · 3 min</div>
+      <h3>Plaza del Castillo</h3>
+      <p>Centro neurálgico y lugar de ocio por excelencia en la capital de Navarra. Un enorme espacio porticado rodeado de elegantes edificios del siglo XVIII y un bellísimo kiosco central. Todos los caminos de Pamplona llevan a esta plaza.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Ayuntamiento · 240 m · 3 min desde la Plaza</div>
+      <h3>Ayuntamiento de Pamplona · Mercado de Santo Domingo</h3>
+      <p>Uno de los edificios más espectaculares de Pamplona. Fachada de corte barroco y vivos colores en la Plaza Consistorial. Durante el Chupinazo del 6 de julio, puede acoger hasta 12.500 personas.<br><br>
+      El <strong>Mercado de Santo Domingo</strong> (cierra a las 14:00h) es el más antiguo de la ciudad, levantado en 1876 sobre el solar de un incendio anterior. Fachada rojiza con grandes ventanales arqueados. La puerta principal en la Plaza de Santiago, trasera del Ayuntamiento.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐂 Encierros · La calle más famosa de Pamplona</div>
+      <h3>Calle Estafeta</h3>
+      <p>Debe su nombre a la primera estafeta de correos de Navarra (S.XVIII). Con ligera pendiente, parte del cruce con la calle Mercaderes sobre pavimento adoquinado. El primer tramo hasta la bajada de Javier tiene coloridas fachadas con tiendas de moda y pastelerías. El segundo tramo, hasta la <strong>Plaza de Toros</strong>, es más bullicioso con bares y pinchos a ambos lados.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐂 Escultura · Av. de Roncesvalles</div>
+      <h3>Monumento al Encierro</h3>
+      <p>Encargado por el Ayuntamiento en 2007 al escultor bilbaíno Rafael Huerta. Sensacional conjunto escultórico de bronce colado: 19 figuras (11 mozos, 6 toros y 3 cabestros) recrean con realismo conmovedor una escena del encierro.</p>
+    </div>
+
+    <div class="narrative">
+      Volver por la Av. de Carlos III para ver la fachada del <strong>Teatro Gayarre</strong> y del <strong>Palacio de Navarra</strong>. Volver a la Calle Estafeta a comer un helado y bajar a ver la Estatua de Hemingway.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">✍️ Escultura · Plaza de Toros · Entre los árboles</div>
+      <h3>Estatua de Hemingway</h3>
+      <p>Gran bloque de granito de Guadarrama cuya parte superior emula el torso y brazos de Hemingway. La cabeza, un vivo retrato en bronce, obra del barcelonés Luis Sanguino. Esculpido con el tradicional cuello vuelto que caracterizaba sus jerseys. La posición emula al periodista apoyado sobre la barrera en una corrida, uno de los actos que más le gustaba de San Fermín.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Catedral · Apertura 10:30h · Último acceso 18:00h · 5€</div>
+      <h3>Catedral de Pamplona — Santa María la Real</h3>
+      <p>Joya gótica dentro de un envoltorio neoclásico. Destacan los <strong>sepulcros reales de Carlos III de Navarra y Leonor de Castilla</strong> y el <strong>claustro gótico</strong>, considerado uno de los más bellos de su estilo. Visita libre o guiada (mismo precio): iglesia, claustro, museo y casa del campanero. De lunes a sábado a las 11:15h, visita a la torre con la <strong>Campana María</strong>. Las vistas desde el campanario son de lo mejor de Pamplona.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Inicio del Encierro · 500 m desde la Catedral</div>
+      <h3>Huerta de Santo Domingo · Cuesta de Santo Domingo</h3>
+      <p>Donde comienza el encierro de San Fermín. A la derecha quedan el <strong>Museo de Navarra</strong> y la <strong>Iglesia de Santo Domingo</strong>. La empinada Cuesta de Santo Domingo asciende hasta el centro sobre adoquines. En una hornacina de la muralla, casi imperceptible, la pequeña figura de San Fermín, donde los mozos le cantan cinco minutos antes del encierro.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia · Patrón de la ciudad</div>
+      <h3>Iglesia de San Saturnino (San Cernin)</h3>
+      <p>Patrón de la ciudad. Dos torres y atrio porticado. A los pies, el viejo pozo donde San Saturnino bautizó a los primeros cristianos de Pamplona, entre ellos San Fermín.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Capilla de San Fermín · Calle Mayor abajo · 400 m · 5 min</div>
+      <h3>Iglesia de San Lorenzo · Capilla de San Fermín</h3>
+      <p>La capilla de San Fermín se encuentra en el interior de esta iglesia neoclásica del S.XVIII, con cúpulas de ladrillo y mosaicos de porcelana en la fachada. La talla del copatrón, del S.XV en madera policromada y guarnecida en plata, tiene el rostro ennegrecido por el humo de las velas: <em>"el morenico"</em>. Frente al <strong>Parque de la Taconera</strong> (bajar a la derecha).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Fortaleza pentagonal · S. XVI · Felipe II</div>
+      <h3>Ciudadela de Pamplona</h3>
+      <p>Junto con la Vuelta del Castillo, el gran pulmón verde de Pamplona (280.000 m²). Considerada el mejor ejemplo de arquitectura militar del Renacimiento español. Mandada construir por Felipe II en 1571. Tomada una vez: en 1808 el ejército francés la ocupó aprovechando una gran nevada y la confusión de un lanzamiento de bolas de nieve. Ver desde fuera.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">☕ Café histórico · Plaza del Castillo</div>
+      <h3>Café Iruña</h3>
+      <p>Al norte de la Plaza del Castillo. Precioso local que traslada a la belle époque, con clientes ilustres como Ernest Hemingway. Sala con estatua del escritor a tamaño real.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Reservar desde las 10h</div>
+      <h3>Restaurante La Olla · Pamplona</h3>
+      <p>Tel. <strong>948 229 558</strong></p>
+    </div>
+
+    <div class="section-title">🌙 Noche · Arizkun (Valle del Baztán)</div>
+
+    <div class="narrative">
+      Pueblo con gran riqueza histórica habitado durante siglos por los agotes, grupo étnico marginado y discriminado. Paseo por el pueblo y por el <strong>convento de Nuestra Señora de los Ángeles (hermanas clarisas)</strong>, con gran fachada llamativa.
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena</div>
+      <h3>Restaurante Uxoa · Arizkun</h3>
+      <p>Menú muy barato · 2,3 km en coche desde la casa rural.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 2 ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Ainhoa · Zugarramurdi · Urdax · Valle del Baztán</h2>
+        <div class="day-subtitle">Viernes 18 de Septiembre · Navarra · País Vasco francés</div>
+      </div>
+    </div>
+
+    <div class="section-title">🇫🇷 Mañana · Ainhoa (Francia)</div>
+
+    <div class="place">
+      <div class="place-meta">🏡 Pueblo medieval · 3 km desde Dantzarinea · País Vasco francés</div>
+      <h3>Ainhoa — Uno de los pueblos más bellos de Francia</h3>
+      <p>En el País Vasco francés, ribera del río Nivelle. Surgió como lugar de abastecimiento y hospedaje del Camino de Santiago en el S.XIII. Casas de entramado de madera y contraventanas de colores vivos, sobre todo rojo, a lo largo de una sola calle principal en forma de bastida fortificada. En 1451 volvió a manos francesas tras la Guerra de los Cien Años.<br><br>
+      La <strong>Iglesia de Nuestra Señora de la Asunción</strong> (S.XIII, declarada Monumento Histórico en 1996) tiene una sola nave con galerías de madera que separaban hombres de mujeres. El <strong>cementerio</strong> adosado tiene estelas discoidales con cruces celtas. El <strong>frontón</strong> de 1849 es lugar de reunión y práctica de pelota vasca.</p>
+    </div>
+
+    <div class="section-title">🧙 Mediodía · Zugarramurdi — El pueblo de las brujas</div>
+
+    <div class="place">
+      <div class="place-meta">🧙 Museo + Cuevas · 25 km · 24 min · Entradas reservadas 11:00h</div>
+      <h3>Museo de las Brujas y Cueva de Zugarramurdi</h3>
+      <p>En el S.XVII se produjo aquí el auto de fe de Logroño, en el que la Inquisición sentenció a la hoguera a 8 vecinos acusados de brujería. El museo (antiguo hospital) aborda en tres plantas la brujería, los seres mitológicos, plantas medicinales y la sociedad vasca del S.XVII, con audiovisuales e instalaciones interactivas.<br><br>
+      <strong>Parking señalizado junto al frontón</strong> (7 min a pie descendiendo por Behitiko Karrika). A 200 m del museo están las cuevas. Visita combinada: primero el museo (45 min), luego las cuevas (45 min). Las cuevas tienen diferentes niveles con escaleras, y la cavidad más grande está atravesada por la Regata del Infierno. En el prado, el lugar del <em>akelarre</em>.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer</div>
+      <h3>Restaurante Lapitxuri</h3>
+      <p>En un centro comercial al lado de la frontera.</p>
+    </div>
+
+    <div class="section-title">🕳️ Tarde · Urdax y Valle del Baztán</div>
+
+    <div class="place">
+      <div class="place-meta">🕳️ Cueva prehistórica · 3 km · 5 min · Viernes 13:15 / 15:15 / 17:15h · 6€</div>
+      <h3>Cuevas de Urdax</h3>
+      <p>El yacimiento prehistórico del Paleolítico superior más importante de Navarra. Hace 20.000 años el hombre habitaba ya estos montes. Las cuevas fueron formadas por la erosión del río Urtxuma. En su interior se hallaron buriles, raspadores, arpones de sílex, una aguja de hueso y restos de enterramiento humano. Temperatura constante 14-16ºC. Visita guiada en grupo ~40 minutos. Sin flash.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Pueblo medieval · 15 km · 14 min</div>
+      <h3>Amaiur (Maya) — Último bastión del Reino de Navarra</h3>
+      <p>Acceso por una preciosa portalada. Pueblo a lo largo de una sola calle. Al final, el <strong>Monte Gaztelu</strong> (900 m) con los restos del <strong>Castillo de Amaiur</strong>, último refugio de los defensores del Reino de Navarra en época medieval. Vistas fantásticas del valle. En las afueras, el <strong>molino de Amaiur</strong>, aún en funcionamiento.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Palacios · 3,6 km · 5 min desde Amaiur</div>
+      <h3>Irurita — Palacios del Baztán</h3>
+      <p>Destaca el <strong>Palacio Dorrea o Jauregizarra</strong> (S.XV), construcción más antigua del pueblo. En la plaza de la Duquesa de Goyeneche: el Gastón de Iriarte (palacio torreado, S.XVIII) y la <strong>Casa Torre o Jauregia</strong>, uno de los 12 palacios más antiguos del Reino de Navarra con llamativa escalera del S.XVII. También la <strong>Iglesia de San Salvador</strong> (S.XVIII) con órgano precioso y talla de la Virgen del Rosario.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">👁️ Mirador · 4 km · 5 min · Antes de Ziga</div>
+      <h3>Mirador de Baztán</h3>
+      <p>Vistas increíbles del valle del Baztán.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesia · S. XVI · "Catedral del Baztán"</div>
+      <h3>Ziga — Iglesia de San Lorenzo</h3>
+      <p>Famosa por su increíble iglesia del S.XVI, conocida como la catedral del Baztán. Paseo por el pueblo, el frontón y las casonas palaciegas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏘️ Capital del Baztán · 22 km · 18 min</div>
+      <h3>Elizondo — Capital del Baztán · La trilogía del Baztán</h3>
+      <p>Sede donde transcurre la <em>Trilogía del Baztán</em>. Abundantes casonas señoriales y palacios de indianos paralelos al río. El <strong>Palacio de Arizkunenea</strong> (barroco, S.XVIII) es hoy la Casa de Cultura. La <strong>Casa Consistorial</strong> en la Plaza de los Fueros, con vistas al río desde su parte trasera. Allí, una <strong>piedra de laxoa</strong>, la modalidad de pelota vasca más antigua.<br><br>
+      La <strong>Iglesia de Santiago</strong>, trasladada piedra a piedra a principios del S.XIX. Y la <strong>pastelería Malkorra</strong> con su especialidad <em>urrakin egiña</em>: chocolate con avellanas.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cena · Reservar desde las 9h</div>
+      <h3>Restaurante Casa Galarza · Elizondo</h3>
+      <p>Tel. <strong>948 580 101</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 3 ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Gorostapalo · Cascada de Xorroxin · Señorío de Bértiz</h2>
+        <div class="day-subtitle">Sábado 19 de Septiembre · Navarra</div>
+      </div>
+    </div>
+
+    <div class="section-title">🌊 Mañana · Cascada de Xorroxin (Gorostapalo)</div>
+
+    <div class="transport">
+      <strong>Aparcar en Erratzu</strong> (no en la Ermita Nuestra Señora la Dolorosa, sin aparcamiento)<br>
+      Recorrido circular: 3,6 km · 1h 30 min · Desnivel: 115 m subida/bajada · Altitud: 335-415 m
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌊 Cascada · Circular · 1h 30 min · 3,6 km</div>
+      <h3>Cascada de Xorroxin — Gorostapalo (Erratzu)</h3>
+      <p>La cascada se produce en el recorrido de la regata de Iñarbegi, afluente del Bidasoa. Tiene 4 metros de altura entre hayas, robles, avellanos y castaños. Normalmente se desciende por la pista-calzada hasta el salto (1,5 km) y se regresa. La opción circular añade el dolmen de Sorginetxoa tras ganar altura por la izquierda del cauce, con excelentes vistas del entorno y el monte Auza.<br><br>
+      <em>Según varias leyendas, la cascada es el punto de encuentro de las lamias (sirenas con cola de salmón) que se alisan el cabello con peines de oro.</em></p>
+    </div>
+
+    <div class="section-title">🌿 Tarde · Señorío de Bértiz</div>
+
+    <div class="transport">
+      <strong>Desde el hotel:</strong> 15 km · 14 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Jardín histórico · 10:00-20:00h (cerrado 14-16h) · 3€</div>
+      <h3>Señorío de Bértiz — Jardín y Palacio</h3>
+      <p>El jardín, con más de 100 años de antigüedad, es el mayor tesoro del Parque Natural. Bello entramado de caminos y senderos sinuosos rodeado de grandes árboles: liquidámbares, tejos, secuoyas, cedros, ginckos, limoneros, camelias, azaleas, hortensias, glicinas, bambúes... Varios estanques, puentes, glorietas y un mirador y capilla en Art Nouveau.<br><br>
+      El <strong>Sendero Irretarazu</strong> (7 km · 2h, enlazando con Plazazelai en amarillo) recorre el parque pasando junto al Jardín Histórico, las antiguas caleras, carboneras y restos de chabolas de la actividad industrial. Hayedos, robles y fresnos en uno de los mejores ejemplos de bosque mixto atlántico de Navarra.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · Sin reserva</div>
+      <h3>Restaurante Urgain · Bértiz</h3>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Cenar</div>
+      <h3>Asador Ordoki</h3>
+      <p>Menú asador por 27€.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 4 ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Playa Laida · Ogoño · Elantxobe · Gernika</h2>
+        <div class="day-subtitle">Domingo 20 de Septiembre · Bizkaia</div>
+      </div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🏨</div>
+      <div>
+        <div class="hotel-label">Alojamiento · Ajangiz</div>
+        <h3>Hotel Aristieta</h3>
+        <p>Kanpantxu 12, Ajangiz, Bizkaia</p>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desde Arizkun a Playa Laida:</strong> 170 km · 2h 40 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚣 Canoas · 12:00h · 35€ · 2h 30 min · Reserva previa</div>
+      <h3>Descenso en Canoa · Playa Laida — Laida Kanoak</h3>
+      <p>Antzora 24, Playa Laida · Tel. <strong>946 276 515 / 689 708 769</strong> · Ibarrangelu, Bizkaia<br>
+      Descenso según la marea. Confirmar el día antes.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer</div>
+      <h3>Restaurante Atxarre · Playa Laida</h3>
+      <p>En el mismo sitio que las canoas. Bocata.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛰️ Cabo · 305 m de altura · 1,7 km ida</div>
+      <h3>Cabo Ogoño</h3>
+      <p>Continuar hasta el cementerio de Elantxobe y dejar el coche. Seguir a pie por la carretera que sale a la derecha de la fuente del cementerio (200 m) y coger a la izquierda el camino hacia la parte alta del cabo. También se puede subir a la cima (305 m, unos 270 m de ascensión).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Puerto · Paseo</div>
+      <h3>Elantxobe</h3>
+      <p>Pasear por el pintoresco puerto pesquero de este pequeño pueblo enclavado en la base del cabo Ogoño.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 5 ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Gernika · Gaztelugatxe · Faro Matxitxako · Bermeo</h2>
+        <div class="day-subtitle">Lunes 21 de Septiembre · Bizkaia · Reserva Urdaibai</div>
+      </div>
+    </div>
+
+    <div class="section-title">🕊️ Mañana · Gernika</div>
+
+    <div class="transport">
+      <strong>Desde el hotel:</strong> 3,3 km · 5 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕊️ Corazón histórico de Euskadi · Lunes, Mercado</div>
+      <h3>Gernika — Parque de la Paz y Mercado</h3>
+      <p>El corazón de la comarca y del País Vasco histórico. Atravesar el <strong>Parque de la Paz</strong> con esculturas colosales de Eduardo Chillida y Henry Moore. El <strong>Mercado de Gernika (Pasileku)</strong> en la Plaza de los Fueros: mercado semanal de los lunes, el más importante de Bizkaia, con festival de olores, colores y sonidos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕳️ Refugios · Visita guiada · 10:00h · 3€ · 1 hora</div>
+      <h3>Refugios Antiaéreos de Gernika · 1937</h3>
+      <p>Entradas compradas para las 10:15h. Salida puntual desde la entrada del Museo de la Paz (Foru Plaza 1). Llegar 5-10 min antes para canjear el bono. Tel. 946 270 213.<br><br>
+      Adentrarse en los refugios de 1937. Ruta por la Plaza de los Fueros y el Pasileku hasta la zona industrial de Gernika. Se reviven los acontecimientos del <strong>26 de abril de 1937</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕊️ Museo · Entradas 11:20h · 21 Sep: entrada gratuita 10-14h</div>
+      <h3>Museo de la Paz de Gernika</h3>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌳 Símbolo · 10:00-14:00 y 16:00-19:00h · Entrada gratuita</div>
+      <h3>Casa de Juntas — El Árbol de Gernika</h3>
+      <p>Símbolo de las libertades vascas. Desde el S.XIV el Señor de Bizkaia juraba respetar los Fueros bajo este roble. Se conserva el <em>Árbol Hijo</em> (muerto, expuesto al público) y su sucesor plantado en 2004. Hoy sigue usándose para los juramentos del Lehendakari. Sede del parlamento histórico de Bizkaia.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Arte · 560 m desde el parking</div>
+      <h3>Reproducción del Guernica de Picasso · Museo</h3>
+      <p>Reproducción en azulejo del famosísimo cuadro. El museo a 200 m.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · 2 km de Bermeo</div>
+      <h3>Asador Txakoli Arreta</h3>
+    </div>
+
+    <div class="section-title">⛪ Tarde · Costa de Bizkaia</div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Ermita · Escenario de Juego de Tronos · 18 km · 28 min · 237 escalones</div>
+      <h3>Ermita de San Juan de Gaztelugatxe</h3>
+      <p>Construida sobre un pequeño islote en el Cantábrico al que se accede por una hilera de escaleras sobre la roca. Escenario de <em>Juego de Tronos</em>. Dejar el coche en el parking señalizado (1,3 km al mirador). Tras bajar por el camino de acceso, el puente peatonal y 237 escalones. Las vistas de la costa son espectaculares.<br><br>
+      <em>Tradición: tocar tres veces la campana para pedir un deseo o ahuyentar los malos espíritus.</em> La iglesia data del siglo X y alberga exvotos de marinos que se salvaron de naufragios.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔦 Faro · 7 km · 14 min desde Gaztelugatxe</div>
+      <h3>Faro de Matxitxako</h3>
+      <p>Dos faros: el antiguo (inaugurado 1852, en desuso desde 1909) y el moderno en funcionamiento. La torre antigua, de piedra sillar de canteras de Durangaldea. Para llegar: a la altura de la planta de gas, aparcar a mano derecha y descender por un sendero (con cuesta pronunciada para la vuelta).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Puerto pesquero · 6,7 km · 14 min</div>
+      <h3>Bermeo — Puerto y Casco Viejo</h3>
+      <p>La localidad más poblada de Urdaibai y de arraigada tradición marinera. Recorrer el puerto pesquero y las llamativas casas de colores. La <strong>Atalaya</strong> ofrece gran vista de Bermeo. El <strong>Arco de San Juan</strong> (S.XIV), principal puerta que daba salida a la ermita de Gaztelugatxe, con la leyenda de las huellas de San Juan Bautista en su pavimento.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 6 ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Cueva Santimamiñe · San Miguel de Ereñozar · Mundaka · Bermeo</h2>
+        <div class="day-subtitle">Martes 22 de Septiembre · Bizkaia · Reserva Urdaibai</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦬 Cueva rupestre · Reserva 11:00h · 5€ · 1h · Patrimonio Humanidad 2008</div>
+      <h3>Cueva de Santimamiñe</h3>
+      <p>Restos de asentamientos humanos de hace más de 14.000 años y casi medio centenar de pinturas rupestres del Magdaleniense (~13.000 a.C.): 32 bisontes, 7 cápridos, 6 caballos, 1 oso, 1 ciervo y otras figuras. Las salas con pinturas no se visitan para evitar su deterioro — se hace un <strong>recorrido virtual en 3D</strong>. Se sube por el encinar con parada en mirador antes de la cueva. Tel. 94 465 16 57 / 60.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Ermita · S. X · Monte Ereñozar · Desde Ereño: 6 km · 9 min</div>
+      <h3>San Miguel de Ereñozar</h3>
+      <p>Sobre la cueva de Santimamiñe, la ermita rural con muros de mampostería y amplio pórtico. Guarda un sillar de arenisca con figura de orante rodeada de dientes de sierra y un sepulcro monolítico antropomorfo (S.X-XII). Lugar estratégico que sirvió de atalaya defensiva. En 1334, señores vizcaínos resistieron aquí durante un mes el asedio del rey Alfonso XI. Rodeado de leyendas de San Miguel persiguiendo al diablo, aguas con propiedades curativas y vientos atribuidos a almas en peregrinación.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Comer · A la salida de Ereño</div>
+      <h3>Atxoste Jatetxea · Ereño</h3>
+      <p>Menú del día.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏄 Surf · El mejor pueblo de Urdaibai · 18 km · 22 min</div>
+      <h3>Mundaka</h3>
+      <p>El pueblo más bonito y animado de Urdaibai, en la margen izquierda de la desembocadura de la ría. Paseo por sus estrechas callejuelas, el puerto pesquero y el mirador de la Atalaya presidido por la <strong>iglesia de Santa María</strong>. La ermita de Santa Catalina es visita imprescindible. Reconocido santuario del surf con la mejor ola de izquierda de toda Europa.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Iglesias · Bermeo</div>
+      <h3>Bermeo — Iglesias de Santa María y Santa Eufemia</h3>
+      <p>La <strong>Iglesia de Santa María de la Asunción</strong> (neoclásica, inaugurada 1858) tiene pórtico con frontón triangular y columnas dóricas, planta de cruz latina con cúpula a ocho cascos y órgano majestuoso. La <strong>Iglesia de Santa Eufemia</strong> (S.XIII, reconstruida finales S.XV) es la más antigua de Bermeo, conocida como la iglesia del puerto. De estilo gótico, es una de las cuatro iglesias <em>juraderas</em> donde los señores de Bizkaia firmaban los fueros. Ver por fuera.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 7 ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Museo Euskal Herria · Balneario de Elgorriaga</h2>
+        <div class="day-subtitle">Miércoles 23 de Septiembre · Bizkaia · Navarra</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Museo · 10:00-14:00 y 16:00-19:00h · 2€</div>
+      <h3>Museo de Euskal Herria · Gernika</h3>
+      <p>En el Palacio de Alegría o Montefuerte (reconstrucción barroca de 1733 de una torre medieval). Se salvó del bombardeo de 1937. Rodeado del Parque de los Pueblos de Europa. Cuatro plantas: planta baja (medio físico), primera (evolución histórica), segunda (deporte, folklore, música, baile, mitos) y ático (exposiciones temporales).</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-icon">🛁</div>
+      <div>
+        <div class="hotel-label">Balneario · Elgorriaga · 138 km · 2h</div>
+        <h3>Balneario de Elgorriaga</h3>
+        <p>Media pensión reservada + circuito SPA 70 min · Masaje 25 min: 35€ (reservar con días de antelación)<br>
+        Entrada/salida: 14:00h / antes de 12:00h · Desayuno: 08:15-10:00h<br>
+        ⚠️ Necesario traer bañador, gorro, chanclas. Recomendable gafas. Toalla y albornoz en la habitación.<br>
+        Reservado a las 17:00h y 17:30h · Baño termal después.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Antes del balneario · 2,7 km · 3 min · Menú 15€</div>
+      <h3>Hostal Santamaría · San Esteban</h3>
+      <p>Reservar: Tel. <strong>948 450 043</strong></p>
+    </div>
+  </section>
+
+  <!-- ═══ DIA 8 ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Olite — Palacio Real · Regreso</h2>
+        <div class="day-subtitle">Jueves 24 de Septiembre · Navarra</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desde el balneario a Olite:</strong> 94 km · 1h 16 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Palacio Real · 10:00-19:00h · 4,90€ adultos · Visita guiada 12:30h (40 min)</div>
+      <h3>Palacio Real de Olite</h3>
+      <p>Más de 150.000 visitantes al año. El mejor reflejo del esplendor de Olite en la Edad Media. Residencia de los reyes de Navarra, casi totalmente destruido en 1813 por el general Espoz y Mina para evitar que lo ocuparan las tropas francesas. Las obras de restauración se iniciaron en 1937 y duraron 30 años.<br><br>
+      El gran impulsor fue el rey <strong>Carlos III El Noble</strong> (finales S.XIV, principios S.XV), quien lo convirtió en uno de los palacios más lujosos de Europa. Estilo gótico francés.<br><br>
+      En la visita: murallas, patios (con impresionante árbol morera), Sala del Rey, Torre del Homenaje. La única decoración original es la <strong>Cámara de los Yesos</strong>. De la primera planta a cada una de las 6 torres hay escaleras.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Regreso a casa:</strong> 440 km · 5h 30 min
+    </div>
+  </section>
+
+</main>
+
+<!-- VIDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div class="video-label">📍 Viaje a Navarra 2020 fotos</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/f--y4KdFPKo" title="Navarra 2020" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div class="video-label">📍 Viaje a Navarra 2020 video</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/dCPbW21w2sc" title="Vizcaya 2020" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Navarra · Vizcaya 2020</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/10224967923935805.jpg','fotos/10224967924095809.jpg','fotos/10224967924575821.jpg',
+    'fotos/10224967926015857.jpg','fotos/10224967926055858.jpg','fotos/10224967926095859.jpg',
+    'fotos/10224967927215887.jpg','fotos/10224967927415892.jpg','fotos/10224967927815902.jpg',
+    'fotos/10224967927895904.jpg','fotos/10224967927935905.jpg','fotos/10224967929855953.jpg',
+    'fotos/10224967931335990.jpg','fotos/10224967931535995.jpg','fotos/10224967931655998.jpg',
+    'fotos/10224967931896004.jpg','fotos/10224967932056008.jpg','fotos/10224967932656023.jpg',
+    'fotos/10224967932856028.jpg','fotos/10224967933016032.jpg','fotos/10224967933416042.jpg',
+    'fotos/10224967933536045.jpg','fotos/10224967933856053.jpg','fotos/10224967934336065.jpg',
+    'fotos/10224968007577896.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.onclick = () => openLightbox(i);
+    const img = document.createElement('img');
+    img.src = src; img.alt = `Foto Navarra-Vizcaya ${i+1}`; img.loading = 'lazy';
+    item.appendChild(img);
+    gallery.appendChild(item);
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.day-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.day-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.2 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

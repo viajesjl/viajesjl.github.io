@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valladolid 2015 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.70) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.80) 100%),
+        url('https://images.unsplash.com/photo-1613224327093-bcc6c035d4c1?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.5rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.5rem 1.1rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.45rem; }
+    .place p { font-size: 0.98rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.98rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    /* ── PASOS DE RUTA ── */
+    .ruta-paso { display: flex; gap: 1.2rem; align-items: flex-start; background: white; border-left: 4px solid var(--accent-pale); padding: 1rem 1.5rem; margin-bottom: 0.6rem; transition: border-color 0.2s; }
+    .ruta-paso:hover { border-left-color: var(--accent); }
+    .paso-num { background: var(--accent); color: white; font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; font-weight: 700; min-width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 0.15rem; }
+    .paso-body .paso-dist { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.2rem; }
+    .paso-body h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.35rem; }
+    .paso-body p { font-size: 0.96rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    /* ── RESTAURANTES ── */
+    .resto { background: white; border-left: 4px solid #e8a838; padding: 1.1rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .resto:hover { border-left-color: #c47d10; }
+    .resto-meta { font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: #c47d10; font-weight: 700; margin-bottom: 0.3rem; }
+    .resto h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+    .resto p { font-size: 0.95rem; font-weight: 500; line-height: 1.75; color: var(--muted); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-espana">🇪🇸 España</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Valladolid 2015</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇪🇸 España · Castilla y León</div>
+  <h1 class="hero-title">Valladolid</h1>
+  <div class="hero-date">25 Agosto 2015 · 1 día</div>
+  <div class="hero-pills">
+    <span class="pill">Plaza Mayor</span>
+    <span class="pill">Plaza de San Pablo</span>
+    <span class="pill">Catedral</span>
+    <span class="pill">Casa de Cervantes</span>
+    <span class="pill">Museo Nacional de Escultura</span>
+    <span class="pill">Campo Grande</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por secciones">
+  <a href="#llegada">Llegada y Campo Grande</a>
+  <a href="#centro">Centro histórico</a>
+  <a href="#sanpablo">Plaza de San Pablo</a>
+  <a href="#catedral">Catedral</a>
+  <a href="#comer">Dónde comer</a>
+</div>
+
+<main class="content">
+
+  <!-- ═══ LLEGADA ═══ -->
+  <section class="day-section" id="llegada">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Valladolid — Un día por la capital castellana</h2>
+        <div class="day-subtitle">Martes 25 Agosto 2015 · Ruta a pie desde la Estación de Ferrocarril</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vueling BCN → Valladolid:</strong> Salida 8:15h (embarque 7:45h) · Llegada 9:35h<br>
+      <strong>Bus aeropuerto → Estación AVE:</strong> Sale 9:45h · 3 € · Llega 10:10h (bajarse en la penúltima parada)<br>
+      <strong>Coche alquiler Europcar:</strong> Reserva 1014270311 · Planta 0, frente a la sala club · Disponible desde las 10:00h<br>
+      <strong>Alternativa taxi:</strong> Tarifa única 22 € + 0,50 € por maleta (si el siguiente bus es a las 11:15h)
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🅿️ Aparcamiento</div>
+      <p>Prácticamente todo el centro es <strong>zona azul</strong>. Hay parking subterráneo bajo la <strong>Plaza de Zorrilla</strong>.</p>
+    </div>
+
+    <div class="section-title">🚶 Inicio de la ruta · Desde la Estación de Ferrocarril</div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">1</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Punto de partida · Estación de Ferrocarril Campo Grande</div>
+        <h3>Estación de Ferrocarril Campo Grande</h3>
+        <p>La construcción data de <strong>1856 a 1894</strong>. Desde aquí se ve la <strong>Plaza de Colón</strong>, en cuyo centro se encuentra el <strong>Monumento a Colón</strong> (1891-1905), obra del escultor Antonio Susillo.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">2</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Paseo de Filipinos · Saliendo a la izquierda de la estación</div>
+        <h3>Iglesia de San Juan de Letrán y Convento de Agustinos Filipinos</h3>
+        <p>La <strong>Iglesia de San Juan de Letrán</strong> (siglos XVII-XVIII), de estilo barroco, es actualmente el Convento de las Reparadoras. A su lado, el <strong>Convento de Agustinos Filipinos</strong> (siglos XVIII-XX), obra de Ventura Rodríguez, alberga hoy varias salas del <strong>Museo Oriental</strong>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">3</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Enfrente de la estación</div>
+        <h3>Parque de Campo Grande</h3>
+        <p>Acondicionado en 1877 por iniciativa del alcalde Miguel Iscar. Con una extensión de <strong>115.000 m²</strong>, tiene una variada flora y fauna (patos y pavos reales), así como estatuas y fuentes.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">4</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Acera de Recoletos · Volviendo hacia la Plaza de Colón</div>
+        <h3>Acera de Recoletos — Arquitectura burguesa del XIX</h3>
+        <p>A lo largo de este paseo, edificios representativos de la burguesía del siglo XIX y principios del XX: la <strong>Casa Mantilla</strong> y la <strong>Casa Resines</strong> (ambas de Julio Saracíbar) y la <strong>Casa del Príncipe</strong> (de Jerónimo del Arroyo). En este paseo está la <strong>Oficina de Turismo</strong>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">5</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Final de la Acera de Recoletos</div>
+        <h3>Plaza de Zorrilla · Academia de Caballería</h3>
+        <p>Al final de la acera: el <strong>Monumento a José Zorrilla</strong> y una hermosa fuente en la recién acondicionada <strong>Plaza de Zorrilla</strong>. Bajo la plaza hay parking. A la izquierda se ve la <strong>Academia de Caballería</strong>, que comenzó siendo un picadero en 1863; el edificio principal es de 1922.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ CENTRO HISTÓRICO ═══ -->
+  <section class="day-section" id="centro">
+    <div class="day-header">
+      <div class="day-number" style="font-size:0.9rem;letter-spacing:-1px;">CTR</div>
+      <div class="day-info">
+        <h2>Centro histórico</h2>
+        <div class="day-subtitle">Calle Miguel Iscar · Calle Santiago · Plaza Mayor · Calle Platería</div>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">6</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Miguel Iscar · A la derecha de la Plaza de Zorrilla · Antes de la Plaza España, calle Rastro a la derecha</div>
+        <h3>Casa de Cervantes</h3>
+        <p>Lugar de residencia de Miguel de Cervantes <strong>de 1602 a 1606</strong>. Recientemente restaurada con mobiliario original. <strong>Horario: 9h a 15h · Entrada: 3 €.</strong> <a href="http://www.museocasacervantes.mcu.es" style="color:var(--accent-light);" target="_blank">museocasacervantes.mcu.es</a><br><br>
+        Curiosidad histórica: por esta calle discurría antiguamente uno de los ramales del río La Esgueva.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">7</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Santiago · 50 m a mano izquierda desde la Plaza de Zorrilla</div>
+        <h3>Convento de las Comendadoras de Santiago — "Las Francesas"</h3>
+        <p>Una gran puerta conduce al convento, actualmente dedicado a uso comercial. El claustro tiene el suelo cubierto de <strong>"tabas"</strong> que forman diversos dibujos, por lo que se le llama el <em>"patio de las tabas"</em>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">8</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Santiago · 50 m más adelante</div>
+        <h3>Iglesia de Santiago Apóstol</h3>
+        <p>Siglo XV. Cuenta con un magnífico <strong>retablo de Alonso Berruguete</strong>. A esta iglesia pertenece la <strong>Cofradía de las Siete Palabras</strong>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">9</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Final de la Calle Santiago</div>
+        <h3>Plaza Mayor · Ayuntamiento · Monumento al Conde Ansúrez</h3>
+        <p>En el centro se levanta el <strong>Monumento al Conde Ansúrez</strong>, a quien se atribuye la fundación de la ciudad. El <strong>Ayuntamiento</strong> acaba de celebrar su centenario. También en la plaza: la <strong>Iglesia de Santa María de la Antigua</strong> y la <strong>Colegiata de Santa María</strong>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">10</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 A la derecha por la calle Lencería y luego calle Platería</div>
+        <h3>Calle Platería e Iglesia de la Vera Cruz</h3>
+        <p>La <strong>Calle Platería</strong>, conocida como <em>"la costanilla"</em>, fue una de las más transitadas de la ciudad. Ha sufrido una historia turbulenta: prácticamente desapareció en el <strong>incendio de 1461</strong>, reconstruida ardió de nuevo en <strong>1561</strong> (con más de 400 casas y la Plaza Mayor), y volvió a desaparecer en las <strong>inundaciones de 1788</strong>. En el nº 1 nació <strong>San Pedro Regalado</strong>.<br><br>
+        La <strong>Iglesia de la Vera Cruz</strong> (siglo XVI) llama la atención por el balcón de su fachada. Es sede de la <strong>Cofradía de la Santa Vera Cruz</strong>.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ PLAZA DE SAN PABLO ═══ -->
+  <section class="day-section" id="sanpablo">
+    <div class="day-header">
+      <div class="day-number" style="font-size:0.85rem;letter-spacing:-1px;">SPB</div>
+      <div class="day-info">
+        <h2>Plaza de San Pablo y alrededores</h2>
+        <div class="day-subtitle">Calle Felipe II · Calle Cadenas de San Gregorio · Calle Angustias</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">📍 Plaza de San Pablo — orientación</div>
+      <p>Al llegar a la plaza por la calle Felipe II: a la <strong>derecha</strong> el Palacio Real; a la <strong>izquierda</strong> el Instituto José Zorrilla, la Iglesia de San Pablo y la calle Cadenas de San Gregorio; <strong>enfrente</strong> el Palacio de Pimentel.</p>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">11</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Plaza de San Pablo · Derecha</div>
+        <h3>Palacio Real</h3>
+        <p>Residencia de la Corte de <strong>Felipe III y Margarita de Austria</strong> del 1601 al 1606, y lugar donde nació el futuro <strong>Felipe IV (1605)</strong>. Construido en el siglo XVI. En 1600 lo adquiere el Duque de Lerma, quien en 1601 se lo vende a Felipe III. A finales del siglo XIX pasa a ser sede de la <strong>Capitanía General</strong>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">12</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Plaza de San Pablo · Izquierda</div>
+        <h3>Iglesia de San Pablo</h3>
+        <p>Levantada sobre los restos del convento de los dominicos (siglo XIII). La construcción se inició en 1445 por orden del cardenal <strong>Torquemada</strong>. El conjunto de la fachada es de estilo <strong>hispano-flamenco</strong>, de una riqueza ornamental extraordinaria.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">13</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Cadenas de San Gregorio · Mano derecha</div>
+        <h3>Palacio del Marqués de Villena — Museo Nacional de Escultura</h3>
+        <p>Obra del siglo XVI. Tras sucesivos dueños, fue sede del Gobierno Civil hasta 1982, cuando pasó a ser <strong>edificio anexo al Museo Nacional de Escultura</strong>. Enfrente, el <strong>Colegio de San Gregorio</strong> (finales del siglo XV, por iniciativa de Fray Alonso de Burgos), donde la fachada, el claustro y la escalera concentran la más rica ornamentación. En 1933 pasó a ser la sede principal del Museo Nacional de Escultura.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">14</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Pequeña calle a mano izquierda desde Plaza de San Pablo</div>
+        <h3>Casa de José Zorrilla</h3>
+        <p>Lugar donde nació el poeta el <strong>21 de febrero de 1817</strong>. Recién restaurada, conserva el <strong>mobiliario original</strong>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">15</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Plaza de San Pablo · Enfrente</div>
+        <h3>Palacio de Pimentel — El nacimiento de Felipe II</h3>
+        <p>Actual sede de la <strong>Diputación Provincial</strong>. En este palacio nació el <strong>21 de mayo de 1527</strong> el que sería Felipe II. Anécdota histórica: en el lateral de la calle Cadenas de San Gregorio se conserva la famosa <strong>ventana por la que sacaron al futuro rey para ser bautizado</strong> en la Iglesia de San Pablo. Si salía por la puerta que da a la calle Angustias le correspondería la parroquia de la Iglesia de San Martín… así que ahí está la <em>reja partida y vuelta a cerrar con una cadena</em>.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">16</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Angustias</div>
+        <h3>Nuestra Señora de las Angustias y Teatro Calderón</h3>
+        <p>La <strong>Iglesia de Nuestra Señora de las Angustias</strong> (siglo XVI). Frente a ella, el <strong>Teatro Calderón</strong>, que se levanta sobre lo que fue el antiguo palacio del Almirante. Es obra de Jerónimo de la Gándara.</p>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">17</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Echegaray · Desde el Teatro Calderón</div>
+        <h3>Iglesia de Santa María La Antigua</h3>
+        <p>Aparece citada en documentos de principios del siglo XI, aunque la iglesia primitiva parece ser anterior. La actual es de <strong>estilo gótico</strong>. A la derecha queda la <strong>Plaza de Portugalete</strong>. Casi enfrente, subiendo por la calle Arzobispo Gandásegui, los restos de la <strong>Colegiata de Santa María</strong>, sobre los que se levantó la Catedral. La calle termina en la <strong>Plaza de la Universidad</strong>.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ CATEDRAL ═══ -->
+  <section class="day-section" id="catedral">
+    <div class="day-header">
+      <div class="day-number" style="font-size:0.95rem;letter-spacing:-1px;">CAT</div>
+      <div class="day-info">
+        <h2>Universidad, Catedral y Palacio de la Santa Cruz</h2>
+        <div class="day-subtitle">Plaza de la Universidad · Calle Cardenal Cos · Calle Librería</div>
+      </div>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">18</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Plaza de la Universidad</div>
+        <h3>Universidad de Valladolid</h3>
+        <p>Data de los siglos XV y XVII. Su <strong>fachada barroca</strong> es obra de Fray Pedro de la Visitación. En la balaustrada, las esculturas de los cuatro reyes que favorecieron a la Universidad: <strong>Alfonso VIII, Juan I, Enrique III y Felipe II</strong>. En el centro de la plaza, la <strong>estatua de Miguel de Cervantes</strong>, obra de Nicolás Fernández de la Oliva (siglo XIX).</p>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Siglo XVI · Juan de Herrera · Visita guiada 5 € a las 12:15h</div>
+      <h3>Catedral de Valladolid</h3>
+      <p>A la espalda de Cervantes. Bajando por su lateral (calle Cardenal Cos) y girando a la derecha se llega a la fachada principal. Data del <strong>siglo XVI</strong> y se debe a <strong>Juan de Herrera</strong>. En 1596, Felipe II le otorga la categoría de Catedral.<br><br>
+      En su interior, el <strong>Museo Catedralicio</strong> con una interesante selección de esculturas, pinturas y orfebrería. La <strong>torre de 70 metros</strong> ofrece una vista impresionante de toda la ciudad. <strong>Visita guiada: 5 € a las 12:15h.</strong></p>
+    </div>
+
+    <div class="ruta-paso">
+      <div class="paso-num">19</div>
+      <div class="paso-body">
+        <div class="paso-dist">📍 Calle Librería · Desde la Catedral</div>
+        <h3>Palacio de la Santa Cruz</h3>
+        <p>Edificio del <strong>siglo XV</strong> fundado por el <strong>cardenal Mendoza</strong>. Una de las joyas del renacimiento español, con una fachada de gran riqueza ornamental.</p>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ RESTAURANTES ═══ -->
+  <section class="day-section" id="comer">
+    <div class="day-header">
+      <div class="day-number" style="font-size:1.1rem;">🍽️</div>
+      <div class="day-info">
+        <h2>Dónde comer</h2>
+        <div class="day-subtitle">Zona Plaza Santa Ana / Plaza del Poniente</div>
+      </div>
+    </div>
+
+    <div class="resto">
+      <div class="resto-meta">🔥 Lechazo al horno de leña · Calle Pedro Niño, 1 (esquina Calle San Lorenzo)</div>
+      <h3>La Parrilla de San Lorenzo</h3>
+      <p>Entre la Plaza Santa Ana y la Plaza del Poniente. Se sigue asando el lechazo en <strong>horno de leña</strong>, una de las especialidades más emblemáticas de la cocina castellana.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-meta">🥩 Brasería · Calle de Gabilondo, 15</div>
+      <h3>Brasería Molino Rojo</h3>
+      <p>Cerca del coche. Otra buena opción para una comida de brasería en el centro de Valladolid.</p>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- VÍDEO -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeo del viaje</div>
+
+  <!-- UN SOLO VÍDEO: descomenta y pon el ID de YouTube -->
+  <!--
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/TU_ID_AQUI" title="Valladolid 2015" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+  -->
+
+  <!-- DOS VÍDEOS: descomenta y pon los IDs -->
+  
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">📹 Vídeo de fotos</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/ukgQuIzviLU" title="Vídeo de fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">📹 Vídeo</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/gc3-mb5EykE" title="Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Valladolid 2015</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = ['fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+     'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+      ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto Valladolid ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

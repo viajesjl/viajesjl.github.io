@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India 2014 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    .foto-inline-wrap { margin: 1rem 0; }
+    .foto-inline-wrap img { width: 100%; max-height: 380px; object-fit: cover; display: block; }
+    .foto-placeholder {
+      width: 100%; height: 220px;
+      background: var(--paper-dark); border: 2px dashed var(--accent-light);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.4rem;
+    }
+    .foto-placeholder .fp-icon { font-size: 2rem; opacity: 0.35; }
+    .foto-placeholder .fp-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    .foto-placeholder .fp-file { font-size: 0.72rem; color: var(--accent-light); font-family: monospace; margin-top: 0.1rem; }
+    .foto-caption { font-size: 0.72rem; color: var(--muted); font-style: italic; padding: 0.3rem 0.5rem; background: rgba(10,31,61,0.04); text-align: center; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; pointer-events: none;}
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-asia">🌏 Asia</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">India 2014</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇮🇳 India</div>
+  <h1 class="hero-title">India</h1>
+  <div class="hero-date">15 – 24 Junio 2014 · 10 días</div>
+  <div class="hero-pills">
+    <span class="pill">Nueva Delhi</span>
+    <span class="pill">Benarés · Varanasi</span>
+    <span class="pill">Khajuraho</span>
+    <span class="pill">Orcha</span>
+    <span class="pill">Agra · Taj Mahal</span>
+    <span class="pill">Fatehpur Sikri</span>
+    <span class="pill">Jaipur · Ciudad Rosa</span>
+    <span class="pill">Amber Fort</span>
+    <span class="pill">Samode</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Llegada Delhi</a>
+  <a href="#dia2">Día 2 · Nueva Delhi</a>
+  <a href="#dia3">Día 3 · Delhi · Benarés</a>
+  <a href="#dia4">Día 4 · Benarés · Khajuraho</a>
+  <a href="#dia5">Día 5 · Orcha · Agra</a>
+  <a href="#dia6">Día 6 · Agra · Taj Mahal</a>
+  <a href="#dia7">Día 7 · Fatehpur Sikri · Jaipur</a>
+  <a href="#dia8">Día 8 · Amber Fort · Jaipur</a>
+  <a href="#dia9">Día 9 · Samode · Delhi</a>
+  <a href="#dia10">Día 10 · Vuelta a BCN</a>
+</div>
+
+<main class="content">
+  
+  <div class="tip">
+    <div class="tip-label">🇮🇳 Consejos prácticos — India 2014</div>
+    <p><strong>Moneda:</strong> Rupia india (INR) · ~65 rupias = 1 € aprox. · <strong>Vuelo:</strong> Austrian Airlines · BCN→VIE→DEL / DEL→VIE→BCN · <strong>Normas en templos:</strong> Descalzarse siempre · Las mujeres deben cubrir hombros y piernas · <strong>Propinas:</strong> Habitual para los cuidadores de zapatos en mezquitas y templos · <strong>Transporte local:</strong> Taxi o tuk-tuk para moverse por las ciudades · <strong>Agua:</strong> Beber siempre agua embotellada</p>
+  </div>
+
+  <!-- ═══ DÍA 1 — LLEGADA A DELHI ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Barcelona → Viena → Nueva Delhi</h2>
+        <div class="day-subtitle">Domingo 15 de Junio · BCN 10:00h → VIE 12:20h → DEL 00:05h (+1)</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo BCN → VIE:</strong> Austrian Airlines · Salida 10:00h · Llegada 12:20h<br>
+      <strong>Vuelo VIE → DEL:</strong> Austrian Airlines · Salida 13:15h · Llegada 00:05h (día siguiente)
+    </div>
+
+    <!-- FOTO DÍA 1 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia1.jpg" alt="Jama Masjid Nueva Delhi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia1.jpg</span></div>
+      <div class="foto-caption">Ruta al hotel</div>
+    </div>
+
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Nueva Delhi</div>
+      <h4>The Suryaa New Delhi</h4>
+      <p>Nueva Delhi · Alojamiento durante los días en Delhi</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — NUEVA DELHI ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Nueva Delhi — Mezquitas, monumentos y templos</h2>
+        <div class="day-subtitle">Lunes 16 de Junio · Jama Masjid · Raj Ghat · India Gate · Qutb Minar · Templos</div>
+      </div>
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">🕌 Old Delhi · Promontorio · Entrada gratuita · Cámara: 150 rupias (2,5 €) · 8:30–12:30h y 13:45h–puesta de sol</div>
+      <h3>Jama Masjid — La mayor mezquita de la India</h3>
+      <p>Situada sobre un promontorio que permite observar toda la parte vieja de la ciudad. Construida en 1656 por Shah Jahan: 6 años de obras y más de 5.000 obreros. Destacan sus tres grandes entradas, dos minaretes de 40 m de altura y las hileras alternas de mármol blanco y arenisca roja. Su patio tiene cabida para 25.000 fieles. <em>Normas:</em> descalzarse y las mujeres deben cubrir hombros y piernas. Recomendable dejar propina a los cuidadores de zapatos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕊️ Old Delhi · Sur del Fuerte Rojo · Ribera del río Yamuna · Gratuito · 9:30–17:30h (cerrado lunes)</div>
+      <h3>Raj Ghat — Tumba de Gandhi</h3>
+      <p>Lugar de peregrinación sencillo pero cargado de emotividad. Plataforma de mármol negro que señala el punto exacto donde fue incinerado Gandhi en 1948. Un sacerdote vela por las cenizas y mantiene viva una llama eterna. El recinto tiene un parque precioso y tranquilo donde aislarse del caos de Nueva Delhi.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Nueva Delhi · Raj Path · Mejor al atardecer</div>
+      <h3>India Gate + Raj Path</h3>
+      <p>Gigantesca puerta de arenisca roja construida para rendir tributo a los soldados que murieron en la Primera Guerra Mundial, la provincia North-West Frontier, la tercera guerra afgana y la guerra indo-pakistaní de 1971. El ambiente que la rodea es fabuloso: un pequeño parque donde los habitantes se reúnen para jugar al ajedrez y a juegos tradicionales. <strong>Pasear por Raj Path al atardecer</strong> entre la Puerta de la India y el Rashtrapati Bhavan, mezclándose con los indios que vienen a pasear.</p>
+    </div>
+
+     <!-- FOTO DÍA 2 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia2.jpg" alt="Jama Masjid Nueva Delhi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">India Gate + Raj Path</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏗️ Sur de Delhi · Patrimonio UNESCO desde 1993 · Minarete de ladrillos más alto del mundo</div>
+      <h3>Qutb Minar — Complejo Qutb</h3>
+      <p>Torre de 72,5 m de altura (14,3 m de diámetro en la base, 2,7 m en la cima). Construcción iniciada en 1193, terminada en 1368. Construida en ladrillos y mármol, forma parte del complejo Qutb, declarado Patrimonio de la Humanidad por la UNESCO en 1993. Considerada una de las más bellas muestras del arte islámico.</p>
+    </div>
+
+    <!-- FOTO DÍA 2a -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia2a.jpg" alt="Jama Masjid Nueva Delhi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">India Gate + Raj Path</div>
+    </div>
+
+
+    <div class="place">
+      <div class="place-meta">🛕 Delhi · Erigido en 1938 · Abierto a todas las castas · No se pueden hacer fotos en el interior</div>
+      <h3>Templo de Birla — Birla Mandir</h3>
+      <p>Uno de los primeros templos de la India abierto a todas las castas; Gandhi asistió a su primera puja. Entrada de mármol con shikharas (agujas) de color ocre y marrón. Interior con imágenes de Vishnu y Lakshmi en el altar mayor, pinturas del Mahabharata y Ramayana en los altares secundarios. Sala dedicada a Krishna con música relajante y cantos religiosos. Espacio de meditación disponible.</p>
+    </div>
+
+    <!-- FOTO DÍA 2b -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia2b.jpg" alt="Jama Masjid Nueva Delhi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">Templo de Birla — Birla Mandir</div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔱 Delhi · Cerca de Connaught Place · Cúpula dorada · Descalzarse · Pañuelo gratuito para la cabeza</div>
+      <h3>Templo Sikh — Gurudwara Bangla Sahib</h3>
+      <p>Principal templo sikh de Delhi, cerca de Connaught Place. Todo construido en mármol, incluido el suelo. Complejo con cocina, estanque, escuela y galería de arte. Antiguo palacio del rajá Jai Singh (s. XVII) donde el Gurú Har Krishan ayudó a los afectados por una epidemia de cólera en 1664 con agua de su pozo — considerada hoy con propiedades curativas. Centro de peregrinación para sikhs e hindúes de todo el mundo.</p>
+    </div>
+
+    <!-- FOTO DÍA 2c -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia2c.jpg" alt="Jama Masjid Nueva Delhi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">Templo de Birla — Birla Mandir</div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Regreso · Nueva Delhi</div>
+      <h4>The Suryaa New Delhi</h4>
+      <p>Regreso al hotel al final del día</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — DELHI / BENARÉS ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Nueva Delhi → Benarés — Traslado</h2>
+        <div class="day-subtitle">Martes 17 de Junio · Vuelo a Varanasi</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Traslado:</strong> Aeropuerto Indira Gandhi → vuelo a Benarés (Varanasi) · Traslado al hotel Radisson Hotel Varanasi
+    </div>
+
+    <!-- FOTO DÍA 3 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia3.jpg" alt="Jama Masjid Nueva Delhi" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia2.jpg</span></div>
+      <div class="foto-caption">Itinerario al hotel</div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Benarés (Varanasi)</div>
+      <h4>Radisson Hotel Varanasi</h4>
+      <p>Benarés · Varanasi</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — BENARÉS / KHAJURAHO ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Benarés — Ganges al amanecer · Templos de Khajuraho</h2>
+        <div class="day-subtitle">Miércoles 18 de Junio · Paseo en barca · Vuelo a Khajuraho (50 min) · Visita templos</div>
+      </div>
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">🛶 Varanasi · Al amanecer · ~80 ghats a lo largo del río</div>
+      <h3>Recorrido en barca por el Ganges — Ghats de Varanasi</h3>
+      <p>Varanasi, también conocida como Kashi, es considerada la ciudad más antigua del mundo (más de 3.000 años de antigüedad). Centro cultural y espiritual de la India y una de las principales ciudades de peregrinación hindú. Los ghats principales van desde Raj Ghat en el norte hasta Assi Ghat al sur. <strong>Paseo por las callejuelas de la Ciudad Vieja</strong> tras el recorrido en barca.</p>
+    </div>
+
+    <!-- FOTO DÍA 4 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia4.jpg" alt="Varanasi Ganges ghats" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia4.jpg</span></div>
+      <div class="foto-caption">Varanasi · Los ghats del Ganges al amanecer</div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo a Khajuraho:</strong> 50 min (por carretera serían 7h y 392 km) · Traslado al hotel Taj Chandela
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛕 Khajuraho · Templos s. X-XI · 22 templos conservados de los 80 originales · Patrimonio UNESCO</div>
+      <h3>Templos de Khajuraho — Templo Visvanath y Grupo Occidental</h3>
+      <p>El mayor conjunto de templos hinduistas de la India, famosos por sus esculturas eróticas. Capital religiosa de la dinastía Chandella (ss. X-XII). Los templos se construyeron entre el 950 y el 1050 d.C. Toda la zona ocupa 21 km² y está amurallada con ocho puertas flanqueadas por palmeras. De los 80 templos originales, 22 se conservan en buen estado. Al encontrarse lejos del Ganges, sobrevivieron a la destrucción mogol. Redescubiertos en 1838 por el capitán I. S. Burt. El nombre de la ciudad viene de <em>Kajur</em> (palmera datilera en hindi).</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Khajuraho</div>
+      <h4>Hotel Taj Chandela</h4>
+      <p>Khajuraho</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — KHAJURAHO / ORCHA / AGRA ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Khajuraho → Orcha → Agra</h2>
+        <div class="day-subtitle">Jueves 19 de Junio · 4h en coche a Orcha · Tren Shatbdi Express Jhansi–Agra (~2,5h)</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>A Orcha:</strong> 4h en coche por carreteras destartaladas con baches y animales · 176 km aprox.<br>
+      <strong>A Agra:</strong> Carretera hasta Jhansi + tren rápido Shatbdi Express Jhansi–Agra (~2,5h)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Orcha · Pueblo de 8.000 habitantes · Orillas del río Betwa</div>
+      <h3>Orcha — Palacio Real y Cenotafios del clan Bundela</h3>
+      <p>Palacio construido por el tercer rajá Madhukar Shâh (1554-1578). Habitaciones pintadas con murales en los techos donde la realeza de Rama, Krishna y Orchha pelean, cazan, luchan y bailan. Cámaras reales conectadas por laberínticos pasillos con acceso a jardines de estilo mongol. En el patio central: restos de un baño alimentado por canales. Los balcones exteriores están decorados con filigranas de madera y esculturas de animales (elefantes destacados en las puertas). <strong>Raj Praveen Mahal:</strong> pabellón externo con baño turco de hermosos techos abovedados y vistas excepcionales al río Betwa. Destacan la calma total y los cánticos llamando a la oración.</p>
+    </div>
+
+    <!-- FOTO DÍA 5 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia5.jpg" alt="Palacio de Orcha" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia5.jpg</span></div>
+      <div class="foto-caption">Raj Praveen Mahal</div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Agra</div>
+      <h4>Jaypee Palace Hotel</h4>
+      <p>Agra · Traslado al hotel tras llegar en tren</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — AGRA ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Agra — Fuerte Rojo · Taj Mahal</h2>
+        <div class="day-subtitle">Viernes 20 de Junio · Fuerte Rojo (mañana) · Taj Mahal (tarde)</div>
+      </div>
+    </div>
+   
+    <div class="place">
+      <div class="place-meta">🏰 Agra · Orilla oeste del río Yamuna · Salida temprana</div>
+      <h3>Fuerte Rojo de Agra — Lal Qila</h3>
+      <p>Construido en piedra de arenisca roja por el emperador mogol Akbar entre 1565 y 1573. Palacio amurallado con impresionante conjunto de palacios de estilos que van desde la complejidad de Akbar hasta la simplicidad de su nieto Shah Jahan. Rodeado de un profundo foso que se llenaba de agua del Yamuna. Acceso por la <strong>Amar Singh Gate</strong>. Destacan: <strong>Jahangiri Mahal</strong> (único palacio de la época de Akbar), <strong>Khas Mahal</strong> (exquisito salón de mármol blanco con techos pintados y pabellones dorados con tejado bengalí). El resto del fuerte está bastante en ruinas y descuidado.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕌 Agra · Puerta oeste · Ticket 750 rupias · Complejo construido 1631–1654 · Patrimonio UNESCO</div>
+      <h3>Taj Mahal — Palacio de la Corona</h3>
+      <p>Ticket en la taquilla de la puerta oeste (750 rupias) y dirigirse a la entrada del complejo. Construido entre 1631 y 1654 a orillas del río Yamuna por el emperador Shah Jahan en honor de su esposa favorita Arjumand Bano Begum (Mumtaz Mahal), fallecida en el parto de su decimocuarta hija. Dentro del complejo hay una mezquita activa. Se estima que su construcción requirió el esfuerzo de unos 20.000 obreros.</p>
+    </div>
+
+    <!-- FOTO DÍA 6 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia6.jpg" alt="Taj Mahal Agra" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia6.jpg</span></div>
+      <div class="foto-caption">Taj Mahal · El Palacio de la Corona</div>
+    </div>
+
+  </section>
+
+  <!-- ═══ DÍA 7 — FATEHPUR SIKRI / JAIPUR ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Fatehpur Sikri · Hawa Mahal · Jaipur</h2>
+        <div class="day-subtitle">Sábado 21 de Junio · Fatehpur Sikri (35 km de Agra) → Jaipur (Ciudad Rosa)</div>
+      </div>
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">🏛️ 35 km de Agra · Bus desde parking: 5 rupias ida + 5 vuelta · Tumba de Salim Chishti: gratuita</div>
+      <h3>Fatehpur Sikri — Ciudad imperial del siglo XVI</h3>
+      <p>Ciudad erigida por el emperador mogol Akbar entre 1571 y 1585, en el distrito de Agra, estado de Uttar Pradesh. Arquitectura bellísima. Acceso: bajar en el parking, atravesar la zona comercial, coger el bus interno al complejo (5 rupias ida). <strong>No perderse la Tumba de Salim Chishti</strong> (a 100 m de la salida del complejo): exquisita arquitectura Mughal del s. XVI, entrada gratuita, descalzarse y dejar propina al cuidador.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Jaipur · Ciudad Rosa · Centro de la calle principal · Construido en 1799 · Símbolo de Jaipur</div>
+      <h3>Hawa Mahal — Palacio de los Vientos</h3>
+      <p>Construido en 1799 por el marahá Sawai Pratap Singh. Formaba parte del Palacio de la Ciudad y servía de extensión del harén: las mujeres reales podían observar la vida cotidiana de las calles sin ser vistas. El máximo exponente de la arquitectura Rajput, con matices mongoles. Fachada con <strong>953 pequeñas ventanas</strong> (como un panal de abejas). 5 pisos de forma piramidal, acceso solo mediante rampas (sin escaleras). Construido en arenisca roja y rosa con incrustaciones de óxido de calcio. Su diseñador, Lal Chand Usta, le dio la forma de la corona del dios Krishna. Aunque solo se conserva la fachada, es el símbolo de Jaipur.</p>
+    </div>
+
+    <!-- FOTO DÍA 7 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia7.jpg" alt="Hawa Mahal Jaipur" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia7.jpg</span></div>
+      <div class="foto-caption">Hawa Mahal · El Palacio de los Vientos · 953 ventanas en su fachada</div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Jaipur · Zona muy céntrica</div>
+      <h4>Royal Orchid Jaipur</h4>
+      <p>Jaipur · Salir a pasear por los alrededores del hotel (zona muy céntrica)</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 8 — JAIPUR / AMBER / JAIPUR ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Amber Fort · Palacio del Maharajá · Jantar Mantar</h2>
+        <div class="day-subtitle">Domingo 22 de Junio · Subida en elefante · Palacio de la Ciudad · Observatorio astronómico</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐘 Fuera de Jaipur · Subida en elefante: 450 rupias ida y vuelta · Entrada 50 rupias (cámara: 75 rps · vídeo: 150 rps)</div>
+      <h3>Amber Fort — Subida en elefante</h3>
+      <p>Uno de los lugares más turísticos de toda la India. Construido sobre un antiguo fuerte del s. XI, es uno de los mejores ejemplos de arquitectura del Rajasthan. La subida en elefante por el estrecho camino adoquinado es movidita: el camino es empinado e irregular y los paquidermos van chocando entre ellos. <strong>Destacan:</strong> la <strong>Ganesh Pol</strong> (puerta de tres alturas que separa el patio de las estancias privadas), las puertas de plata, los salones con ventanas de celosía y el precioso <strong>palacio Sheesh Mahal</strong>. El lugar es imponente por su tamaño, el grosor de sus murallas y la belleza de su ornamentación.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Ciudad amurallada de Jaipur · Entrada occidentales: 180 INR · Cámara: +100 INR · Vídeo: +200 INR</div>
+      <h3>Palacio del Maharajá — City Palace</h3>
+      <p>Complejo enorme con varios edificios, jardines, patios y murallas; una parte es la residencia actual del Maharajá (no visitable). Fusión de arquitectura Rajhastan con influencia mogola. Muy colorido, destacando el rosado y el marfil. En su interior: museo dedicado a los Maharajas de Jaipur con la imagen de Sawai Masho Singh I (2 m de alto, 1,2 m de ancho, 250 kg, 108 esposas). También el arsenal (dagas, espadas, espejos y techos con incrustaciones de oro) y las salas de audiencias. Fijarse en las puertas del patio con bajorrelieves de pavos reales.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔭 Al lado del Palacio de la Ciudad · Entrada: 10 rupias · Cámara: 50 rps · Vídeo: 100 rps · Construido 1728–1734</div>
+      <h3>Jantar Mantar — Observatorio astronómico</h3>
+      <p>Compuesto por 16 aparejos astronómicos que todavía se utilizan para predecir temperaturas de verano, intensidad de monzones y catástrofes naturales. En la India la astronomía tiene una importancia capital: un astrónomo puede determinar si una pareja es compatible para casarse según las cartas astrales. Merece la pena llevarse alguna foto de recuerdo.</p>
+    </div>
+
+    <!-- FOTO DÍA 8 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia8.jpg" alt="Amber Fort Jaipur elefantes" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia8.jpg</span></div>
+      <div class="foto-caption">Amber Fort · Palacio del Maharajá · Jantar Mantar</div>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Jaipur</div>
+      <h4>Royal Orchid Jaipur</h4>
+      <p>Jaipur</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — SAMODE / NUEVA DELHI ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Samode Palace · Nueva Delhi — Traslado al aeropuerto</h2>
+        <div class="day-subtitle">Lunes 23 de Junio · Samode (56 min / 40 km) → Delhi (4h aprox.) → Aeropuerto</div>
+      </div>
+    </div>
+    
+    <div class="place">
+      <div class="place-meta">🏰 Samode · 56 min / 40 km desde Jaipur</div>
+      <h3>Samode Palace</h3>
+      <p>Alto en el camino para contemplar el majestuoso Samode Palace, un hotel que antiguamente era un palacio muy opulento. Almuerzo en Samode.</p>
+    </div>
+
+    <!-- FOTO DÍA 9 -->
+    <div class="foto-inline-wrap">
+      <img src="fotos/dia9.jpg" alt="Samode Palace Rajasthan" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="foto-placeholder" style="display:none;"><span class="fp-icon">📷</span><span class="fp-label">Tu foto aquí</span><span class="fp-file">fotos/dia9.jpg</span></div>
+      <div class="foto-caption">Samode Palace · Un palacio opulento convertido en hotel</div>
+    </div>
+
+    <div class="transport">
+      <strong>A Delhi:</strong> Unas horas más de carreteras con baches y amortiguadores en pésimo estado · Unas 4h aprox. · Traslado directo al aeropuerto Indira Gandhi
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — VUELTA A BARCELONA ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Nueva Delhi → Viena → Barcelona</h2>
+        <div class="day-subtitle">Martes 24 de Junio · DEL 01:35h → VIE 05:55h → BCN 09:15h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo DEL → VIE:</strong> Austrian Airlines · Salida 01:35h · Llegada 05:55h<br>
+      <strong>Vuelo VIE → BCN:</strong> Austrian Airlines · Salida 07:00h · Llegada 09:15h<br>
+      <strong style="color: var(--accent);">🇮🇳 Fin del viaje</strong>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS EN 3 COLUMNAS --> 
+<div class="video-section"> 
+  <div class="section-title" style="padding:0;">Vídeos del viaje</div> 
+  
+  <div class="video-grid"> 
+    
+    <!-- VÍDEO 1 (IZQUIERDA) -->
+    <div> 
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 1</div> 
+      <div class="video-wrap"> 
+        <iframe src="https://youtube.com/embed/wDBA4iW2qI0" title="Fotos del viaje a la India 2014" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+        <div class="video-placeholder-v" id="vph1"><span class="icon">▶</span><span>FOTOS DEL VIAJE</span></div> 
+      </div> 
+    </div> 
+
+    <!-- VÍDEO 2 (CENTRO) -->
+    <div> 
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE PARTE 2</div> 
+      <div class="video-wrap"> 
+        <iframe src="https://youtube.com/embed/cvHsRM-mbNk" title="Vídeo del viaje a la India 2014" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+        <div class="video-placeholder-v" id="vph2"><span class="icon">▶</span><span>VÍDEO DEL VIAJE 1</span></div> 
+      </div> 
+    </div> 
+
+    <!-- VÍDEO 3 (DERECHA) -->
+    <div> 
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VÍDEO DEL VIAJE</div> 
+      <div class="video-wrap"> 
+        <iframe src="https://youtube.com/embed/uGgMzkW1JOw" title="Vídeo del viaje a la India 2014" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+        <div class="video-placeholder-v" id="vph3"><span class="icon">▶</span><span>VÍDEO DEL VIAJE 2</span></div> 
+      </div> 
+    </div> 
+
+  </div> 
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · India 2014</strong> &nbsp;·&nbsp; 15 – 24 Junio 2014 · 10 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/galeria/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto India ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) {
+      document.getElementById(id).style.display = 'none';
+    }
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>

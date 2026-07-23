@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nueva York 2019 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
+        url('https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.8; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 2rem 0 1.2rem; display: flex; align-items: center; gap: 1rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-america">🌎 América</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Nueva York 2019</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇺🇸 Nueva York · Estados Unidos</div>
+  <h1 class="hero-title">Nueva York</h1>
+  <div class="hero-date">19 – 23 Septiembre 2019 · 5 días · 4 noches</div>
+  <div class="hero-pills">
+    <span class="pill">Williamsburg · Brooklyn</span>
+    <span class="pill">Estatua de la Libertad</span>
+    <span class="pill">Ellis Island</span>
+    <span class="pill">Wall Street · One WTC</span>
+    <span class="pill">11S Memorial</span>
+    <span class="pill">Times Square · Rockefeller</span>
+    <span class="pill">Grand Central</span>
+    <span class="pill">Harlem · Gospel</span>
+    <span class="pill">Central Park · Met</span>
+    <span class="pill">Bronx · Queens</span>
+    <span class="pill">DUMBO · Puente de Brooklyn</span>
+    <span class="pill">Chinatown</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Llegada · Brooklyn</a>
+  <a href="#dia2">Día 2 · Manhattan</a>
+  <a href="#dia3">Día 3 · Boda</a>
+  <a href="#dia4">Día 4 · Harlem · Central Park</a>
+  <a href="#dia5">Día 5 · Tour · DUMBO · Vuelo</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">🗽 Consejos prácticos — Nueva York 2019</div>
+    <p><strong>Vuelo:</strong> Delta/Air France · Reservas GPGGLC y H43UNH · BCN T1 (puerta habitual E76) → JFK T4 (puerta habitual B37) · AF3557 / DL477 · <strong>Metro NY:</strong> MetroCard · 1 viaje 2,75$ · Comprar en Bedford Ave · <strong>Uber:</strong> Más económico que taxi para grupos · XL ~80$ / X ~60$ del aeropuerto · entre barrios 8-12$ · <strong>TKTS:</strong> Entradas de teatro con descuento bajo las escaleras rojas de Times Square (15–20h) o South St Seaport (11–18h) · <strong>Ismael:</strong> 845 Grand Street · <strong>Civitatis Tour:</strong> Comprado 44,50 €/persona</p>
+  </div>
+
+  <!-- ═══ DÍA 1 — LLEGADA ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada — Brooklyn · Williamsburg · Domino Park</h2>
+        <div class="day-subtitle">Jueves 19 de Septiembre · BCN 12:45h → JFK 15:44h · 9h de vuelo</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo:</strong> AF3557 (DL477) · Salida BCN T1 12:45h · Llegada JFK T4 15:44h · 9h de vuelo<br>
+      <strong>Del aeropuerto al hotel:</strong> 2 Ubers (XL ~80$ y X ~60$) al POD Brooklyn, 247 Metropolitan Avenue
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · 4 noches · Williamsburg · Brooklyn</div>
+      <h4>POD Brooklyn</h4>
+      <p>247 Metropolitan Avenue · Williamsburg · Brooklyn</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌳 1,1 km del hotel · Vistas de Manhattan y del Williamsburg Bridge</div>
+      <h3>Domino Park + Restaurante Aurora</h3>
+      <p>Pasear hasta Domino Park pasando por el Restaurante Aurora para ver las vistas de Manhattan y del Williamsburg Bridge. Se pasan también las peluquerías seleccionadas.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Cena · Con Ismael · 845 Grand Street</div>
+      <h4>Con Ismael — Donde él diga</h4>
+      <p>Ir al apartamento de Ismael (845 Grand St). En metro: Línea L en Bedford Ave → 3 paradas → Grand St. En Uber: 8–12$. Caminando: 2,1 km. Cenar y volver al hotel.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — MANHATTAN ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Manhattan — Estatua de la Libertad · Wall St · One WTC · Times Square · Rockefeller · Grand Central</h2>
+        <div class="day-subtitle">Viernes 20 de Septiembre · Entradas Estatua Libertad para las 10h · Quedar a las 8:00h para el ferry</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Metro al Battery Park:</strong> Línea L en Bedford Ave (450 m del hotel, 4ª calle arriba) → comprar MetroCards (12 viajes 31,44$, 18 viajes 47,13$, 24 viajes 62,85$, +1$ la tarjeta) → 3 paradas → 14 St-Union Sq → Línea 5 (no la 6) → 4 paradas → Bowling Green (downtown) · Total ~30 min
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗽 Entradas para las 10h · Statue Cruises · Battery Park · 360 m desde el metro por el parque · ~3h30 total</div>
+      <h3>Estatua de la Libertad — Liberty Island + Ellis Island</h3>
+      <p>Llegar a las 8:00h como tarde para pasar el control de seguridad. El crucero recorre dos islas: <strong>Liberty Island</strong> con el Statue of Liberty Museum (historia de la construcción) y <strong>Ellis Island</strong> con el Immigration Museum (gratuito) y el muro con los nombres de todos los inmigrantes. Situarse en la <strong>cubierta derecha</strong> para ver la estatua. <strong>Horarios:</strong> salidas a Liberty Island 10:00–10:20–10:40 (cada hora) · Liberty Island a Ellis Island 11:05–11:25–11:45 · Ellis Island a Battery Park 12:05–12:25–12:45.<br><br>
+      <strong>Historia:</strong> Diseñada por Auguste Bartholdi y construida en París durante 8 años (1876–1884). Llegó a NY en 214 cajas en 1885. Inaugurada el 28 de octubre de 1886. El armazón interior lo diseñó Gustave Eiffel (el mismo de la Torre Eiffel). El color verdoso es por la oxidación del cobre; en 1906 el Congreso propuso repintarla pero la oposición popular lo impidió. La antorcha (recubierta de oro desde 1986) lleva cerrada desde el 30 de julio de 1916, cuando la explosión "Black Tom" la dañó. Lo máximo que se puede hacer es subir a la corona.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐂 150 m subiendo por Broadway · Parque Bowling Green · Wall St a 330 m</div>
+      <h3>Toro de Wall Street + Wall Street + Trinity Church</h3>
+      <p>Subir por Broadway 150 m: el Toro de Bronce en el parque Bowling Green. Un poco más arriba (330 m): Wall Street a la derecha y Trinity Church a la izquierda.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏙️ 560 m desde Wall St · Subir por Trinity Place → Thames St → Plantas 100–102 · 36$ (34$ jubilados)</div>
+      <h3>One World Trade Center + 9/11 Memorial Plaza</h3>
+      <p>541 m de altura, 1.776 pies (año de la Declaración de Independencia). La azotea a 417 m: la misma altura que las Torres Gemelas. El ascensor sube a la planta 102 en menos de 60 segundos con time-lapse de la historia de NY desde 1600. Comer en el centro comercial del interior.<br><br>
+      <strong>9/11 Memorial Plaza:</strong> Dos estanques en los cimientos de las Torres con cascadas de agua y placas de bronce con los nombres de los fallecidos. El <strong>Survivor Tree</strong>, hallado maltrecho entre los escombros, cuidado y replantado en 2010. <em>No entrar al Museo</em>.</p>
+    </div>
+
+    <div class="transport">
+      <strong>A Times Square:</strong> Metro Línea 2 o 3 roja en Park Place Station (600 m: derecha por Vesey St → parquecito → izquierda por West Broadway → derecha por Barclay St → izquierda por Church St) → 4 paradas → Times Sq-42 St → subir 370 m por la 7ª Av
+    </div>
+
+    <div class="place">
+      <div class="place-meta">✨ Broadway y 7ª Avenida · TKTS bajo las escaleras rojas · 15–20h</div>
+      <h3>Times Square + Bryant Park + NY Public Library</h3>
+      <p>TKTS bajo las escaleras rojas. Carteles luminosos, Disney Store, M&amp;M's World. Bajar 680 m hacia Bryant Park pasando por la <strong>Bank of America Tower</strong> (6ª Av., estructura de cristal y techo inclinado, vestíbulo público con mesas). <strong>Bryant Park:</strong> la Josephine Shaw Lowell Memorial Fountain (se congela en invierno). Desde el norte del parque: vista del Empire State (1 km por la 6ª Ave). Ver el <strong>American Radiator Building</strong> (calle 40, Art Déco negro con remates dorados). Frente al parque: la <strong>NY Public Library</strong> (estilo Beaux-Arts con dos leones guardianes, exposiciones gratuitas).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚉 560 m · Subir por la 5ª Ave → girar derecha por la 42 St · Construida 1913</div>
+      <h3>Grand Central Terminal</h3>
+      <p>Ver la fachada clásica desde la calle 42 con el Chrysler al fondo. Escultura "La gloria del comercio" (Minerva, Mercurio y Hércules), reloj de cristal de Tiffany y águilas en las esquinas. <strong>Main Concourse:</strong> reloj central adelantado 1 minuto, balcones (uno con Apple Store), bandera post-11S, techo aguamarina con constelaciones en orden incorrecto. El agujero sobre Piscis (del cohete Sputnik de 1957) y el rectángulo negro cerca de Cáncer (color original del techo). <strong>Whispering Gallery</strong> frente al Oyster Bar (arquitecto valenciano Rafael Guastavino): susurrar de esquina a esquina. Grand Central Market, Dining Concourse, NY Transit Museum y maqueta de NY.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎡 Top of the Rock 38$ / 36$ seniors · Subir por la 5ª Ave hasta la 49th → izquierda</div>
+      <h3>Rockefeller Center + Radio City Music Hall + St. Patrick + Tiffany</h3>
+      <p><strong>Radio City Music Hall</strong> (un poco más adelante por la 6ª). <strong>Rockefeller Center:</strong> pista de patinaje y árbol de Navidad con 30.000 luces. <strong>Top of the Rock</strong> (38$/36$ seniors): mirador. Bajar y tirar a la izquierda al nº 610 de la 5ª Av. para ver la joyería <strong>Tiffany</strong>. Subir por la 5ª Av. hasta la 50th para ver la <strong>St. Patrick Cathedral</strong> (280 m). Opcionalmente seguir 5 calles más para ver la <strong>Trump Tower</strong> (510 m) pasando por la tienda de Apple y el Hotel Plaza (esquina calle 59).</p>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelta al hotel:</strong> Desde St. Patrick subir por la 5ª hasta la 53 → Línea M azul → 5 paradas → 14 St Station → Línea L → Bedford St
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — BODA ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Boda de Ismael — Restaurante Aurora · Williamsburg</h2>
+        <div class="day-subtitle">Sábado 21 de Septiembre · Ceremonia 11:40h–16:00h · Restaurante Aurora · Grand Street 70</div>
+      </div>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">💍 Celebración · Grand Street 70 · Williamsburg</div>
+      <h4>Restaurante Aurora</h4>
+      <p>Ir andando y en Uber. Inicio de la ceremonia a las 11:40h hasta las 16:00h. Volver al hotel a cambiarse e ir al restaurante de la tarde que indique Ismael (en Uber).</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — HARLEM Y CENTRAL PARK ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Harlem — Misa Gospel · Brunch · Central Park · Metropolitan Museum</h2>
+        <div class="day-subtitle">Domingo 22 de Septiembre · Misa a las 11h · Llegar 45 min antes</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">⛪ Dos opciones para la misa gospel</div>
+      <p><strong>Opción recomendada — Mother African Methodist Episcopal</strong> (137th St): la iglesia negra más antigua de los Estados Unidos (fundada en 1796, también conocida como "Madre Sión"). Edificio de 1923–1925. Metro: Bedford Av → 4 paradas → 14 St → transbordo Línea 2 o 3 → 8 paradas → 135 St → 270 m caminando (subir por Malcolm X y primera a la izquierda por la 136). Misa a las 11h, llegar 45 min antes.<br><br>
+      <strong>Opción alternativa — Bethel Gospel Assembly</strong> (120th St con Madison Ave): servicios a las 8:00 y 11:30h. Metro: Bedford Av → 3 paradas → 14 St-Union Sq → transbordo Línea 4 → 6 paradas → 125 St → bajar por Lexington Av, 2ª a la derecha. Está en la esquina del Parque Marcus Garvey.</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍗 Brunch · 328 Malcolm X Blvd (entre la 126 y la 127)</div>
+      <h4>Sylvia's Restaurant o Red Rooster Harlem</h4>
+      <p><strong>Sylvia's</strong> (328 Malcolm X Blvd): el mejor pollo frito y la famosa comida "soul" de Harlem. <strong>Red Rooster Harlem</strong> (310 Malcolm X Blvd): alternativa igual de notable. 1 km bajando por Malcolm X Blvd desde la iglesia.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌳 A la altura del Metropolitan Museum · 1000 Fifth Ave · Precio sugerido 25$</div>
+      <h3>Central Park + Metropolitan Museum of Art</h3>
+      <p><strong>Metro desde Harlem:</strong> Línea 2 en 125 St → 2 paradas → 149 St-Grand Concourse → transbordo Línea 4 o 5 → 3 paradas → 86 Street Station → 700 m andando por la 86 St a la derecha hasta el parque → bajar por la 5ª Avenida.<br><br>
+      Bajar hasta el extremo sureste del parque. <strong>Vuelta al hotel:</strong> Línea N o R (la W no pasa en fin de semana) en 5 Avenue Station → 7 paradas → 14 St-Union Sq → Línea L → 3 paradas → Bedford.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — TOUR CONTRASTES · DUMBO · VUELO ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Tour Contrastes NYC · Chinatown · DUMBO · Puente de Brooklyn · Vuelo</h2>
+        <div class="day-subtitle">Lunes 23 de Septiembre · Tour 9:15h · Recoger maletas 16:00h · Vuelo AF3597 20:39h → BCN 10:35h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚌 Civitatis · 44,50 €/persona · Entradas compradas · Hotel Pennsylvania 407 7th Ave · Salida 9:15h (llegar 9:05h)</div>
+      <h3>Tour "Contrastes de NYC" — Harlem · Bronx · Queens · Brooklyn</h3>
+      <p><strong>Metro al punto de salida:</strong> Bedford → Línea L → 4 paradas → 14 St → 4 min andando hacia la 7ª → Línea 2 o 3 (no la 1) → 1 parada → 34 St-Penn Station → unos metros por la 7ª Ave hasta el hotel. Total ~22 min.<br><br>
+      <strong>Harlem:</strong> Cotton Club (club nocturno de 1920 con Louis Armstrong, Ella Fitzgerald y Billie Holiday) y Teatro Apollo (fundado en 1800; tras la muerte de Michael Jackson en 2009, lleno de fans con flores). <strong>Bronx:</strong> Estadio de los Yankees (54.000 personas), zona de la Corte y Fort Apache, graffitis (destaca el del rapero Big Pun). <strong>Queens:</strong> zona residencial de Malba con vistas del Puente Whitestone → Flushing Meadows Corona Park (2º parque más grande de NY, construido para la Feria Mundial 1939–40, estadio de los Mets y pistas del US Open). <strong>Brooklyn:</strong> Barrio judío ultraortodoxo (hombres con bekishe y shtraimel; mujeres con colores oscuros y codos tapados; letreros en hebreo; comida kosher) → Puente de Brooklyn.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">📸 Barrio judío de Brooklyn</div>
+      <p>No hacer fotos de la gente "robadas" — alguno puede molestarse. Observar con respeto.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐉 Canal St · Metro Línea 6 desde Bedford → 14 St → 4 paradas → Canal St · 150.000 residentes chinos</div>
+      <h3>Chinatown — Alternativa o complemento al tour</h3>
+      <p>Columna vertebral del barrio asiático más famoso de NY. El primer chino en establecerse aquí fue Ah Ken en 1858, en Mott Street (la calle principal). Pasear por Canal St hacia abajo → 2ª a la izquierda, Baxter St → <strong>Most Precious Blood Church</strong> (si está abierta). Seguir por Canal St → <strong>Mahayana Buddhist Center</strong> (660 m, 8:30–17:45h): buda de oro de 5 metros sobre una flor de loto rodeado de ofrendas. Las donaciones van acompañadas de una frase (como galletitas de la fortuna). Al lado: el <strong>Manhattan Bridge</strong>. Volver por Mott St o Mulberry hasta <strong>Columbus Park</strong> (ancianos jugando a juegos tradicionales, tai-chi y música).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌉 Metro Línea J o Z → 2 paradas → Fulton St → Línea C → High Street-Brooklyn Bridge Station → 590 m al puente</div>
+      <h3>Puente de Brooklyn + DUMBO + Grimaldi's Pizza</h3>
+      <p>Desde el metro: bajar por el parque Cadman Plaza Park (Brooklyn War Memorial) → girar a la izquierda por Tillary St hasta el cruce con Brooklyn Bridge → entrada al puente en el centro. Cruzar hasta la mitad del puente. Estamos en <strong>DUMBO</strong> (Down Under the Manhattan Bridge Overpass): a la derecha el puente de Manhattan. <strong>Jane's Carousel</strong> (1 km desde la salida del puente) y paseo por el <strong>Brooklyn Bridge Park</strong>. Desde el <strong>Empire Fulton Ferry Park</strong> (700 m más): vistas geniales de Manhattan. <strong>Grimaldi's Pizza</strong> (300 m desde el carrusel): una de las pizzerías más míticas de NY, frecuentada por Frank Sinatra. Pizza margherita pequeña 14$, grande 16$, bebidas 2$.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelta al hotel con maletas (16:00h):</strong> Barco East River → 2ª parada North Williamsburg → 1 km caminando (2,75$, no sirve MetroCard) · O 2 Ubers (6 km en coche)<br>
+      <strong>Al aeropuerto JFK T4:</strong> 2 Ubers para las maletas · Vuelo <strong>AF3597</strong> (DL) · Salida JFK 20:39h → BCN 10:35h (D+1) · 7h56 de vuelo<br>
+      <em>Pedir taxi para 5 el día anterior para la llegada a Barcelona, confirmar hora el mismo día.</em><br>
+      <strong style="color: var(--accent);">🗽 Fin del viaje</strong>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div class="section-title" style="padding:0;">🎬 Vídeos del viaje</div>
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_1 por el ID real de YouTube (parte después de ?v=) -->
+        <iframe src="https://www.youtube.com/embed/V9mSkg_yf3o"
+          title="Fotos del viaje a Nueva York 2019"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span class="icon">▶</span>
+          <span>FOTOS DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VÍDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <!-- Sustituir VIDEO_ID_2 por el ID real de YouTube -->
+        <iframe src="https://www.youtube.com/embed/jWiFPxLdr8U"
+          title="Vídeo del viaje a Nueva York 2019"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+        <div class="video-placeholder-v" id="vph2">
+          <span class="icon">▶</span>
+          <span>VÍDEO DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2 en el HTML</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div class="section-title" style="padding:0;">📷 Galería de fotos</div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Nueva York 2019</strong> &nbsp;·&nbsp; 19 – 23 Septiembre 2019 · 5 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+  ];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length === 0) {
+    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/galeria/</code> y se listen en el array del script.</p>';
+  } else {
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto NY 2019 ${i+1}`; img.loading = 'lazy';
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  }
+
+  ['vph1','vph2'].forEach((id, i) => {
+    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
+    if (iframe && !iframe.src.includes('VIDEO_ID')) {
+      document.getElementById(id).style.display = 'none';
+    }
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    if (!photos.length) return;
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
