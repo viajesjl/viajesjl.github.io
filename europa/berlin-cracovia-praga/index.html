@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Berlín · Cracovia · Praga 2007 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.70) 0%, rgba(21,101,192,0.25) 55%, rgba(10,31,61,0.80) 100%),
+        url('https://images.unsplash.com/photo-1560969184-10fe8719e047?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 4rem); font-weight: 900; color: white; line-height: 1.1; font-style: italic; }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.7rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    /* Separadores de ciudad */
+    .city-sep { font-family: 'Barlow Condensed', sans-serif; font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase; font-weight: 700; color: white; background: var(--accent); padding: 0.25rem 0.9rem; display: inline-block; margin-bottom: 0; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.85; color: var(--muted); }
+
+    /* Tarjeta memorial — gris oscuro sobria */
+    .memorial { background: #1a1f2e; border-left: 5px solid #78909c; padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; }
+    .memorial-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: #90a4ae; margin-bottom: 0.3rem; }
+    .memorial h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: #cfd8dc; margin-bottom: 0.4rem; }
+    .memorial p { font-size: 0.95rem; font-weight: 400; line-height: 1.9; color: #90a4ae; }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.9; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    .leyenda { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+    .leyenda-dot.memorial { background: #1a1f2e; border: 2px solid #78909c; }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.transport { background: rgba(21,101,192,0.25); border: 1px dashed var(--accent-light); }
+
+    /* Datos complementarios */
+    .datos { background: white; border: 1px solid var(--paper-dark); padding: 1.2rem 1.5rem; margin-bottom: 2rem; }
+    .datos h4 { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.9rem; }
+    .datos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 2rem; }
+    @media (max-width: 600px) { .datos-grid { grid-template-columns: 1fr; } }
+    .dato { display: flex; justify-content: space-between; font-size: 0.88rem; font-weight: 500; color: var(--muted); padding: 0.25rem 0; border-bottom: 1px dotted var(--paper-dark); }
+    .dato .nombre { color: var(--ink); }
+    .dato .precio { font-weight: 700; color: var(--accent); font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; }
+
+    /* Nerudova casas */
+    .nerudova { background: white; border-left: 4px solid var(--accent-pale); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .nerudova h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--accent); margin-bottom: 0.8rem; }
+    .nerudova-item { display: flex; gap: 0.8rem; align-items: baseline; margin-bottom: 0.4rem; font-size: 0.93rem; font-weight: 500; color: var(--muted); line-height: 1.6; }
+    .nerudova-num { font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; font-weight: 700; color: var(--accent-light); background: var(--accent-pale); padding: 0.1rem 0.4rem; flex-shrink: 0; }
+
+    .video-single { margin-top: 1.5rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+    @media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } .day-number { width: 50px; height: 50px; font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Berlín · Cracovia · Praga 2007</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇩🇪 Alemania · 🇵🇱 Polonia · 🇨🇿 República Checa</div>
+  <h1 class="hero-title">Berlín · Cracovia<br>& Praga</h1>
+  <div class="hero-date">2 – 13 Agosto 2007 · 12 días</div>
+  <div class="hero-pills">
+    <span class="pill">Berlín</span>
+    <span class="pill">Topographie des Terrors</span>
+    <span class="pill">Reichstag · Norman Foster</span>
+    <span class="pill">Pergamon Museum</span>
+    <span class="pill">Charlottenburg</span>
+    <span class="pill">Cracovia · Wawel</span>
+    <span class="pill">Wieliczka · Minas de Sal</span>
+    <span class="pill">Auschwitz-Birkenau</span>
+    <span class="pill">Praga · Barrio Judío</span>
+    <span class="pill">Castillo de Praga</span>
+    <span class="pill">Puente Carlos</span>
+    <span class="pill">Potsdam · Sanssouci</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">🇩🇪 Día 1 · Llegada Berlín</a>
+  <a href="#dia2">🇩🇪 Día 2 · Alexanderplatz · Isla de los Museos</a>
+  <a href="#dia3">🇩🇪 Día 3 · Museo Judío · Checkpoint Charlie · Charlottenburg</a>
+  <a href="#dia4">🇩🇪 Día 4 · Tiergarten · Siegessäule · Zoo</a>
+  <a href="#dia5">🇵🇱 Día 5 · Berlín → Częstochowa → Cracovia</a>
+  <a href="#dia6">🇵🇱 Día 6 · Cracovia · Castillo de Wawel</a>
+  <a href="#dia7">🇵🇱 Día 7 · Wieliczka · Valle de los Tatras</a>
+  <a href="#dia8">🇵🇱🇨🇿 Día 8 · Auschwitz-Birkenau → Praga</a>
+  <a href="#dia9">🇨🇿 Día 9 · Barrio Judío · Plaza Ciudad Vieja · Puente Carlos</a>
+  <a href="#dia10">🇨🇿 Día 10 · Castillo de Praga · Nerudova · Malá Strana</a>
+  <a href="#dia11">🇨🇿🇩🇪 Día 11 · Petřín · Potsdam · Sanssouci</a>
+  <a href="#dia12">🇩🇪 Día 12 · Neues Palais · Vuelo de regreso</a>
+</div>
+
+<main class="content">
+  
+  <!-- ════════════════ BERLÍN ════════════════ -->
+
+  <!-- DÍA 1 — LLEGADA BERLÍN -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada a Berlín — Sultanahmet · Topographie des Terrors · Potsdamer Platz · Holocaust Denkmal · Reichstag</h2>
+        <div class="day-subtitle">Jueves 2 de Agosto 🇩🇪 · Vuelo 11:45h → Llegada 14:20h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo:</strong> Salida 11:45h → Llegada Berlín 14:20h · Comer en el aeropuerto · Taxi al hotel<br>
+      <strong>Salida hotel 16:50h:</strong> Bajar → izquierda por Wilhelmstrasse → izquierda por Niederkirchner Str.
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Berlín</div>
+      <h4>Aletto Jugendhotel</h4>
+      <p>Tempelhofer Ufer 18/9 · Berlín</p>
+    </div>
+
+    <div class="memorial">
+      <div class="memorial-label">🏛️ Niederkirchner Str. · 10:00–20:00h · Gratuito · Audio guía en castellano gratuita · 1,2 km / 30 min desde hotel</div>
+      <h3>Topographie des Terrors</h3>
+      <p>Antigua sede de la Gestapo y las SS. En Wilhelmstrasse 102 estaban las oficinas centrales de <strong>Reinhard Heydrich</strong> (SD), uno de los principales arquitectos del Holocausto. Este lugar exacto fue el epicentro del terror nazi entre 1933 y 1945 — hoy, sus sótanos expuestos muestran cómo las instituciones estatales se convirtieron en maquinaria de opresión. Ver la sección del Muro en Niederkirchner Str. que aún conserva las cicatrices de la división.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏙️ 17:30h · Antigua "tierra de nadie" dividida por el Muro · Mayor proyecto urbanístico de Europa para unir este y oeste</div>
+      <h3>Potsdamer Platz · Sony Center · Beisheim Center</h3>
+      <p>Durante los años 20 fue el cruce más concurrido de Europa; tras la Segunda Guerra Mundial quedó convertida en "tierra de nadie" dividida por el Muro. Su renacimiento en el siglo XXI la convirtió en el mayor proyecto urbanístico de Europa. <strong>Sony Center:</strong> gran cúpula de cristal que simula el monte Fuji (Potsdamer Str., 725 m). <strong>Beisheim Center</strong> (2004): monumento de acero y cristal.</p>
+    </div>
+
+    <div class="memorial">
+      <div class="memorial-label">🪦 Ebertstrasse · 10:00–20:00h · Peter Eisenman · 2.711 pilares de hormigón · 850 m desde Potsdamer Platz</div>
+      <h3>Holocaust Denkmal — Memorial del Holocausto</h3>
+      <p>Diseñado por Peter Eisenman: 2.711 pilares de hormigón gris de 0 a 4,7 metros de altura sobre un suelo irregular. Sin placas ni nombres, su laberinto busca generar una sensación de aislamiento, desorientación y opresión, simulando un sistema supuestamente ordenado que perdió el contacto con la razón humana. Bajo el memorial: el centro de documentación del genocidio.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 19:00h · 300 m · Símbolo de la reunificación · Cúpula de Norman Foster · 8:00–24:00h · Entrada gratuita</div>
+      <h3>Puerta de Brandenburgo · Reichstag — Cúpula de Norman Foster</h3>
+      <p>La Puerta de Brandenburgo, antigua entrada a la ciudad y hoy símbolo de la reunificación. El <strong>Reichstag</strong> (Parlamento): su famosa cúpula de cristal diseñada por Norman Foster simboliza la transparencia democrática. Puede haber mucha cola.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌳 Bulevar imperial · Embajada Rusa · Humboldt Universität · Bebelplatz · Neue Wache</div>
+      <h3>Unter den Linden — Paseo monumental</h3>
+      <p>Embajada Rusa · Altes Palais · Estatua ecuestre de Federico II el Grande · <strong>Bebelplatz</strong> (monumento subterráneo al lugar de la quema de libros nazi de 1933) · Humboldt Universität · <strong>Neue Wache</strong> (antiguo edificio de guardia convertido en memorial para las víctimas de la guerra y la tiranía).</p>
+    </div>
+
+    <div class="datos">
+      <h4>📋 Datos y precios — Berlín</h4>
+      <div class="datos-grid">
+        <div class="dato"><span class="nombre">Berlín Welcome Card</span><span class="precio">19,90 € (6,50 € c/u)</span></div>
+        <div class="dato"><span class="nombre">Reichstag (cúpula)</span><span class="precio">Gratuito</span></div>
+        <div class="dato"><span class="nombre">Museo Judío</span><span class="precio">5 €</span></div>
+        <div class="dato"><span class="nombre">Pergamon Museum · 10–18h</span><span class="precio">4 €</span></div>
+        <div class="dato"><span class="nombre">Charlottenburg · 9–17h</span><span class="precio">6,50 €</span></div>
+        <div class="dato"><span class="nombre">Columna de la Victoria · 9:30–19h</span><span class="precio">1 €</span></div>
+        <div class="dato"><span class="nombre">Torre de TV Fernsehturm · 9–24h</span><span class="precio">7 €</span></div>
+        <div class="dato"><span class="nombre">Museo de Historia Natural · 11–18h</span><span class="precio">2,50 €</span></div>
+        <div class="dato"><span class="nombre">Nueva Sinagoga · 10–18h (cierra sábados)</span><span class="precio">2,50 €</span></div>
+        <div class="dato"><span class="nombre">Zeughaus · 10–18h</span><span class="precio">2 €</span></div>
+        <div class="dato"><span class="nombre">Berliner Dom</span><span class="precio">5 €</span></div>
+        <div class="dato"><span class="nombre">Barco Reederei-City Tour</span><span class="precio">3,60 € (3 € WC)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DÍA 2 — ALEXANDERPLATZ · ISLA DE LOS MUSEOS -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Alexanderplatz · Torre de TV · Isla de los Museos · Unter den Linden</h2>
+        <div class="day-subtitle">Viernes 3 de Agosto · Metro U6 → Stadtmitte → U2 → Alexanderplatz · 10:00h</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎟️ Berlin Welcome Card · Descuentos</div>
+      <p>Disponible en máquinas de billetes (31 € total, Alex no paga). 3 días solo transporte: 18,30 €. Recoger tickets de descuento en Oficinas de Turismo (Puerta de Brandenburgo o Info Café en Fernsehturm, Alexanderplatz, 10–18h). Se activa la primera vez que se usa.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Metro:</strong> Hallesches Tor → U6 (dir. Alt-Tegel) → Stadtmitte → U2 (Pankow) → Alexanderplatz
+    </div>
+
+    <div class="place">
+      <div class="place-meta">📡 Alexanderplatz · 203 m · 24,50 € · Símbolo de la superioridad comunista de la RDA</div>
+      <h3>Fernsehturm — Torre de TV</h3>
+      <p>203 metros de altura. Construida por la RDA en Alexanderplatz como símbolo de la superioridad comunista. Puede haber colas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 10:00–18:00h · Una de las iglesias más antiguas de Berlín · Fuente de Neptuno · Rotes Rathaus</div>
+      <h3>Marienkirche · Fuente de Neptuno · Nikolaiviertel</h3>
+      <p>Marienkirche (10–18h), una de las iglesias más antiguas de Berlín. Fuente de Neptuno. Por Spandauerstraße: el <strong>Rotes Rathaus</strong> (Ayuntamiento Rojo, 9–18h) y el reconstruido barrio medieval de Nikolaiviertel. Marx-Engels-Forum: foto con la estatua de los padres del comunismo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ 9:00–20:00h · 5 € · Gran pila de granito</div>
+      <h3>Berliner Dom</h3>
+      <p>La imponente catedral protestante de la ciudad, con su gran pila de granito.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏺 10:00–22:00h · 4 € · Altar de Pérgamo · Puerta de Ishtar · Estructuras monumentales de la antigüedad</div>
+      <h3>Pergamonmuseum</h3>
+      <p>Alberga estructuras monumentales de la antigüedad como el <strong>Altar de Pérgamo</strong> y la <strong>Puerta de Ishtar</strong> de Babilonia. Altes Museum: la escultura de Nefertiti.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 10:00–18:00h · 2 € · Arsenal barroco · Hoy Museo Histórico Alemán</div>
+      <h3>Zeughaus · Neue Wache · Bebelplatz</h3>
+      <p>Zeughaus (antiguo arsenal barroco, hoy Museo Histórico Alemán). Bajando por Unter den Linden: Neue Wache (10–18h), Humboldt Universität y Bebelplatz.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 3 — MUSEO JUDÍO · CHECKPOINT CHARLIE · CHARLOTTENBURG -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Museo Judío · Checkpoint Charlie · Nueva Sinagoga · Hackesche Höfe · Charlottenburg</h2>
+        <div class="day-subtitle">Sábado 4 de Agosto · Waterloo-Ufer → Lindenstrasse → Kochstrasse</div>
+      </div>
+    </div>
+
+    <div class="memorial">
+      <div class="memorial-label">🏛️ Lindenstrasse · 10:00–20:00h · 15 € · Arquitectura en zigzag evocando una estrella de David deconstruida</div>
+      <h3>Museo Judío de Berlín — Jüdisches Museum</h3>
+      <p>Arquitectura en zigzag de Daniel Libeskind que evoca una estrella de David deconstruida. Junto al museo: la Berlinische Galerie.</p>
+    </div>
+
+    <div class="memorial">
+      <div class="memorial-label">🛂 Kochstrasse · Punto de control entre sectores estadounidense y soviético · El paso fronterizo más famoso del Muro</div>
+      <h3>Checkpoint Charlie</h3>
+      <p>El punto de control fronterizo más famoso del Muro de Berlín entre los sectores estadounidense y soviético.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Metro:</strong> Kochstrasse U6 → Oranienburgerstrasse → bajar por Oranienburger Str.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕍 10:00–18:00h (cierra sábados) · 2,50 € · Cúpula dorada morisca · Sobrevivió a la Noche de los Cristales Rotos</div>
+      <h3>Nueva Sinagoga — Neue Synagoge</h3>
+      <p>Famosa por su cúpula dorada de estilo morisco que sobrevivió a la Noche de los Cristales Rotos.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎨 Hackesche Höfe · Patios comunales Art Nouveau · Arte y tiendas</div>
+      <h3>Hackesche Höfe</h3>
+      <p>Seguir bajando por Oranienburger hasta los famosos patios comunales de estilo Art Nouveau, hoy llenos de arte y tiendas.</p>
+    </div>
+
+    <div class="transport">
+      <strong>A Charlottenburg:</strong> Transbordo Stadtmitte U2 → Sophie-Charlotte-Platz (dir. Ruhleben)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 10:00–17:00h · 6,50 € · Residencia de verano de Sofía Carlota · Parque de estilo versallesco · Ägyptisches Museum</div>
+      <h3>Schloss Charlottenburg</h3>
+      <p>Palacio barroco de la realeza prusiana. Entrar al Ägyptisches Museum (10–18h) y luego al Palacio (10–17h), residencia de verano de Sofía Carlota. Dar un paseo por su parque de estilo versallesco. A la salida: el Museo Berggruen con cuadros de Picasso, Cézanne y Van Gogh.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 4 — TIERGARTEN · SIEGESSÄULE · ZOO -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Viktoriapark · Kaiser-Wilhelm-Gedächtniskirche · Zoo · Tiergarten · Siegessäule</h2>
+        <div class="day-subtitle">Domingo 5 de Agosto · Metro Hallesches Tor → Platz der Luftbrücke (2 paradas)</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚡ Kurfürstendamm · Torre con daños de bomba sin restaurar · Monumento contra la guerra</div>
+      <h3>Kaiser-Wilhelm-Gedächtniskirche</h3>
+      <p>La famosa iglesia cuya torre, dañada por los bombardeos aliados, se dejó deliberadamente sin restaurar como monumento contra la guerra. Europa Center: el famoso reloj del fluir del tiempo, que mide las horas mediante líquidos de colores.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🐼 Budapester Strasse 34 · Osos panda</div>
+      <h3>Zoo de Berlín</h3>
+      <p>Entrar al zoo para ver los osos panda.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Tiergarten · 63 m · 9:00–19:00h · 1 € · Victorias militares prusianas del siglo XIX</div>
+      <h3>Siegessäule — Columna de la Victoria</h3>
+      <p>Monumento de 63 metros que conmemora las victorias militares prusianas del siglo XIX. Subir desde el gran parque Tiergarten por la Straße des 17. Juni.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">⛵ Paseo en barco por el Spree</div>
+      <p>Reederei-City Tour: 3,60 € (3 € con Welcome Card). Desde Dock Friedrichstraße hasta Nikolaiviertel. Horarios: 10:15 · 11:40 · 13:15 · 14:45 · 16:15 · 17:45h.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 5 — BERLÍN → CRACOVIA -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Berlín → Częstochowa (Virgen Negra) → Cracovia</h2>
+        <div class="day-subtitle">Lunes 6 de Agosto 🇵🇱 · Coche desde Alexanderplatz · 09:00h · 521 km hasta Częstochowa</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ruta en coche:</strong> Alexanderplatz (metro U6 → Stadtmitte → U2 → Alexanderplatz) → Cottbus → frontera Polonia en Swiecko → Legnica → Wrocław → Katowice → Częstochowa → Cracovia<br>
+      <strong>Llegada Częstochowa ~17:30h · Salida ~18:30h · Últimos 148 km → Cracovia ~20:30h</strong>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕍 Częstochowa · 521 km de Berlín · El icono más sagrado de Polonia · Descubren el cuadro de 14:00 a 21:00h · Tesoro y Arsenal cierran 17:00h</div>
+      <h3>Santuario de Jasna Góra — La Virgen Negra</h3>
+      <p>Centro de peregrinación nacional de Polonia. El cuadro de la <strong>Virgen Negra de Częstochowa</strong> se descubre cada día de 14:00 a 21:00h. La Virgen se encuentra en la capilla de la izquierda. Visitar también la Sala de los Caballeros y el Tesoro (cierra a las 17:00h).</p>
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Cracovia</div>
+      <h4>Hotel en Cracovia</h4>
+      <p>Llegar ~20:30h para cenar</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Cena · Cracovia · Rynek Główny</div>
+      <h4>Chimera Salad Bar · Helados Lody Gillo</h4>
+      <p><strong>Chimera:</strong> Calle Sw. Anny 13 (al sur y a la izquierda de la plaza Rynek Główny). <strong>Helados Lody Gillo:</strong> Rynek Główny 32. Paseo nocturno por la <strong>Rynek Główny</strong>, la plaza medieval más grande de Europa.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 6 — CRACOVIA -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Cracovia — Castillo de Wawel · Rynek Główny · Collegium Maius</h2>
+        <div class="day-subtitle">Martes 7 de Agosto · A pie: Józefa Dietla → Sebastiana → Św. Gertrudy → Plac Bernardyński · 1,4 km / 17 min</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 6:00–20:00h · Billete común 2,65 €/sala · Abre 9:30h · ~3 horas de visita · Número de visitantes diarios limitado</div>
+      <h3>Castillo de Wawel — Sede histórica de los reyes polacos</h3>
+      <p><strong>Catedral de Wawel:</strong> Panteón de monarcas y héroes nacionales. En la puerta de entrada, colgados de una cadena, hay huesos que la leyenda medieval atribuía al <em>Dragón de Wawel</em> — en realidad fósiles de mamut, rinoceronte lanudo y ballena colgados para ahuyentar los malos espíritus. <strong>Sala de los Diputados · Capilla renacentista de Segismundo · Campana</strong> (9–15h / 2,70 €) · <strong>Cueva del Dragón</strong> (Smocza Jama) · Piedra de "chacra" de buena suerte. <strong>Estancias Reales 3,20 € · Apartamentos Reales 4 € · Tesoro 3,20 €.</strong></p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Calle Kanonicza · Museo Arqueológico 13:00–18:00h · Ídolo de Zbrucz · Museo Archidiócesano 10:00–16:00h</div>
+      <h3>Calle Kanonicza · Museo Arqueológico · Casa de Karol Wojtyła</h3>
+      <p>Museo Archidiócesano en el edificio donde habitó el joven padre Karol Wojtyła (futuro Juan Pablo II). Museo Arqueológico (Senacka 3, 13–18h): famoso por sarcófagos egipcios y el <strong>Ídolo de Zbrucz</strong>, el único dios pagano eslavo tallado en piedra caliza con 4 caras y 2,5 metros de altura.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plaza Rynek Główny · La plaza medieval más grande de Europa · S. XI–XIV</div>
+      <h3>Rynek Główny — Plaza Mayor de Cracovia</h3>
+      <p><strong>Iglesia de San Pedro y San Pablo</strong> (calle Grodzka): reconocible por las 12 esculturas de los apóstoles en su entrada barroca. <strong>Iglesia de San Adalberto</strong> (11–16h): una de las más antiguas de la ciudad (S. XI). <strong>Torre del Ayuntamiento</strong> (9–13h y 13:45–18h). <strong>Estatua de Adam Mickiewicz · Lonja de Paños (Sukiennice)</strong>, antiguo mercado textil renacentista. <strong>Basílica de Santa María</strong> (S. XIV): cada hora, un trompetista toca el Hejnał mariacki desde la torre — la melodía se interrumpe bruscamente en memoria del vigía del siglo XIII al que una flecha tártara cortó la melodía en la garganta. Interior: <strong>retablo de madera de Veit Stoss</strong> (12–14h) y Capilla de la Virgen Negra.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Floriańska (S. XIII) → Puerta de San Florián → Museo Czartoryski 9:00–15:00h</div>
+      <h3>Museo Czartoryski — La dama del armiño de Leonardo</h3>
+      <p>Subir por la calle Floriańska (S. XIII) hasta la Puerta de San Florián (única puerta medieval que sobrevivió al derribo de las murallas). Girar izquierda por Pijarska hasta el Museo Czartoryski: <strong>"La dama del armiño"</strong> de Leonardo da Vinci (que retrata a Cecilia Gallerani) y objetos históricos como el forro de Napoleón.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎓 Jagiellońska 15 · 12:00–14:30h · Nicolás Copérnico estudió aquí · Globo de Jagellón (~1510)</div>
+      <h3>Collegium Maius — El Globo de Jagellón</h3>
+      <p>La Universidad más antigua de Polonia, donde estudió Nicolás Copérnico. Su joya: el <strong>Globo de Jagellón</strong> (~1510), uno de los globos terráqueos más antiguos del mundo que incluye el continente americano bajo la inscripción <em>"America noviter reperta"</em>.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 7 — WIELICZKA · TATRAS -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Minas de Sal de Wieliczka · Valle de los Tatras · Zakopane</h2>
+        <div class="day-subtitle">Miércoles 8 de Agosto · 17 km de Cracovia · Abre 7:30–19:30h · 8 € · 2 horas</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛏️ 17 km de Cracovia · 7:30–19:30h · 8 € · 340 escalones de bajada hasta −135 m · Tasa para fotos y vídeo</div>
+      <h3>Minas de Sal de Wieliczka</h3>
+      <p>Descenso a pie bajando 340 escalones hasta una profundidad de −135 m. El recorrido por las galerías subterráneas esculpidas en sal gema culmina en la espectacular <strong>Capilla de la Reina Kinga</strong>, una catedral subterránea donde incluso las lámparas de araña están hechas de sal cristalizada. El regreso a la superficie en un ascensor minero rápido.</p>
+    </div>
+
+    <div class="transport">
+      <strong>A los Tatras:</strong> 100 km hacia las montañas Tatry (macizo alpino en la frontera con Eslovaquia) → aldea de Kiry (7 km)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏔️ Kiry · Senderos negros · Cueva Mroźna · Cueva Mylna (linterna obligatoria) · Valle Tomanowa (1:15h, ruta verde)</div>
+      <h3>Valle de los Tatras — Cuevas de Kościeliska</h3>
+      <p>Bordear el río Kościeliska siguiendo las señales negras para explorar las cavidades geológicas: la <strong>Cueva Mroźna</strong> (famosa por sus formaciones de estalactitas y estalagmitas congeladas) y la <strong>Cueva Mylna</strong> (laberinto natural oscuro donde es obligatorio el uso de linterna). Si queda tiempo: ruta verde hacia el idílico Valle Tomanowa (1h 15 min).</p>
+    </div>
+  </section>
+
+  <!-- DÍA 8 — AUSCHWITZ → PRAGA -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Auschwitz-Birkenau · Viaje a Praga</h2>
+        <div class="day-subtitle">Jueves 9 de Agosto 🇨🇿 · 70 km de Cracovia · Visita 3,5–4 horas · 485 km hasta Praga · ~6 horas</div>
+      </div>
+    </div>
+
+    <div class="memorial">
+      <div class="memorial-label">🕯️ 70 km de Cracovia · Museo Auschwitz I: 8:00–19:00h · Aparcamiento 1,50 € · Visita combinada 3,5–4 horas de profunda solemnidad</div>
+      <h3>Campo de concentración y exterminio de Auschwitz-Birkenau</h3>
+      <p>El mayor símbolo de los horrores del régimen nazi. <strong>Auschwitz I:</strong> el museo principal (8–19h). <strong>Birkenau (Auschwitz II):</strong> situado a 3 km, con sus famosas vías ferroviarias de entrada al campo de exterminio. La visita combinada a ambos campos toma entre 3 horas y media y 4 horas y es un recorrido histórico de profunda solemnidad.</p>
+    </div>
+
+    <div class="transport">
+      <strong>A Praga:</strong> Salir en coche hacia la República Checa · 485 km · ~6 horas
+    </div>
+  </section>
+
+  <!-- DÍA 9 — PRAGA BARRIO JUDÍO -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Praga — Barrio Judío (Josefov) · Plaza de la Ciudad Vieja · Puente Carlos</h2>
+        <div class="day-subtitle">Viernes 10 de Agosto · Tranvía nº 17 → Staroměstská o Náměstí Jana Palacha</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕍 Široká 3 · 9:00–18:00h · Hasta 12 niveles de tumbas superpuestas · Leyenda del Golem · Sinagoga más antigua de Europa en uso</div>
+      <h3>Barrio Judío (Josefov) — Cementerio Antiguo · Sinagoga Vieja-Nueva</h3>
+      <p><strong>Cementerio Judío Antiguo:</strong> Empezar el recorrido por la derecha con la tumba de Hendela Bassevi y la del célebre sabio místico <strong>Rabino Löw</strong>. Debido a las leyes históricas que prohibían expandir el gueto, el cementerio cuenta con hasta <strong>12 niveles de tumbas superpuestas</strong>. En la <strong>Sinagoga Pinkas:</strong> conmovedora exposición de dibujos de niños del campo de Terezín y muros inscritos con los nombres de las víctimas del Holocausto. <strong>Ayuntamiento judío</strong> (Maiselova): fachada barroca del S. XVIII con su icónico reloj de números hebreos cuyas manecillas giran al revés. <strong>Sinagoga Vieja-Nueva</strong> (1270): la sinagoga en funcionamiento más antigua de Europa. Asiento del Rabino Löw y el estandarte histórico. Según la leyenda cabalística, en su desván el rabino escondió los restos de barro del <strong>Golem</strong>. <strong>Sinagoga Española</strong> (Široká, 9–18h): deslumbrante decoración de estilo mudéjar inspirada en la Alhambra de Granada.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Staroměstské náměstí · Reloj Astronómico 9:00–18:00h · Iglesia de Tyn abre 18:00h</div>
+      <h3>Plaza de la Ciudad Vieja — Reloj Astronómico · Iglesia de Tyn</h3>
+      <p>Casa de la Campana de Piedra · Iglesia de San Nicolás · <strong>Iglesia de Tyn</strong> (torres de cuento de hadas, abre a las 18h). <strong>Ayuntamiento con Reloj Astronómico</strong> (esperar a que den las horas para ver el desfile de los doce apóstoles y la alegoría de la Muerte, 9–18h). Seguir por Celetná hasta la <strong>Torre de la Pólvora</strong> y la <strong>Casa Municipal</strong> (Obecní dům, obra maestra del Art Nouveau checo, 10–18h). Bajar por Karlova → contemplar el <strong>Clementinum</strong> → cruzar el <strong>Puente Carlos</strong> (30 estatuas barrocas sobre el Moldava).</p>
+    </div>
+
+    <div class="resto">
+      <div class="resto-label">🍽️ Cena + Concierto · Karoliny Světlé 21 · 21:00h</div>
+      <h4>Restaurante Stolet · Concierto Prague String Orchestra</h4>
+      <p><strong>Cena</strong> en el restaurante Stolet (calle Karoliny Světlé 21). <strong>A las 21:00h:</strong> Concierto de la Prague String Orchestra en la Iglesia de San Nicolás.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🍽️ Almuerzo · Rámová 5</div>
+      <p>Restaurante <strong>Orange Moon</strong>, calle Rámová 5, al salir del Convento de Santa Inés.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 10 — CASTILLO DE PRAGA · NERUDOVA -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Castillo de Praga · Catedral de San Vito · Nerudova · Malá Strana</h2>
+        <div class="day-subtitle">Sábado 11 de Agosto · Tranvía 22 o 23 (verde) → Pražský Hrad</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 El complejo presidencial y palaciego más grande del mundo · Entrada por Hradčanské náměstí · Puerta de Matías (barroca)</div>
+      <h3>Castillo de Praga — Catedral de San Vito · Callejón de Oro</h3>
+      <p><strong>Galería de Pintura</strong> (10–18h): Tiziano y Rubens. Jardín Real. Torre de la Pólvora (Mihulka). <strong>Catedral de San Vito:</strong> corazón espiritual de la nación y lugar de coronación real. En la fachada gótica, los señores esculpidos son los propios mecenas históricos y el arquitecto (sosteniendo un compás). Interior: <strong>Capilla de San Wenceslao</strong> (con la aldaba de bronce a la que se aferró el santo antes de ser asesinado) y la fastuosa <strong>tumba barroca de San Juan Nepomuceno</strong>, forjada con 2.000 kg de plata pura. <strong>Antiguo Palacio Real:</strong> escalera diseñada para que los jinetes subieran a caballo y el Salón de Ladislao. Romántico Convento de San Jorge. <strong>Callejón de Oro:</strong> donde vivían los alquimistas de la corte y Franz Kafka habitó temporalmente en el nº 22. Torre de Dalibor (antigua prisión).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">📚 Monasterio de Strahov · Biblioteca teológica y filosófica · Palacio Sternberg · Santuario barroco de Loreto</div>
+      <h3>Palacio Sternberg · Loreto · Monasterio de Strahov</h3>
+      <p>Regresar por los Jardines del Sur. Visitar el Palacio Sternberg, el santuario barroco de Loreto y el histórico Monasterio de Strahov, famoso por su biblioteca teológica y filosófica.</p>
+    </div>
+
+    <div class="nerudova">
+      <h4>🏠 Calle Nerudova — Emblemas heráldicos barrocos (antes de 1770, las casas se identificaban con relieves)</h4>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 6</span><span>El Águila Roja — Símbolo heráldico tradicional de protección</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 12</span><span>Los Tres Violines — Residencia de tres familias consecutivas de célebres maestros luthiers</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 16</span><span>El Cáliz de Oro — Emblema de un maestro orfebre</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 32</span><span>La Vieja Farmacia — Antigua botica del barrio</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 34</span><span>La Herradura Dorada — Vinculada a un herrero de la corte; cuenta la leyenda que un caballero dejó una herradura de la suerte</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 39</span><span>El León Rojo — Símbolo alquímico de la fuerza, usado por los boticarios de la época</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 43</span><span>La Langosta Verde — Una de las decoraciones más curiosas; su trasfondo original sigue siendo un enigma</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 47</span><span>Los Dos Soles — Residencia familiar del escritor Jan Neruda (en cuyo honor se nombró la calle)</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 49</span><span>El Cisne Blanco — Representación de la pureza y elegancia arquitectónica barroca</span></div>
+      <div class="nerudova-item"><span class="nerudova-num">Nº 5</span><span>Palacio Morzin — Actual embajada de Rumanía, con dos impresionantes esculturas de atlantes negros</span></div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🕍 9:00–17:00h · Cumbre del barroco centroeuropeo · Palacio Wallenstein 10:00–16:00h · Jardines hasta 20:00h</div>
+      <h3>Iglesia de San Nicolás de Malá Strana · Palacio Wallenstein</h3>
+      <p>Columna de la peste · <strong>Iglesia de San Nicolás</strong> (9–17h): cumbre del barroco centroeuropeo. Iglesia de Santo Tomás. Antigua cervecería de Santo Tomás (Letenská 12). <strong>Palacio Wallenstein</strong> (10–16h): barroco construido para rivalizar con el castillo, con espectaculares jardines geométricos (abiertos hasta las 20h). <strong>Jardines Vojan</strong> (U Lužického semináře): los más antiguos de Praga, con estanques, sauces llorones y pavos reales. <strong>Plaza de Malta</strong> (Maltézské náměstí): sede histórica de los Caballeros de la Orden de Malta y estatua de San Juan Bautista.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌸 Vrtbovská zahrada · Nº 25 Nerudova · Jardines barrocos con terrazas escalonadas y panorámica de Malá Strana</div>
+      <h3>Iglesia de la Victoria (Niño Jesús de Praga) · Jardines Vrtba</h3>
+      <p><strong>Iglesia de la Victoria:</strong> alberga la milagrosa figura del Niño Jesús de Praga. En el nº 25: los bellos <strong>Jardines barrocos Vrtba</strong>, con terrazas escalonadas y excelente panorámica del barrio de Malá Strana.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 11 — PETŘÍN · POTSDAM -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Muro de John Lennon · Petřín · Potsdam — Sanssouci</h2>
+        <div class="day-subtitle">Domingo 12 de Agosto · Malá Strana → Funicular Petřín → Coche hacia Potsdam</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎵 Velkopřevorské Náměstí · Grafitis contra el régimen comunista desde la muerte de Lennon</div>
+      <h3>Muro de John Lennon · Isla de Kampa</h3>
+      <p>Emblemático Muro de John Lennon: comenzó como foco de protesta pacífica y grafitis contra el régimen comunista tras la muerte del cantante. Cruzar el pequeño puente sobre el canal del Diablo hacia la tranquila <strong>Isla de Kampa</strong> y ver la antigua rueda de madera del molino del Gran Priorato.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗼 Újezd · Funicular hasta las 23:20h · Laberinto de Espejos hasta 22h · Mirador de Petřín hasta 22h · Réplica de la Torre Eiffel de 60 m · 1891</div>
+      <h3>Colina de Petřín — Laberinto de Espejos · Mirador</h3>
+      <p>Funicular desde Újezd (hasta las 23:20h) hasta la colina boscosa de Petřín. El divertido <strong>Laberinto de Espejos</strong> (hasta las 22h) y el <strong>Mirador de Petřín</strong>, estructura de hierro de 60 metros construida como réplica de la Torre Eiffel para la Exposición de Praga de 1891 (hasta las 22h). Bordear el gótico <strong>Muro del Hambre</strong> hacia el Monasterio de Strahov → tranvía 22 en Pohořelec.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎭 Espectáculos en Praga</div>
+      <p><strong>Basílica de San Jorge</strong> (dentro del castillo): conciertos de música clásica a las 18:30h (1h). <strong>Teatro Negro "Ta Fantastika"</strong> (Karlova 8): funciones 19:00 y 21:30h · 25 € · Obra "Aspects of Alice". <strong>Laterna Magika</strong> (teatro multimedia, Národní 9, taquilla 10–18h).</p>
+    </div>
+
+    <div class="transport">
+      <strong>Salida hacia Potsdam</strong> (viaje de regreso hacia las cercanías de Berlín)
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 Palacios cierran a las 17h · El "Versalles prusiano" de Federico el Grande · sans souci = "sin preocupaciones"</div>
+      <h3>Sanssouci — El Versalles prusiano</h3>
+      <p>Magnífico conjunto palaciego mandado construir por Federico el Grande como refugio de descanso. El inmenso <strong>parque histórico</strong>, las dependencias de las Communs, la Orangerie, el <strong>Neue Kammern</strong> y el <strong>Schloss Sanssouci</strong> sobre terrazas llenas de viñedos. En el parque: la pintoresca <strong>Casa de Té China</strong> (rococó oriental), los baños romanos y los jardines paisajísticos.</p>
+    </div>
+  </section>
+
+  <!-- DÍA 12 — NEUES PALAIS · VUELO -->
+  <section class="day-section" id="dia12">
+    <div class="day-header">
+      <div class="day-number">12</div>
+      <div class="day-info">
+        <h2>Neues Palais · Vuelo de regreso</h2>
+        <div class="day-subtitle">Lunes 13 de Agosto · Neues Palais abre 9:00h · Vuelo de regreso 14:30h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Parque de Potsdam · Abre 9:00h · Fin de la Guerra de los Siete Años · Marmorsaal · Grottensaal</div>
+      <h3>Neues Palais — El Salón de la Gruta</h3>
+      <p>Monumental palacio mandado edificar por Federico II para celebrar el fin de la Guerra de los Siete Años. Espectaculares salones reales: el <strong>Marmorsaal</strong> (Salón de Mármol) y el deslumbrante <strong>Grottensaal</strong> (Salón de la Gruta), cuyas paredes están incrustadas con miles de conchas marinas, piedras preciosas y minerales.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Vuelo de regreso:</strong> Aeropuerto de Berlín · Salida 14:30h
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎉 Fin del viaje</div>
+      <p>12 días recorriendo la historia del siglo XX: el terror nazi en Berlín, los campos de concentración en Polonia, la resistencia judía en Praga y los palacios del absolutismo ilustrado en Potsdam.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEO — Un solo vídeo centrado -->
+<div class="video-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    🎬 VÍDEO DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="video-single">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">📷 FOTOS DEL VIAJE</div>
+    <div class="video-wrap">
+      <iframe src="https://www.youtube.com/embed/VIDEO_ID_1" title="Berlín Cracovia Praga 2007"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="video-placeholder-v" id="vph1">
+        <span style="font-size:2.5rem;opacity:0.4;">▶</span>
+        <span>FOTOS DEL VIAJE</span>
+        <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1 en el HTML</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Berlín · Cracovia · Praga 2007</strong> &nbsp;·&nbsp; 2 – 13 Agosto 2007 · 12 días</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
+    'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
+    'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+  ];
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div'); item.className = 'gallery-item'; item.onclick = () => openLightbox(i);
+    const img = document.createElement('img'); img.src = src; img.alt = `Foto Berlín-Cracovia-Praga 2007 ${i+1}`; img.loading = 'lazy';
+    img.onerror = function() {
+      const ph = document.createElement('div');
+      ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
+      ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto '+(i+1)+'</span>';
+      item.replaceChild(ph, this);
+    };
+    item.appendChild(img); gallery.appendChild(item);
+  });
+  const iframe = document.querySelector('.video-wrap iframe');
+  if (iframe && !iframe.src.includes('VIDEO_ID')) document.getElementById('vph1').style.display = 'none';
+  let currentPhoto = 0;
+  function openLightbox(idx) { currentPhoto = idx; document.getElementById('lb-img').src = photos[idx]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  function changePhoto(dir) { currentPhoto = (currentPhoto + dir + photos.length) % photos.length; document.getElementById('lb-img').src = photos[currentPhoto]; }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') changePhoto(-1); if (e.key === 'ArrowRight') changePhoto(1); });
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { navLinks.forEach(l => l.classList.remove('active')); const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`); if (a) a.classList.add('active'); } });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>

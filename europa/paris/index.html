@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>París 2017 · Diario de Viajes</title>
+  <title>París 1998 & 2017 · Diario de Viajes</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -11,6 +11,8 @@
       --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
       --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
       --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+      --y98: #8a5a1e; --y98-pale: #f3e2c8;
+      --y17: #1565c0; --y17-pale: #bbdefb;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
@@ -23,36 +25,66 @@
 
     .hero {
       min-height: 65vh;
-      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.28) 60%, rgba(10,31,61,0.75) 100%),
-        url('https://images.unsplash.com/photo-1541264161754-445bbdd7de52?w=1800&q=80') center/cover no-repeat;
+      background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(21,101,192,0.32) 60%, rgba(10,31,61,0.82) 100%),
+        url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=1800&q=80') center/cover no-repeat;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       text-align: center; padding: 6rem 2rem 4rem; position: relative;
     }
     .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
     .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
-    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
-    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 7vw, 5.8rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; font-style: italic; }
+    .hero-title em { font-style: italic; color: var(--accent-light); }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-weight: bold; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 1rem; }
     .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
     .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
 
+    /* Selector de viaje */
+    .trip-tabs { position: sticky; top: 52px; z-index: 90; display: flex; justify-content: center; gap: 0; background: var(--ink); padding: 0; flex-wrap: wrap; }
+    .trip-tabs a { flex: 1; min-width: 220px; text-align: center; padding: 1rem 1.5rem; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: rgba(255,255,255,0.55); border-bottom: 3px solid transparent; transition: all 0.2s ease; }
+    .trip-tabs a.tab-98:hover, .trip-tabs a.tab-98.active { color: white; border-bottom-color: var(--y98); background: rgba(138,90,30,0.18); }
+    .trip-tabs a.tab-17:hover, .trip-tabs a.tab-17.active { color: white; border-bottom-color: var(--y17); background: rgba(21,101,192,0.18); }
+    .trip-tabs span { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; opacity: 0.7; margin-top: 0.15rem; }
+
+    .part-header { max-width: 920px; margin: 3rem auto 0; padding: 0 2rem; text-align: center; scroll-margin-top: 110px; }
+    .part-header .part-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; }
+    .part-98 .part-eyebrow { color: var(--y98); }
+    .part-17 .part-eyebrow { color: var(--y17); }
+    .part-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin: 0.3rem 0 0.6rem; }
+    .part-header p { color: var(--muted); font-size: 1rem; font-weight: 500; max-width: 640px; margin: 0 auto; line-height: 1.7; }
+    .part-divider { max-width: 920px; margin: 4rem auto 0; padding: 0 2rem; }
+    .part-divider hr { border: none; height: 2px; background: linear-gradient(to right, var(--y98), var(--y17)); }
+
     .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
     .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
-    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+    .days-nav.nav-98 a:hover, .days-nav.nav-98 a.active { background: var(--y98); border-color: var(--y98); color: white; }
+    .days-nav.nav-17 a:hover, .days-nav.nav-17 a.active { background: var(--y17); border-color: var(--y17); color: white; }
 
     .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
 
     .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
     .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
     .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    #parte-1998 .day-header::after { background: var(--y98); }
+    #parte-2017 .day-header::after { background: var(--y17); }
     .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    #parte-1998 .day-number { background: var(--y98); }
+    #parte-2017 .day-number { background: var(--y17); }
     .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
     .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+    #parte-1998 .day-info .day-subtitle { color: var(--y98); }
+    #parte-2017 .day-info .day-subtitle { color: var(--y17); }
 
     .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
     .place:hover { border-left-color: var(--accent); }
     .place-meta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
     .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
     .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+    #parte-1998 .place { border-left-color: var(--y98-pale); }
+    #parte-1998 .place:hover { border-left-color: var(--y98); }
+    #parte-1998 .place h3, #parte-1998 .place-meta { color: var(--y98); }
+    #parte-2017 .place { border-left-color: var(--y17-pale); }
+    #parte-2017 .place:hover { border-left-color: var(--y17); }
+    #parte-2017 .place h3, #parte-2017 .place-meta { color: var(--y17); }
 
     .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
     .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
@@ -67,9 +99,15 @@
     .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
     .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
     .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    #parte-2017 .tip { background: var(--y17-pale); border-left-color: var(--y17); }
+    #parte-2017 .tip-label { color: var(--y17); }
 
     .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.85; }
     .transport strong { color: var(--accent); font-weight: 700; }
+    #parte-1998 .transport { border-color: var(--y98); }
+    #parte-1998 .transport strong { color: var(--y98); }
+    #parte-2017 .transport { border-color: var(--y17); }
+    #parte-2017 .transport strong { color: var(--y17); }
 
     .leyenda { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
     .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
@@ -78,24 +116,37 @@
     .leyenda-dot.resto { background: var(--rest-border); }
     .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
 
-    .video-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; } /* He ampliado el ancho de 920px a 1100px */
-    .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1.5rem; }
-    @media (max-width: 900px) { .video-grid { grid-template-columns: repeat(2, 1fr); } } /* 2 por fila en tablets */
-    @media (max-width: 600px) { .video-grid { grid-template-columns: 1fr; } }           /* 1 por fila en móviles */
+    /* OpenTour badge */
+    .opentour { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.2rem 0.6rem; margin-right: 0.4rem; }
+    .opentour.verde  { background: #2e7d32; color: white; }
+    .opentour.amarillo { background: #f9a825; color: #3e2000; }
+    .opentour.naranja { background: #e65100; color: white; }
+    .opentour.azul   { background: var(--accent); color: white; }
 
-   .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
-   .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
-   .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
-   .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); display: block; }
 
+    .end-group { margin-top: 5rem; }
+    .end-group-title { max-width: 1100px; margin: 0 auto; padding: 0 2rem; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; }
+    .end-section-title { max-width: 1100px; margin: 0 auto 0.8rem; padding: 0 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+
+    .video-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 1rem; }
+    @media (max-width: 600px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-v .icon { font-size: 2.5rem; opacity: 0.4; }
 
     .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
-    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1rem; }
     .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
     .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
     .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
     .gallery-item:hover::after { opacity: 1; }
+    .foto-placeholder { width: 100%; height: 100%; background: var(--paper-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
 
     .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
     .lightbox.open { display: flex; }
@@ -106,13 +157,6 @@
     .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
     .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
 
-    /* OpenTour badge */
-    .opentour { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; padding: 0.2rem 0.6rem; margin-right: 0.4rem; }
-    .opentour.verde  { background: #2e7d32; color: white; }
-    .opentour.amarillo { background: #f9a825; color: #3e2000; }
-    .opentour.naranja { background: #e65100; color: white; }
-    .opentour.azul   { background: var(--accent); color: white; }
-
     footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
     footer a { color: var(--accent-light); text-decoration: none; }
     footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
@@ -120,6 +164,8 @@
     @media (max-width: 600px) {
       .gallery-grid { grid-template-columns: repeat(3, 1fr); }
       .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+      .trip-tabs { top: 44px; }
+      .trip-tabs a { min-width: 50%; padding: 0.8rem 0.5rem; font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -130,34 +176,135 @@
   <span class="nav-sep">/</span>
   <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
   <span class="nav-sep">/</span>
-  <span class="nav-current">París 2017</span>
+  <span class="nav-current">París 1998 & 2017</span>
 </nav>
 
 <header class="hero">
   <div class="hero-badge">🇫🇷 Francia</div>
-  <h1 class="hero-title">París 2017</h1>
-  <div class="hero-date">10 – 12 Marzo 2017 · 3 días</div>
+  <h1 class="hero-title">París <em>1998 · 2017</em></h1>
+  <div class="hero-date">02 – 04 Abril 1998 &nbsp;·&nbsp; 10 – 12 Marzo 2017</div>
   <div class="hero-pills">
     <span class="pill">Torre Eiffel</span>
     <span class="pill">Notre-Dame</span>
-    <span class="pill">Sacré-Cœur</span>
-    <span class="pill">Louvre</span>
-    <span class="pill">Montmartre</span>
-    <span class="pill">La Madeleine</span>
-    <span class="pill">Panteón</span>
-    <span class="pill">Les Invalides</span>
+    <span class="pill">Museo del Louvre</span>
     <span class="pill">Arco del Triunfo</span>
+    <span class="pill">Sacré-Cœur</span>
+    <span class="pill">Les Invalides</span>
     <span class="pill">Barrio Latino</span>
   </div>
 </header>
 
-<div class="days-nav" role="navigation" aria-label="Navegación por días">
-  <a href="#dia1">Día 1 · Llegada · Torre Eiffel · Notre-Dame · Barrio Latino</a>
-  <a href="#dia2">Día 2 · Sacré-Cœur · La Madeleine · Panteón · Les Invalides</a>
-  <a href="#dia3">Día 3 · Louvre · Arco del Triunfo · Vuelta BCN</a>
+<div class="trip-tabs">
+  <a class="tab-98" href="#parte-1998-header">Parte I<span>París 1998</span></a>
+  <a class="tab-17" href="#parte-2017-header">Parte II<span>París 2017</span></a>
 </div>
 
-<main class="content">
+<div class="part-header part-98" id="parte-1998-header">
+  <p class="part-eyebrow">Parte I · 3 días</p>
+  <h2>El primer París · Primavera de 1998</h2>
+  <p>El Arco del Triunfo, el Campo de Marte y el Trocadero, los enigmas del Louvre y el gótico de Notre-Dame y el Museo de Cluny.</p>
+</div>
+
+<div class="days-nav nav-98" role="navigation" aria-label="Navegación por días de 1998">
+  <a href="#p98-dia1">Día 1 · París Imperial & Vistas</a>
+  <a href="#p98-dia2">Día 2 · Enigmas del Louvre</a>
+  <a href="#p98-dia3">Día 3 · Secretos del Gótico</a>
+</div>
+
+<main class="content" id="parte-1998">
+
+  <!-- ═══ DÍA 1 ═══ -->
+  <section class="day-section" id="p98-dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>El París Imperial, Alturas y Vistas de Vértigo</h2>
+        <div class="day-subtitle">Jueves 2 de Abril de 1998</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Plaza Charles de Gaulle · Monumento Histórico</div>
+      <h3>El Arco de Triunfo</h3>
+      <p>Napoleón mandó construir este arco en 1806 prometiendo a sus soldados: "Volveréis a casa bajo arcos triunfales". Lo curioso es que él nunca lo vio terminado en vida. Cuando falleció en el exilio en la isla de Santa Elena, sus restos mortales tuvieron que esperar hasta 1840 para poder cumplir la promesa y pasar, por fin, bajo la gran bóveda camino de su sepulcro.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🗼 Campo de Marte · Perspectiva de la Escuela Militar</div>
+      <h3>Mirada al Campo de Marte</h3>
+      <p>Los jardines parecen un tablero de ajedrez perfecto. En este mismísimo césped, en julio de 1790, se celebró la Fiesta de la Federación donde el rey Luis XVI juró la nueva Constitución ante una multitud enfebrecida... pocos años antes de perder la cabeza en la guillotina.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Orilla Norte del Sena · Palacio de Chaillot</div>
+      <h3>Trocadero</h3>
+      <p>El palacio se construyó para la Exposición Universal de 1937. Fue justo en su gran terraza mirador donde Adolf Hitler se fotografió con la Torre Eiffel de fondo tras ocupar Francia, dejándonos una de las imágenes más oscuras del siglo XX.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔱 Cúpula Dorada</div>
+      <h3>Mirada a Los Inválidos</h3>
+      <p>Esa cúpula dorada custodia las cenizas del mismísimo Napoleón Bonaparte. Para fundir el oro que recubre la estructura exterior se necesitaron más de doce kilos de este metal precioso.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 ═══ -->
+  <section class="day-section" id="p98-dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Tesoros de la Humanidad y Enigmas Egipcios</h2>
+        <div class="day-subtitle">Viernes 3 de Abril de 1998</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏺 Antigüedades Egipcias · Inventario N 2627</div>
+      <h3>La Momia de Bashiri (Museo del Louvre)</h3>
+      <p>Esta pieza es una celebridad silenciosa. Llegó al Louvre en 1827 gracias a Champollion, el hombre que descifró los jeroglíficos. Durante la Segunda Guerra Mundial, ante la inminente invasión nazi, los conservadores del museo organizaron una evacuación masiva secreta. Empacaron miles de obras en cajas de madera para esconderlas en castillos lejanos. Nuestra momia tuvo que viajar oculta por carreteras secundarias para no ser saqueada por el ejército alemán.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 ═══ -->
+  <section class="day-section" id="p98-dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Secretos Medievales y el Corazón de la Cité</h2>
+        <div class="day-subtitle">Sábado 4 de Abril de 1998</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦄 Barrio Latino · Tapices del Siglo XV</div>
+      <h3>"Mon Seul Désir" (Museo de Cluny)</h3>
+      <p>Estos tapices fueron tejidos alrededor del año 1500, pero pasaron siglos olvidados en un castillo sufriendo humedades. La escritora George Sand los redescubrió en el siglo XIX. Los primeros cinco representan los sentidos corporales. El sexto muestra a la dama guardando sus joyas bajo el lema "Mi único deseo", representando el libre albedrío: renunciar a las pasiones materiales para abrazar el alma.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Île de la Cité · Plaza Juan XXIII</div>
+      <h3>Catedral de Notre Dame</h3>
+      <p>La gran aguja central que domina el centro de tu fotografía, diseñada por el arquitecto Viollet-le-Duc en el siglo XIX, colapsó trágicamente ante los ojos del mundo entero durante el devastador incendio del 15 de abril de 2019. Tu instantánea de abril de 1998 capta la catedral en toda su gloria original antes del fuego.</p>
+    </div>
+  </section>
+
+</main>
+
+<div class="part-divider"><hr></div>
+
+<div class="part-header part-17" id="parte-2017-header">
+  <p class="part-eyebrow">Parte II · 3 días</p>
+  <h2>El regreso · Primavera de 2017</h2>
+  <p>Diecinueve años después, un recorrido a fondo en OpenTour y Batobus: Torre Eiffel, Sacré-Cœur, el Panteón, Les Invalides, el Louvre y el Arco del Triunfo.</p>
+</div>
+
+<div class="days-nav nav-17" role="navigation" aria-label="Navegación por días de 2017">
+  <a href="#p17-dia1">Día 1 · Torre Eiffel · Notre-Dame · Barrio Latino</a>
+  <a href="#p17-dia2">Día 2 · Sacré-Cœur · La Madeleine · Panteón · Les Invalides</a>
+  <a href="#p17-dia3">Día 3 · Louvre · Arco del Triunfo · Vuelta BCN</a>
+</div>
+
+<main class="content" id="parte-2017">
 
   <div class="tip">
     <div class="tip-label">🚌 OpenTour — E-Ticket 144098 · 5 personas · 230 € · 2 días</div>
@@ -176,7 +323,7 @@
   </div>
 
   <!-- ═══ DÍA 1 ═══ -->
-  <section class="day-section" id="dia1">
+  <section class="day-section" id="p17-dia1">
     <div class="day-header">
       <div class="day-number">1</div>
       <div class="day-info">
@@ -234,7 +381,7 @@
   </section>
 
   <!-- ═══ DÍA 2 ═══ -->
-  <section class="day-section" id="dia2">
+  <section class="day-section" id="p17-dia2">
     <div class="day-header">
       <div class="day-number">2</div>
       <div class="day-info">
@@ -306,7 +453,7 @@
   </section>
 
   <!-- ═══ DÍA 3 ═══ -->
-  <section class="day-section" id="dia3">
+  <section class="day-section" id="p17-dia3">
     <div class="day-header">
       <div class="day-number">3</div>
       <div class="day-info">
@@ -350,42 +497,62 @@
   </section>
 
 </main>
+<!-- ═══════════════════════════ VÍDEOS -->
+<div class="end-group">
+  <h2 class="end-group-title">🎬 Vídeos del viaje</h2>
 
-<!-- VÍDEOS -->
-<div class="video-section">
-  <div class="section-title-block" style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;max-width:1100px;margin-left:auto;margin-right:auto;">
-    🎬 VÍDEOS DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  <div class="video-section">
+    <div class="end-section-title">Viaje 1998</div>
+    <div class="video-grid">
+      <div>
+        <div class="video-label">📸 Fotos del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/vQqjPh4ODL4" title="París 1998 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/mp0J0oSnvcs" title="París 1998 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="video-grid">
-    
-    <!-- VÍDEO 1 -->
-    <div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DE FOTOS DEL VIAJE</div>
-      <div class="video-wrap">
-        <iframe src="https://youtube.com/embed/CepM0IZYB0k" title="Fotos del viaje" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <div class="video-placeholder-v" id="vph1"><span class="icon">▶</span><span>FOTOS DEL VIAJE</span></div>
-      </div>
-    </div>
 
-    <!-- VÍDEO 2 -->
-    <div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">VIDEO DEL VIAJE</div>
-      <div class="video-wrap">
-        <iframe src="https://youtube.com/embed/Ra94Y_JlOLE" title="Vídeo del viaje París 1998" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <div class="video-placeholder-v" id="vph2"><span class="icon">▶</span><span>VIDEO DEL VIAJE</span></div>
+  <div class="video-section">
+    <div class="end-section-title">Viaje 2017</div>
+    <div class="video-grid">
+      <div>
+        <div class="video-label">📸 Fotos del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://youtube.com/embed/CepM0IZYB0k" title="Fotos del viaje París 2017" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-placeholder-v" id="vph1"><span class="icon">▶</span><span>FOTOS DEL VIAJE</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://youtube.com/embed/Ra94Y_JlOLE" title="Vídeo del viaje París 2017" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-placeholder-v" id="vph2"><span class="icon">▶</span><span>VIDEO DEL VIAJE</span></div>
+        </div>
       </div>
     </div>
-    
   </div>
 </div>
 
+<!-- ═══════════════════════════ GALERÍAS -->
+<div class="end-group">
+  <h2 class="end-group-title">📷 Galerías de fotos</h2>
 
-<!-- GALERÍA -->
-<div class="gallery-section">
-  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
-    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  <div class="gallery-section">
+    <div class="end-section-title">Viaje 1998</div>
+    <div class="gallery-grid" id="gallery-1998"></div>
   </div>
-  <div class="gallery-grid" id="gallery"></div>
+
+  <div class="gallery-section">
+    <div class="end-section-title">Viaje 2017</div>
+    <div class="gallery-grid" id="gallery-2017"></div>
+  </div>
 </div>
 
 <!-- LIGHTBOX -->
@@ -397,32 +564,47 @@
 </div>
 
 <footer>
-  <p><strong>Diario de Viajes · París 2017</strong> &nbsp;·&nbsp; 10 – 12 Marzo 2017 · 3 días</p>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; París 1998 & 2017</p>
   <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
 </footer>
 
 <script>
-  const photos = [
+  // ---- Fotos 1998 ---- (antes en fotos/, ahora en fotos1998/ para no colisionar con las de 2017)
+  const photos1998 = [
+    'fotos/1a.jpg','fotos/2a.jpg','fotos/3a.jpg','fotos/4a.jpg','fotos/5a.jpg',
+    'fotos/6a.jpg','fotos/7a.jpg','fotos/8a.jpg',
+  ];
+
+  // ---- Fotos 2017 ---- (antes en fotos/, ahora en fotos2017/)
+  const photos2017 = [
     'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
     'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
     'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
     'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
   ];
 
-  const gallery = document.getElementById('gallery');
-  if (!photos.length) {
-    gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>fotos/</code>.</p>';
-  } else {
+  const galleries = {
+    'gallery-1998': photos1998,
+    'gallery-2017': photos2017,
+  };
+
+  function buildGallery(galleryId, photos, yearLabel) {
+    const gallery = document.getElementById(galleryId);
+    if (!photos.length) {
+      gallery.innerHTML = '<p style="color:var(--muted);font-size:0.95rem;font-weight:500;padding:1rem 0;">Las fotos se mostrarán aquí cuando se añadan a <code>' + (yearLabel === '1998' ? 'fotos1998/' : 'fotos2017/') + '</code>.</p>';
+      return;
+    }
     photos.forEach((src, i) => {
       const item = document.createElement('div');
       item.className = 'gallery-item';
-      item.onclick = () => openLightbox(i);
+      item.onclick = () => openLightbox(galleryId, i);
       const img = document.createElement('img');
-      img.src = src; img.alt = `Foto París 2017 ${i+1}`; img.loading = 'lazy';
+      img.src = src;
+      img.alt = `Foto París ${yearLabel} ${i+1}`;
+      img.loading = 'lazy';
       img.onerror = function() {
         const ph = document.createElement('div');
         ph.className = 'foto-placeholder';
-        ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
         ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto ' + (i+1) + '</span>';
         item.replaceChild(ph, this);
       };
@@ -430,15 +612,15 @@
       gallery.appendChild(item);
     });
   }
+  buildGallery('gallery-1998', photos1998, '1998');
+  buildGallery('gallery-2017', photos2017, '2017');
 
-  ['vph1','vph2'].forEach((id, i) => {
-    const iframe = document.querySelectorAll('.video-wrap iframe')[i];
-    if (iframe && !iframe.src.includes('VIDEO_ID')) document.getElementById(id).style.display = 'none';
-  });
-
+  let currentGallery = 'gallery-1998';
   let currentPhoto = 0;
-  function openLightbox(idx) {
+  function openLightbox(galleryId, idx) {
+    const photos = galleries[galleryId];
     if (!photos.length) return;
+    currentGallery = galleryId;
     currentPhoto = idx;
     document.getElementById('lb-img').src = photos[idx];
     document.getElementById('lightbox').classList.add('open');
@@ -449,6 +631,7 @@
     document.body.style.overflow = '';
   }
   function changePhoto(dir) {
+    const photos = galleries[currentGallery];
     currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
     document.getElementById('lb-img').src = photos[currentPhoto];
   }
@@ -459,18 +642,47 @@
     if (e.key === 'ArrowRight') changePhoto(1);
   });
 
-  const sections = document.querySelectorAll('.day-section');
-  const navLinks = document.querySelectorAll('.days-nav a');
-  const obs = new IntersectionObserver(entries => {
+  // Ocultar el overlay de "video pendiente" de 2017 si el iframe ya tiene un ID real
+  (function hideVideoPlaceholders() {
+    const wraps = document.querySelectorAll('.video-wrap');
+    wraps.forEach(w => {
+      const iframe = w.querySelector('iframe');
+      const ph = w.querySelector('.video-placeholder-v');
+      if (iframe && ph && !iframe.src.includes('VIDEO_ID')) ph.style.display = 'none';
+    });
+  })();
+
+  // Active day nav on scroll (por separado para cada parte)
+  function wireDayNav(sectionSelector, navSelector) {
+    const sections = document.querySelectorAll(sectionSelector);
+    const navLinks = document.querySelectorAll(navSelector);
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const a = document.querySelector(`${navSelector}[href="#${e.target.id}"]`);
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { threshold: 0.25 });
+    sections.forEach(s => obs.observe(s));
+  }
+  wireDayNav('#parte-1998 .day-section', '.days-nav.nav-98 a');
+  wireDayNav('#parte-2017 .day-section', '.days-nav.nav-17 a');
+
+  // Tabs activas según parte visible
+  const partHeaders = document.querySelectorAll('.part-header');
+  const tabLinks = document.querySelectorAll('.trip-tabs a');
+  const tabObs = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
-        navLinks.forEach(l => l.classList.remove('active'));
-        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
-        if (a) a.classList.add('active');
+        tabLinks.forEach(l => l.classList.remove('active'));
+        const cls = e.target.id === 'parte-1998-header' ? 'tab-98' : 'tab-17';
+        document.querySelector(`.trip-tabs a.${cls}`).classList.add('active');
       }
     });
-  }, { threshold: 0.25 });
-  sections.forEach(s => obs.observe(s));
+  }, { threshold: 0.1, rootMargin: '-40% 0px -50% 0px' });
+  partHeaders.forEach(s => tabObs.observe(s));
 </script>
 
 </body>

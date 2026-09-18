@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d;
+      --paper: #e8f2fc;
+      --paper-dark: #c8dff2;
+      --accent: #1565c0;
+      --accent-light: #4a90d9;
+      --accent-pale: #bbdefb;
+      --muted: #4a6885;
+      --white: #f0f8ff;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      background:
+        linear-gradient(160deg, rgba(10,31,61,0.8) 0%, rgba(21,101,192,0.5) 60%, rgba(10,31,61,0.85) 100%),
+        url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      position: relative; text-align: center; padding: 2rem;
+    }
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+      height: 120px; background: linear-gradient(to bottom, transparent, var(--paper));
+    }
+    .hero-stamp {
+      border: 3px solid rgba(255,255,255,0.5);
+      outline: 1px solid rgba(255,255,255,0.25);
+      outline-offset: 8px;
+      padding: 3rem 4rem;
+      animation: fadeIn 1.2s ease both;
+    }
+    .hero-eyebrow {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: white; font-weight: 700; margin-bottom: 1rem;
+    }
+    .hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700; color: white; line-height: 1.1;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 0.2rem;
+    }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900; color: white; line-height: 1.0;
+      margin-bottom: 0.3rem; display: block;
+    }
+    .hero-subtitle {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(0.9rem, 2vw, 1.2rem); letter-spacing: 0.25em;
+      color: white; font-weight: 700; margin-top: 0.8rem; text-transform: uppercase;
+    }
+    .hero-stats { display: flex; gap: 3rem; margin-top: 2.5rem; justify-content: center; }
+    .stat { text-align: center; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: white; display: block; }
+    .stat-label { font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: white; font-weight: 700; }
+    .scroll-hint {
+      position: absolute; bottom: 140px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: rgba(255,255,255,0.6); font-size: 0.7rem; letter-spacing: 0.2em;
+      text-transform: uppercase; animation: bounce 2s ease infinite;
+    }
+    .scroll-hint::after { content: ''; width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent); }
+
+    /* ── SECTIONS ── */
+    .continent-section { padding: 5rem 2rem 3rem; max-width: 1300px; margin: 0 auto; }
+    .continent-header {
+      display: flex; align-items: baseline; gap: 1.5rem;
+      margin-bottom: 2.5rem; padding-bottom: 1rem;
+      border-bottom: 1px solid var(--paper-dark); position: relative;
+    }
+    .continent-header::before {
+      content: ''; position: absolute; bottom: -1px; left: 0;
+      width: 80px; height: 3px; background: var(--accent);
+    }
+    .continent-emoji { font-size: 2rem; }
+    .continent-name { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: var(--ink); }
+    .continent-count { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-left: auto; }
+
+    /* ── CARDS ── */
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.2rem; }
+    .card { background: var(--white); border: 1px solid var(--paper-dark); overflow: hidden; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: transform 0.3s ease, box-shadow 0.3s ease; position: relative; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(10,31,61,0.15); }
+    .card-img-wrap { overflow: hidden; position: relative; }
+    .card-img-wrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,31,61,0.5) 0%, transparent 60%); pointer-events: none; }
+    .card-img { width: 100%; height: 160px; object-fit: cover; display: block; filter: saturate(0.9); transition: filter 0.4s ease, transform 0.4s ease; }
+    .card:hover .card-img { filter: saturate(1.1); transform: scale(1.05); }
+    .card-body { padding: 1rem 1.2rem 1.2rem; }
+    .card-destination { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 0.3rem; }
+    .card-meta { font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+    .card-arrow { position: absolute; bottom: 1rem; right: 1.2rem; width: 28px; height: 28px; background: var(--accent); display: flex; align-items: center; justify-content: center; opacity: 0; transform: translateX(-8px); transition: opacity 0.3s ease, transform 0.3s ease; }
+    .card:hover .card-arrow { opacity: 1; transform: translateX(0); }
+
+    /* ── DIVIDER ── */
+    .divider { text-align: center; padding: 2rem 0 0; color: var(--accent); font-size: 1.2rem; letter-spacing: 0.5em; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; margin-top: 4rem; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+    .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 600px) {
+      .hero-stamp { padding: 2rem 1.5rem; }
+      .hero-stats { gap: 1.5rem; }
+      .cards-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-stamp">
+      <p class="hero-eyebrow">✈ Memorias del mundo</p>
+      <p class="hero-title">Diario de Viajes de</p>
+      <span class="hero-name">Josep Lluis</span>
+      <p class="hero-subtitle">España · Europa · Asia · América · África</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Continentes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">65+</span>
+          <span class="stat-label">Destinos</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">∞</span>
+          <span class="stat-label">Historias</span>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-hint">Explorar</div>
+  </header>
+
+  <main>
+
+    <!-- ══════════════════ CATALUÑA ══════════════════ -->
+    <section id="sec-catalunya" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🏔️</span>
+        <h2 class="continent-name">Catalunya</h2>
+        <span class="continent-count">8 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="espana/vall-daran/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1604320786106-186182484af8?w=400&q=70" alt="Vall d'Aran">
+          </div>
+          <div class="card-body"><div class="card-destination">Vall d'Aran 2012</div><div class="card-meta">Pirineos · Montaña</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/tarragona/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1722520592113-1f681393cd8d?w=400&q=70&fit=crop&auto=format" alt="Tarragona">
+          </div>
+          <div class="card-body"><div class="card-destination">Tarragona 2016</div><div class="card-meta">Tarraco · Historia</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/cardona/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1646330316995-7b8a0017e57b?w=400&q=70&fit=crop&auto=format" alt="Cardona">
+          </div>
+          <div class="card-body"><div class="card-destination">Cardona 2022</div><div class="card-meta">Montaña de Sal · Castillo</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/la-garrotxa/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1651574087390-b305612980dd?w=400&q=70&fit=crop&auto=format" alt="La Garrotxa">
+          </div>
+          <div class="card-body"><div class="card-destination">La Garrotxa 2022</div><div class="card-meta">Zona Volcànica · Natura</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+        <a class="card" href="espana/pirineos/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1455156218388-5e61b526818b?w=400&q=70&fit=crop&auto=format" alt="Pirineos">
+          </div>
+          <div class="card-body"><div class="card-destination">Pirineos 2001-2025</div><div class="card-meta">Catalunya · Alta Muntanya</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/reus/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1756744024964-138830306f73?w=400&q=70&fit=crop&auto=format" alt="Reus">
+          </div>
+          <div class="card-body"><div class="card-destination">Reus 2013</div><div class="card-meta">Camp de Tarragona · Modernisme</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/estartit-girona/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1657983060174-ce54947f9001?w=400&q=70&fit=crop&auto=format" alt="L'Estartit · Girona">
+          </div>
+          <div class="card-body"><div class="card-destination">L'Estartit · Girona 2023</div><div class="card-meta">Illes Medes · Costa</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/costa-brava/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1708952483586-bc3d393a5ea0?w=400&q=70&fit=crop&auto=format" alt="Costa Brava">
+          </div>
+          <div class="card-body"><div class="card-destination">Costa Brava 2022</div><div class="card-meta">Catalunya · Cales i mar</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ ESPAÑA ══════════════════ -->
+    <section id="sec-espana" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🇪🇸</span>
+        <h2 class="continent-name">España</h2>
+        <span class="continent-count">18 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="espana/pais-vasco/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1594305548608-df04461f1b28?w=400&q=70&fit=crop&auto=format" alt="País Vasco">
+          </div>
+          <div class="card-body"><div class="card-destination">País Vasco 2011</div><div class="card-meta">Norte · Gastronomía</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/galicia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://plus.unsplash.com/premium_photo-1661962690640-3ce794d2a2b5?w=400&q=70&fit=crop&auto=format" alt="Galicia">
+          </div>
+          <div class="card-body"><div class="card-destination">Galicia 2012-2026</div><div class="card-meta">Noroeste · Rías</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/cadiz/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1686869051498-769fa2ad8657?w=400&q=70&fit=crop&auto=format" alt="Cádiz">
+          </div>
+          <div class="card-body"><div class="card-destination">Cádiz 2013</div><div class="card-meta">Andalucía · Carnaval</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/valencia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1719401542194-95139aed215c?w=400&q=70&fit=crop&auto=format" alt="Valencia">
+          </div>
+          <div class="card-body"><div class="card-destination">Valencia 2015</div><div class="card-meta">Levante · Cultura</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/navarra-vizcaya/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1745415558507-b07aa223a746?w=400&q=70&fit=crop&auto=format" alt="Navarra-Vizcaya">
+          </div>
+          <div class="card-body"><div class="card-destination">Navarra · Vizcaya 2020 </div><div class="card-meta">Norte · Verde</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/albacete/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1761911653118-f89568a1715d?w=400&q=70&fit=crop&auto=format" alt="Albacete">
+          </div>
+          <div class="card-body"><div class="card-destination">Albacete 2022</div><div class="card-meta">Castilla · Feria</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/la-rioja/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1651349864579-119122bdd70d?w=400&q=70" alt="La Rioja">
+          </div>
+          <div class="card-body"><div class="card-destination">La Rioja 2022</div><div class="card-meta">Norte · Vino</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/madrid/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=400&q=70" alt="Madrid">
+          </div>
+          <div class="card-body"><div class="card-destination">Madrid 2010</div><div class="card-meta">Capital · Arte</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/asturias/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1559127898-2a67ad2680fe?w=400&q=70&fit=crop&auto=format" alt="Asturias">
+          </div>
+          <div class="card-body"><div class="card-destination">Asturias 2024</div><div class="card-meta">Norte · Picos Europa</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/malaga/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1560801514-704d01da7745?w=400&q=70&fit=crop&auto=format" alt="Málaga">
+          </div>
+          <div class="card-body"><div class="card-destination">Málaga 2023</div><div class="card-meta">Andalucía · Sol</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+	<a class="card" href="espana/malaga-2/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1629311722180-60898ebda5d8?w=400&q=70&fit=crop&auto=format" alt="Málaga-2">
+          </div>
+          <div class="card-body"><div class="card-destination">Málaga 2023-2024</div><div class="card-meta">Andalucía · Sol</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+
+        <a class="card" href="espana/salamanca/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1747858224313-f18c9c339c22?w=400&q=70&fit=crop&auto=format" alt="Salamanca">
+          </div>
+          <div class="card-body"><div class="card-destination">Salamanca 2024</div><div class="card-meta">Castilla · Universidad</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/zaragoza/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1612072451833-bb858853aaf5?w=400&q=70&fit=crop&auto=format" alt="Zaragoza">
+          </div>
+          <div class="card-body"><div class="card-destination">Zaragoza 2016</div><div class="card-meta">Aragón · Pilar</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+
+        <a class="card" href="espana/valladolid/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1613224327093-bcc6c035d4c1?w=400&q=70&fit=crop&auto=format" alt="Valladolid">
+          </div>
+          <div class="card-body"><div class="card-destination">Valladolid 2015</div><div class="card-meta">Castilla · Renacimiento</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/zamora/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1670239218352-00df0f1d244f?w=400&q=70&fit=crop&auto=format" alt="Zamora">
+          </div>
+          <div class="card-body"><div class="card-destination">Zamora 2018</div><div class="card-meta">Castilla · Románico</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/avila/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1721831467593-19be7625b534?w=400&q=70&fit=crop&auto=format" alt="Ávila">
+          </div>
+          <div class="card-body"><div class="card-destination">Ávila 2025</div><div class="card-meta">Castilla · Muralla medieval</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/granada/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1597048706405-7d19b803588a?w=400&q=70&fit=crop&auto=format" alt="Granada">
+          </div>
+          <div class="card-body"><div class="card-destination">Granada 2025</div><div class="card-meta">Andalucía · Alhambra</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+       <a class="card" href="espana/merida/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://plus.unsplash.com/premium_photo-1697729502687-a816068007b1?w=400&q=70&fit=crop&auto=format" alt="Mérida">
+          </div>
+          <div class="card-body"><div class="card-destination">Mérida 1997</div><div class="card-meta">Badajoz · Epoca romana</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ ISLAS BALEARES Y CANARIAS ══════════════════ -->
+    <section id="sec-islas" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🏝️</span>
+        <h2 class="continent-name">Islas Baleares y Canarias</h2>
+        <span class="continent-count">5 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="espana/ibiza/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1596377940590-9ac8e3d22b79?w=400&q=70&fit=crop&auto=format" alt="Ibiza">
+          </div>
+          <div class="card-body"><div class="card-destination">Ibiza 2016</div><div class="card-meta">Baleares · Isla</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/menorca/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1458628370679-1f7b2f6bd22b?w=400&q=70&fit=crop&auto=format" alt="Menorca">
+          </div>
+          <div class="card-body"><div class="card-destination">Menorca 1998</div><div class="card-meta">Baleares · Calas</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/mallorca/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1617532408070-369f42b448b0?w=400&q=70&fit=crop&auto=format" alt="Menorca">
+          </div>
+          <div class="card-body"><div class="card-destination">Mallorca 1993</div><div class="card-meta">Baleares · Calas</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/fuerteventura-lanzarote/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1550610484-3e9f86dc0b1d?w=400&q=70&fit=crop&auto=format" alt="Fuerteventura-Lanzarote">
+          </div>
+          <div class="card-body"><div class="card-destination">Fuerteventura · Lanzarote 2020</div><div class="card-meta">Canarias · Volcanes</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="espana/grancanaria-tenerife/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1551341900-ee1c29a24544?w=400&q=70&fit=crop&auto=format" alt="Canarias">
+          </div>
+          <div class="card-body"><div class="card-destination">Gran Canaria · Tenerife 1988</div><div class="card-meta">Canarias · Volcanes y playas</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ ITALIA ══════════════════ -->
+    <section id="sec-italia" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🇮🇹</span>
+        <h2 class="continent-name">Italia</h2>
+        <span class="continent-count">6 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="europa/italia/sicilia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1523365154888-8a758819b722?w=400&q=70" alt="Sicilia">
+          </div>
+          <div class="card-body"><div class="card-destination">Sicilia 2021</div><div class="card-meta">Italia · Mediterráneo</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/italia/milan/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1610016302534-6f67f1c968d8?w=400&q=70" alt="Milán">
+          </div>
+          <div class="card-body"><div class="card-destination">Milán 2022</div><div class="card-meta">Italia · Moda</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/italia/napoles/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1728988120174-1bdf6ef22603?w=400&q=70" alt="Nápoles">
+          </div>
+          <div class="card-body"><div class="card-destination">Nápoles 2025</div><div class="card-meta">Italia · Vesubio</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/italia/venecia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1514890547357-a9ee288728e0?w=400&q=70" alt="Venecia">
+          </div>
+          <div class="card-body"><div class="card-destination">Venecia 2023</div><div class="card-meta">Italia · Canales</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/italia/roma/index.html">
+          <div class="card-img-wrap">
+            <!-- Coliseo de Roma -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=400&q=70" alt="Roma">
+          </div>
+          <div class="card-body"><div class="card-destination">Roma 1999</div><div class="card-meta">Italia · Ciudad Eterna</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/italia/florencia/index.html">
+          <div class="card-img-wrap">
+            <!-- Duomo de Florencia -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1476362174823-3a23f4aa6d76?w=400&q=70" alt="Florencia">
+          </div>
+          <div class="card-body"><div class="card-destination">Florencia - Pisa 1999</div><div class="card-meta">Italia · Renacimiento</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ ISLAS PORTUGUESAS ══════════════════ -->
+    <section id="sec-islas-portuguesas" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🇵🇹</span>
+        <h2 class="continent-name">Portugal y sus Islas</h2>
+        <span class="continent-count">4 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+	<a class="card" href="europa/portugal/index.html">
+          <div class="card-img-wrap">
+            <!-- Puente de Lisboa -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1558102400-72da9fdbecae?w=400&q=70" alt="Portugal">
+          </div>
+          <div class="card-body"><div class="card-destination">Portugal 1997</div><div class="card-meta">Portugal · Tradición</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+        <a class="card" href="europa/terceira/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1620998051604-95ff17ccc537?w=400&q=70" alt="Terceira">
+          </div>
+          <div class="card-body"><div class="card-destination">Terceira 2012</div><div class="card-meta">Azores · Atlántico</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/sao-miguel/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1668597090962-afe0bb644999?w=400&q=70" alt="São Miguel">
+          </div>
+          <div class="card-body"><div class="card-destination">São Miguel 2019</div><div class="card-meta">Azores · Volcanes</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/madeira/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1628413283166-a7666966d26b?w=400&q=70" alt="Madeira">
+          </div>
+          <div class="card-body"><div class="card-destination">Madeira 2018</div><div class="card-meta">Portugal · Flores</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ EUROPA ══════════════════ -->
+    <section id="sec-europa" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🌍</span>
+        <h2 class="continent-name">Europa</h2>
+        <span class="continent-count">11 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="europa/islandia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1494564605686-2e931f77a8e2?w=400&q=70" alt="Islandia">
+          </div>
+          <div class="card-body"><div class="card-destination">Islandia 2011</div><div class="card-meta">Norte · Auroras</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/irlanda/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1590089415225-401ed6f9db8e?w=400&q=70" alt="Irlanda">
+          </div>
+          <div class="card-body"><div class="card-destination">Irlanda 2015</div><div class="card-meta">Islas Británicas · Verde</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/paris/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=400&q=70" alt="París">
+          </div>
+          <div class="card-body"><div class="card-destination">París 1998-2017</div><div class="card-meta">Francia · Arte</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+       <a class="card" href="europa/disneyland/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1690097232120-a59669ee0989?w=400&q=70" alt="París">
+          </div>
+          <div class="card-body"><div class="card-destination">París y Disneyland 2004</div><div class="card-meta">París · Atracciones</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/croacia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1555990793-da11153b2473?w=400&q=70" alt="Croacia">
+          </div>
+          <div class="card-body"><div class="card-destination">Croacia 2018</div><div class="card-meta">Adriático · Costa</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/londres/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=400&q=70" alt="Londres">
+          </div>
+          <div class="card-body"><div class="card-destination">Londres 1999</div><div class="card-meta">Reino Unido · Capital</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/holanda-belgica/index.html">
+          <div class="card-img-wrap">
+            <!-- Canales de Ámsterdam -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=400&q=70" alt="Holanda y Bélgica">
+          </div>
+          <div class="card-body"><div class="card-destination">Holanda · Bélgica 2001</div><div class="card-meta">Benelux · Canales</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/escocia/index.html">
+          <div class="card-img-wrap">
+            <!-- Highlands escoceses -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1589489873423-d1745278a8f4?w=400&q=70" alt="Escocia">
+          </div>
+          <div class="card-body"><div class="card-destination">Escocia 2002</div><div class="card-meta">Reino Unido · Highlands</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/noruega/index.html">
+          <div class="card-img-wrap">
+            <!-- Fiordos noruegos -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1600256698889-61ff2cd73cd8?w=400&q=70" alt="Noruega">
+          </div>
+          <div class="card-body"><div class="card-destination">Noruega 2003</div><div class="card-meta">Escandinavia · Fiordos</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/grecia/index.html">
+          <div class="card-img-wrap">
+            <!-- Santorini Grecia -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=400&q=70" alt="Grecia">
+          </div>
+          <div class="card-body"><div class="card-destination">Grecia 2004</div><div class="card-meta">Mediterráneo · Islas</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/turquia/index.html">
+          <div class="card-img-wrap">
+            <!-- Capadocia Turquía -->
+            <img class="card-img" src="https://images.unsplash.com/photo-1641128324972-af3212f0f6bd?w=400&q=70" alt="Turquía">
+          </div>
+          <div class="card-body"><div class="card-destination">Turquía 2005</div><div class="card-meta">Eurasia · Capadocia</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        
+        <a class="card" href="europa/suiza/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1530638458177-fcc275860f8b?w=400&q=70&fit=crop&auto=format" alt="Suiza">
+          </div>
+          <div class="card-body"><div class="card-destination">Suiza 2000</div><div class="card-meta">Alpes · Lagos</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/futuroscope/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://plus.unsplash.com/premium_photo-1711333057022-5c02224e0788?w=400&q=70&fit=crop&auto=format" alt="Francia · Futuroscope">
+          </div>
+          <div class="card-body"><div class="card-destination">Francia · Futuroscope 2006</div><div class="card-meta">Parque temático · Poitiers</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/berlin-cracovia-praga/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1560969184-10fe8719e047?w=400&q=70&fit=crop&auto=format" alt="Berlín · Cracovia · Praga">
+          </div>
+          <div class="card-body"><div class="card-destination">Berlín·Cracovia·Praga 2007 </div><div class="card-meta">Europa Central · Ruta</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="europa/rusia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1580837119756-563d608dd119?w=400&q=70&fit=crop&auto=format" alt="Rusia">
+          </div>
+          <div class="card-body"><div class="card-destination">Rusia 2010</div><div class="card-meta">Europa del Este · Historia</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ ASIA ══════════════════ -->
+    <section id="sec-asia" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🌏</span>
+        <h2 class="continent-name">Asia</h2>
+        <span class="continent-count">3 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="asia/china/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=400&q=70" alt="China">
+          </div>
+          <div class="card-body"><div class="card-destination">China 2013</div><div class="card-meta">Asia Oriental · Imperio</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="asia/india/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=400&q=70" alt="India">
+          </div>
+          <div class="card-body"><div class="card-destination">India 2014</div><div class="card-meta">Asia del Sur · Espiritualidad</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="asia/japon/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=400&q=70" alt="Japón">
+          </div>
+          <div class="card-body"><div class="card-destination">Japón 2017</div><div class="card-meta">Asia Oriental · Tradición</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ AMÉRICA ══════════════════ -->
+    <section id="sec-america" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🌎</span>
+        <h2 class="continent-name">América</h2>
+        <span class="continent-count">6 destinos</span>
+      </div>
+      <div class="cards-grid">
+
+        <a class="card" href="america/argentina/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1556918936-3e73b945d24f?w=400&q=70&fit=crop&auto=format" alt="Argentina">
+          </div>
+          <div class="card-body"><div class="card-destination">Argentina-Brasil-Chile 2008</div><div class="card-meta">Sudamérica · Patagonia</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="america/costa-rica/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1552727131-5fc6af16796d?w=400&q=70" alt="Costa Rica">
+          </div>
+          <div class="card-body"><div class="card-destination">Costa Rica 2016</div><div class="card-meta">Centroamérica · Selva</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+        
+        <a class="card" href="america/nueva-york-canada/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2?w=400&q=70" alt="Nueva York">
+          </div>
+          <div class="card-body"><div class="card-destination">Nueva York · Canadá 2006</div><div class="card-meta">América del Norte · Ruta</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="america/filadelfia/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1643925263111-c44b0fa434a5?w=400&q=70" alt="Nueva York">
+          </div>
+          <div class="card-body"><div class="card-destination">Moscú-Nueva York-Filadelfia 2017</div><div class="card-meta">América del Norte · Ruta</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+        <a class="card" href="america/nueva-york/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1485738422979-f5c462d49f74?w=400&q=70" alt="Nueva York">
+          </div>
+          <div class="card-body"><div class="card-destination">Nueva York 2019</div><div class="card-meta">América del Norte · Ruta</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+       <a class="card" href="america/california/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1622583529718-b68ded6804d8?w=400&q=70" alt="California">
+          </div>
+          <div class="card-body"><div class="card-destination">California 2021</div><div class="card-meta">EE.UU. · Costa Oeste</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+    <div class="divider">· · ✦ · ·</div>
+
+    <!-- ══════════════════ ÁFRICA ══════════════════ -->
+    <section id="sec-africa" class="continent-section fade-in">
+      <div class="continent-header">
+        <span class="continent-emoji">🌍</span>
+        <h2 class="continent-name">África</h2>
+        <span class="continent-count">1 destino</span>
+      </div>
+      <div class="cards-grid" style="max-width:300px;">
+
+        <a class="card" href="africa/egipto 2009-2023/index.html">
+          <div class="card-img-wrap">
+            <img class="card-img" src="https://images.unsplash.com/photo-1539768942893-daf53e448371?w=400&q=70" alt="Egipto">
+          </div>
+          <div class="card-body"><div class="card-destination">Egipto</div><div class="card-meta">Norte de África · Faraones</div></div>
+          <div class="card-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Memorias del mundo</p>
+    <p style="margin-top:0.5rem; font-size:0.7rem;">Hecho con pasión viajera · josepl1.ddns.net</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
