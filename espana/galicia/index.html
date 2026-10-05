@@ -126,15 +126,37 @@
     .incomplete { background: rgba(21,101,192,0.06); border: 2px dashed var(--paper-dark); padding: 1.5rem 2rem; text-align: center; color: var(--muted); font-size: 0.95rem; font-weight: 500; font-style: italic; }
     .incomplete span { font-size: 1.8rem; display: block; margin-bottom: 0.5rem; }
 
-    .end-section-title { max-width: 1100px; margin: 0 auto; padding: 0 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: 700; display: flex; align-items: center; gap: 1rem; }
+    .end-section-title { max-width: 1100px; margin: 0 auto; padding: 0 2rem; font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); font-weight: bold; margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
     .end-section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
     .end-group { margin-top: 5rem; }
     .end-group-title { max-width: 1100px; margin: 0 auto; padding: 0 2rem; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; margin-bottom: 1.5rem; }
-    .video-section { max-width: 920px; margin: 0 auto 3.5rem; padding: 0 2rem; }
+    /* 1. Creamos la rejilla de 2 columnas */
+    .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Crea 2 columnas del mismo tamaño */
+    gap: 2rem;                             /* Espacio de separación entre los dos videos */
+    max-width: 1200px;                     /* Ancho máximo total de la fila de videos */
+    margin: 0 auto 3.5rem;                 /* Centra la rejilla completa en la pantalla */
+    }
+
+   /* 2. Modificaciones a tu clase actual para que se adapte a las columnas */
+   .video-section {
+    width: 100%;                           /* Ocupa el 100% de su columna correspondiente */
+    margin-bottom: 0;                      /* El margen inferior ahora lo maneja el contenedor */
+    padding: 0;                            /* Opcional: reducimos el padding si se ve muy estrecho */
+   }
+    @media (max-width: 768px) {
+    .video-grid {
+        grid-template-columns: 1fr; /* Cambia a una sola columna en móviles */
+        gap: 1.5rem;
+    }
+   }
     .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); margin-top: 1.5rem; }
     .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
     .video-placeholder { margin-top: 1.5rem; background: var(--ink); color: rgba(255,255,255,0.6); padding: 3rem 2rem; text-align: center; font-size: 0.95rem; font-style: italic; }
-
+    .video-label {
+    font-weight: bold; /* Aplica el estilo de texto en negrita */
+}
     .gallery-section { max-width: 1100px; margin: 0 auto 3.5rem; padding: 0 2rem; }
     .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
     .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
@@ -997,21 +1019,47 @@
   </section>
 
 </main>
+
+
 <!-- ═══════════════════════════ VÍDEOS -->
 <div class="end-group">
   <h2 class="end-group-title">🎬 Vídeos del viaje</h2>
 
   <div class="video-section">
     <div class="end-section-title">Viaje 2012</div>
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/97HQY0vt4m8" title="Viaje a Galicia 2012" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="video-grid">
+      <div>
+        <div class="video-label">📸 Fotos del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/TFK-RtHKJaE" title="Galicia 2012 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/97HQY0vt4m8" title="Galicia 2012 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="video-section">
     <div class="end-section-title">Viaje 2026</div>
-    <div class="video-placeholder">
-      🎥 Aquí irá el vídeo del viaje de 2026.<br>Sustituye este bloque por un <code>&lt;iframe&gt;</code> de YouTube/Vimeo cuando esté montado.
+    <div class="video-grid">
+      <div>
+        <div class="video-label">📸 Fotos del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://youtube.com/embed/m1zfegtbURY" title="Galicia 2026" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-placeholder-v" id="vph1"><span class="icon">▶</span><span>FOTOS DEL VIAJE</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://youtube.com/embed/KN_IwVr2S4A" title="Galicia 2026" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          <div class="video-placeholder-v" id="vph2"><span class="icon">▶</span><span>VIDEO DEL VIAJE</span></div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1074,8 +1122,9 @@
 
   // ---- Fotos 2026 (rellenar cuando estén disponibles) ----
   const photos2026 = [
-    // 'fotos2026/foto1.jpg',
-    // 'fotos2026/foto2.jpg',
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg','fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg','fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
   ];
 
   // Todas las fotos combinadas, para que el lightbox pueda navegar dentro de cada galería por separado
