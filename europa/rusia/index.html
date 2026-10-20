@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rusia 2010 · Diario de Viajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero {
+      min-height: 65vh;
+      background: linear-gradient(160deg, rgba(10,31,61,0.65) 0%, rgba(21,101,192,0.22) 55%, rgba(10,31,61,0.80) 100%),
+        url('https://images.unsplash.com/photo-1580837119756-563d608dd119?q=80') center/cover no-repeat;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem; position: relative;
+    }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5.5rem); font-weight: 900; color: #ffffff; line-height: 1; font-style: italic; }
+    .hero-date {
+    display: inline-block;    /* Hace que la cajita se adapte al ancho del texto */
+    font-size: 1.5rem;        /* Tamaño equilibrado para el formato píldora */
+    font-weight: 700;         /* Texto en negrita */
+    color: #ffffff;           /* Texto blanco */
+  
+  /* Estilos de la cajita (Pill) */
+  background-color: rgba(255, 255, 255, 0.15); /* Fondo semitransparente (puedes cambiarlo por un color sólido) */
+  padding: 0.5rem 1.2rem;   /* Espaciado interno: arriba/abajo y lados */
+  border-radius: 999px;     /* Redondeado perfecto estilo píldora */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil para resaltar aún más */
+  
+  /* Separación exterior */
+  margin-bottom: 1.5rem;    /* Espacio respecto al elemento de abajo */
+}
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(74,144,217,0.25); border: 1px solid rgba(74,144,217,0.4); color: rgba(255,255,255,0.85); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; background: var(--paper); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.7rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 80px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-light); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.85; color: var(--muted); }
+
+    .metro { background: #1b0000; border-left: 5px solid #e53935; padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.9rem; font-weight: 500; color: #ef9a9a; line-height: 1.9; }
+    .metro strong { color: #ff8a80; font-weight: 700; }
+    .metro-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.66rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: #e53935; margin-bottom: 0.3rem; }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .transport { background: rgba(21,101,192,0.08); border: 1px dashed var(--accent-light); padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.9; }
+    .transport strong { color: var(--accent); font-weight: 700; }
+
+    .tip { background: var(--accent-pale); border-left: 4px solid var(--accent); padding: 1rem 1.5rem; margin-bottom: 0.9rem; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+
+    /* Ballet / espectáculo */
+    .ballet { background: #1a0d2e; border-left: 5px solid #9c27b0; padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .ballet-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: #ce93d8; margin-bottom: 0.2rem; }
+    .ballet h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #e1bee7; margin-bottom: 0.3rem; font-style: italic; }
+    .ballet p { font-size: 0.88rem; font-weight: 400; color: #ce93d8; line-height: 1.7; }
+
+    .leyenda { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-bottom: 2.5rem; padding: 1rem 1.5rem; background: white; border: 1px solid var(--paper-dark); }
+    .leyenda-item { display: flex; align-items: center; gap: 0.5rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 700; }
+    .leyenda-dot { width: 14px; height: 14px; flex-shrink: 0; }
+    .leyenda-dot.place { background: var(--accent-pale); border: 2px solid var(--accent); }
+    .leyenda-dot.hotel { background: var(--hotel-border); }
+    .leyenda-dot.resto { background: var(--rest-border); }
+    .leyenda-dot.metro { background: #e53935; }
+    .leyenda-dot.transport { background: rgba(21,101,192,0.25); border: 1px dashed var(--accent-light); }
+    .leyenda-dot.ballet { background: #9c27b0; }
+
+    .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem; }
+    @media (max-width: 700px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-v { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: rgba(255,255,255,0.35); font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-section { max-width: 920px; margin: 0 auto 4rem; padding: 0 2rem; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; margin-top: 1.5rem; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; transition: background 0.2s; }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+    @media (max-width: 600px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } .day-number { width: 50px; height: 50px; font-size: 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-europa">🌍 Europa</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Rusia 2010</span>
+</nav>
+
+<header class="hero">
+  <div class="hero-badge">🇷🇺 Rusia</div>
+  <h1 class="hero-title">Rusia</h1>
+  <div class="hero-date">10 – 20 Agosto 2010 · 11 días</div>
+  <div class="hero-pills">
+    <span class="pill">Moscú</span>
+    <span class="pill">Kremlin</span>
+    <span class="pill">Plaza Roja</span>
+    <span class="pill">San Basilio</span>
+    <span class="pill">Universidad Lomonosov</span>
+    <span class="pill">Monasterio Novodévichi</span>
+    <span class="pill">Koloménskoe · Tsarítsino</span>
+    <span class="pill">Museo de la Cosmonáutica</span>
+    <span class="pill">San Petersburgo</span>
+    <span class="pill">Hermitage</span>
+    <span class="pill">Peterhof</span>
+    <span class="pill">Ballet · Teatro Maly</span>
+    <span class="pill">Kronstadt</span>
+  </div>
+</header>
+
+<div class="days-nav" role="navigation" aria-label="Navegación por días">
+  <a href="#dia1">Día 1 · Llegada Moscú</a>
+  <a href="#dia2">Día 2 · Kremlin · Plaza Roja · San Basilio</a>
+  <a href="#dia3">Día 3 · Lomonosov · Novodévichi · Parque de la Victoria</a>
+  <a href="#dia4">Día 4 · Koloménskoe · Tsarítsino</a>
+  <a href="#dia5">Día 5 · Komsomólskaya · Cosmonáutica · Vernissage</a>
+  <a href="#dia6">Día 6 · Llegada San Petersburgo · Aurora · San Pedro y San Pablo</a>
+  <a href="#dia7">Día 7 · Islas · San Salvador de la Sangre · Hermitage · Nevski</a>
+  <a href="#dia8">Día 8 · Hermitage · Barco por los canales · Smólny</a>
+  <a href="#dia9">Día 9 · Peterhof · Ballet en el Teatro Maly</a>
+  <a href="#dia10">Día 10 · Kronstadt</a>
+  <a href="#dia11">Día 11 · Vuelo de regreso</a>
+</div>
+
+<main class="content">
+
+  <div class="tip">
+    <div class="tip-label">💱 Cambio de divisa · Agosto 2010</div>
+    <p><strong>1 € ≈ 39,4 RUB</strong> · Cambiar en el hotel: 35,8 RUB/€ · 200 € → ~7.100 RUB<br>
+    <strong>Registro del visado:</strong> Pedir en el hotel que registren el visado al llegar — obligatorio para estancias de 3 o más días laborables en Moscú.</p>
+  </div>
+  
+  <!-- ═══ DÍA 1 — LLEGADA MOSCÚ ═══ -->
+  <section class="day-section" id="dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Llegada a Moscú</h2>
+        <div class="day-subtitle">Martes 10 de Agosto · BCN T1 13:55h → Riga 18:35h → Moscú Sheremétievo F 21:45h · Air Baltic BT682 + BT422</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Al hotel (2 opciones):</strong><br>
+      · <strong>Taxi particular:</strong> 1.000–1.500 RUB<br>
+      · <strong>Aeroexpress:</strong> Tren desde terminal F → Estación Belorusskaya · 35 min · 300 RUB · Sale cada 30 min (21:30, 22:00, último 01:00h) → metro Belorusskaya (línea 5 circular) → 4ª parada Kurskaya → línea 3 → 4ª parada Izmailovo Park o taxi
+    </div>
+
+    <div class="hotel">
+      <div class="hotel-label">🏨 Alojamiento · Moscú</div>
+      <h4>Hotel Izmailovo Vega</h4>
+      <p>71 Izmaylovskoy Shosse, edificio 3V · Registrar el visado al llegar</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 2 — KREMLIN · PLAZA ROJA ═══ -->
+  <section class="day-section" id="dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Kremlin · Plaza Roja · San Basilio · Río Moscova</h2>
+        <div class="day-subtitle">Miércoles 11 de Agosto · 10:00–17:00h (cerrado jueves)</div>
+      </div>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro</div>
+      <strong>Desde hotel:</strong> Línea 3 → Ploschad Revolyutsii (5 estaciones) · Tocar la cabeza de la estatua de perro (trae buena suerte) · Bajar por Nikolskaya hasta la Plaza Roja
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 10:00–17:00h · Cerrado jueves · Catedrales 350 RUB · Armería 700 RUB (10:00–12:00h y 14:30–16:30h)</div>
+      <h3>Kremlin — Plaza de las Catedrales · Armería · Cañón y Campana</h3>
+      <p>Entrada por detrás de la Plaza Roja. El enorme <strong>Cañón Zar</strong> — del que se dice que nunca llegó a dispararse por el tamaño y dificultad de manejar su munición — y la <strong>Campana Zar</strong>, considerada la más grande del mundo, que nunca llegó a usarse porque en el incendio de 1737, al echarle agua fría, se resquebrajó y se rompió un fragmento de 12 toneladas. Catedrales: <strong>Asunción</strong> (coronaciones de los zares) · <strong>Manto de la Virgen</strong> · <strong>Anunciación</strong> (templo privado de los zares) · <strong>San Miguel Arcángel</strong> (panteón de los grandes príncipes hasta el traslado de la capital a San Petersburgo). <strong>Torre Spásskaya</strong> (del Salvador) con su famoso carrillón, símbolo del Kremlin — al son de sus campanadas los rusos dan la bienvenida al Año Nuevo.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🟥 695 m × 130 m · La tercera plaza más grande del mundo (tras Tiananmén y la Concordia) · Mausoleo de Lenin 10:00–13:00h</div>
+      <h3>Plaza Roja — Mausoleo de Lenin · GUM · Museo de Historia</h3>
+      <p>El emblemático edificio rojo (construido 1878–1883, inaugurado por el zar Alejandro III) tiene en una de sus fachadas la placa que indica "Krasnaya Ploschad" (Plaza Roja) y en la esquina la placa del <strong>Km 0 de Rusia</strong>. A la izquierda la <strong>Catedral de Kazán</strong> (reconstruida 1993). El <strong>centro comercial GUM</strong> — famoso por sus interiores — para comer. El <strong>Museo Estatal de Historia</strong> (lun/mié/jue/vie 10:00–18:00h, entradas hasta 17:00h · 150 RUB adulto · combinado con San Basilio 230 RUB · fotos 80 RUB): cada sala dedicada a un período histórico con frescos, molduras y decoración de época. Entre sus piezas: barcaza del Volga, artefactos de oro escitas, manuscritos del siglo VI y cerámicas populares rusas.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧅 ~4 € · Pagar suplemento para fotos · Buscar kiosco "KACCA" · 8 iglesias en una · Cúpulas desde 1583</div>
+      <h3>Catedral de San Basilio</h3>
+      <p>Catedral cristiana ortodoxa compuesta por ocho iglesias menores de distintas formas y colores. Las actuales cúpulas bulbosas se construyeron en 1583 tras un incendio — las originales tenían forma de casco. Hasta 1670 la catedral estaba completamente pintada de blanco con cúpulas doradas. Interior de pasadizos y vericuetos: no perderse el <strong>iconostasio mayor</strong> (siglo XIX, estilo barroco con pinturas más antiguas) en la capilla de la Intercesión. Desde San Basilio, hermosa vista del conjunto con el monumento a Minin y Pozharsky en primer plano.</p>
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">⛵ Paseo en barco por el río Moscova</div>
+      <p>Desde la orilla izquierda del río Moscova (sin cruzar el puente). El barco pasa primero por el lado sur del Kremlin, luego por el monumento a Pedro el Grande y una playa artificial. Termina cerca de la calle Arbat. Si no se coge el barco: bajar por Kremlevskaya naberezhnaya hasta la <strong>Catedral del Cristo Salvador</strong> (destruida en 1931 con explosivos para construir el Palacio de los Sóviets; reconstruida en los 90 y consagrada en 2000) y subir por el Gogolevskiy Boulevard hacia Arbat.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 3 — LOMONOSOV · NOVODÉVICHI · PARQUE DE LA VICTORIA ═══ -->
+  <section class="day-section" id="dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Universidad Lomonosov · Monasterio Novodévichi · Parque de la Victoria · Calle Arbat</h2>
+        <div class="day-subtitle">Jueves 12 de Agosto · Ir también a buscar billetes del tren</div>
+      </div>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Universidad</div>
+      <strong>Desde Izmailovo:</strong> Línea 3 → 6ª Arbatskaya → línea 1 dirección Yugo-Zapadnaya → 6ª Universitet · Salir por la salida de la derecha · Bajar a la izquierda por Lomonosovskyi Prospekt → girar a la derecha por los jardines de la rotonda
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ 240 m · 36 pisos · +33 km de corredores · 5.000 habitaciones · El edificio más alto de Europa en los años 50</div>
+      <h3>Universidad Estatal de Moscú — MSU (Lomonosov)</h3>
+      <p>Stalin ordenó construir en Moscú siete grandes torres neoclásicas — la MSU era la mayor de todas. Fundada el 25 de enero de 1755. Lema: <em>"La ciencia es la clara verdad y la educación de la razón"</em>. La torre principal mide 240 m con 36 pisos, flanqueada por cuatro grandes alas. <strong>Visita:</strong> Museo de Ciencias de la Tierra (28º piso) · Sala de columnas de la rotonda (31º piso) · Museo de los Líderes (32º piso, balcón interno) · Punto de observación (32º piso, balcón exterior). Vista espectacular con el Monasterio Novodévichi al fondo.</p>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Novodévichi</div>
+      <strong>Volver al metro:</strong> 2ª parada Sportivnaya (dirección contraria) → bajar por la autopista Ulitsa Kamovniche Skiy Val hasta el monasterio → al lago
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Fundado 1524 · Murallas de 11 m · Segundo conjunto arquitectónico de Moscú tras el Kremlin · Cementerio con Chéjov, Mayakovski, Esenin</div>
+      <h3>Monasterio Novodévichi — Lago de los Cisnes</h3>
+      <p>Fundado en 1524 en honor a la reconquista de Smolensk. Desempeñó un papel destacado en la defensa de Moscú. El segundo conjunto arquitectónico más importante de la ciudad tras el Kremlin. Su <strong>cementerio</strong> alberga grandes personalidades: Chéjov, Mayakovski, Esenin. Según algunos autores, Chaikovsky se inspiró en el lago junto al que está edificado para componer <em>El Lago de los Cisnes</em>.</p>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Estación Park Kultury</div>
+      <strong>2ª parada Park Kultury:</strong> Ver la estación — su decorado representa la juventud soviética descansando. En los medallones de las columnas: jóvenes jugando al fútbol, ajedrez, esquiando, bailando. Retrato escultórico de Máximo Gorki en la pared del extremo.
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Parque de la Victoria</div>
+      <strong>Línea 5 circular → Kievskaya → transbordo línea 3 → Park Pobedy (1ª parada)</strong> · Estación Kievskaya (1954): 18 paneles mosaicos sobre la amistad ruso-ucraniana y la Gran Guerra Patria · 18 columnas
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏅 Museo 2ª Guerra Mundial 10:00–17:00h · Colección de tanques, barcos y aviones · Obelisco con la diosa Nike</div>
+      <h3>Parque de la Victoria (Park Pobedy)</h3>
+      <p>Parque conmemorativo de la victoria sobre Alemania en la Segunda Guerra Mundial. En el centro: escultura de San Jorge matando al dragón. En lo alto del obelisco: la diosa griega de la Victoria Nike. Colección de armamento histórico al aire libre. Museo de la Segunda Guerra Mundial (10:00–17:00h).</p>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Arbat y Kitai-Gorod</div>
+      <strong>2ª parada Smolenskaya → subir por Ulitsa Arbat</strong> · Girar por la 2ª a la derecha por Krivoarbatskij pereulok → Dom Mel'nikova (casa constructivista 1927–29) · Seguir por Arbat hasta la Biblioteca de Lenin · Subir por Tverskaya → Plaza de la Revolución → hotel Metropol · Teatro Maly · <strong>Bolshoi</strong> · Edificio de la KGB en Lubianka
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 4 — KOLOMÉNSKOE · TSARÍTSINO ═══ -->
+  <section class="day-section" id="dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Koloménskoe · Tsarítsino Park</h2>
+        <div class="day-subtitle">Viernes 13 de Agosto · Metro → Kurskaya → línea 5 → Paveletskaya → línea 2 → Kolomenskaya</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏯 Orilla derecha del río Moscova · Antigua residencia de los grandes duques y zares · Museo nacional · Siglos XVI–XVII</div>
+      <h3>Koloménskoe — Antigua residencia de los zares</h3>
+      <p>En 1530, en honor del nacimiento de Iván (el futuro Iván el Terrible) se pusieron los cimientos de la <strong>Iglesia de la Ascensión</strong>. En 1923 se inauguró el <strong>Museo de Arquitectura en Madera al aire libre</strong>: destacan la Casa de Pedro I (traída de Arcángel), la torre del Monasterio de San Nicolás de Korela (1691–92) y la iglesia-campanario de San Juan Precursor (cinco torres octaédricas sobre una base). Hoy es uno de los lugares predilectos de los moscovitas para pasear y celebrar fiestas históricas.</p>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Tsarítsino</div>
+      <strong>Dirección Brateyevo → 3ª Tsaritsino → 10 min a pie (hacia el frente, no por la autopista)</strong>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏰 1 Dolskaya Street · 11:00–18:00h · Catalina II lo compró en 1775 · Palacio mauritano-gótico inacabado · Parque romántico</div>
+      <h3>Tsarítsino Park</h3>
+      <p>En 1775, Catalina II compró el lugar para construir un palacio de estilo mauritano-gótico que simbolizara la victoria sobre Turquía (1774). Cuando llegó a inspeccionarlo con su favorito Potemkin, el palacio no le gustó y mandó destruirlo. En 1786 se encargó un nuevo palacio a Mijaíl Kazakov, que quedó sin finalizar por las dificultades de la segunda guerra con Turquía (1787–92). Desde entonces, las ruinas —en parte reales, en parte construidas como decorado romántico— se convirtieron en lugar predilecto de los moscovitas. En 1918 pasó a protección estatal y en 1927 se inauguró el museo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 5 — KOMSOMÓLSKAYA · COSMONÁUTICA · VERNISSAGE ═══ -->
+  <section class="day-section" id="dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Estación Komsomólskaya · Museo de Cosmonáutica · Kremlin Izmailovo · Tren a San Petersburgo</h2>
+        <div class="day-subtitle">Sábado 14 de Agosto · Guardar maletas en el hotel · Tren SMENA sale 23:00h andén 25/26</div>
+      </div>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Komsomólskaya (visitar la estación)</div>
+      <strong>Desde hotel → Kurskaya → línea 5 sentido contrario agujas del reloj → 1ª Komsomolskaya</strong><br>
+      Arquitecto Shusev y pintor Korin (1954). 72 columnas. 9 lámparas gigantes y 8 grandes paneles mosaicos dedicados a los defensores de Rusia: Alejandro Nevsky, Minin, Pozharsky, Dmitry Donskoy. 15 escaleras automáticas. Encrucijada de tres estaciones de ferrocarril: Yaroslavl, Kazán y Leningrado.
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Museo de Cosmonáutica</div>
+      <strong>Siguiente parada Prospekt Mira → línea 6 dirección Medvedkovo → 3ª VDNJ</strong>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚀 10:00–19:00h · Bajo el monumento de 100 m (1964) · Yuri Gagarin · Belka y Strelka · Maqueta a tamaño real de la estación Mir</div>
+      <h3>Museo de Cosmonáutica (Muzey Kosmonavtiki)</h3>
+      <p>La monumental escultura de bronce de <strong>Yuri Gagarin</strong> da la bienvenida. El museo exhibe un cohete sostenido sobre una descomunal estela de titanio de 100 metros (1964). Actividades: acoplamiento de la Soyuz a la ISS, pilotaje de helicóptero de rescate y sensación de ingravidez con gafas 3D. Salas temáticas: satélites artificiales (con el aparato en que volaron los perros <strong>Belka y Strelka</strong>), maqueta a tamaño real de la estación <em>Mir</em> (se puede entrar), simuladores cósmicos y sucursal del Centro de Control de Vuelos con seguimiento en directo de la ISS. En el vestíbulo: <strong>comida cósmica en tubos</strong>.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🛍️ Detrás de los hoteles Izmailovo · 9:00–21:00h · Recuerdos y artesanía rusa</div>
+      <h3>Kremlin Izmailovo + Mercado Vernissage</h3>
+      <p>Visitar el Kremlin Izmailovo y el mercado Vernissage detrás de él para comprar recuerdos.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Tren nocturno a San Petersburgo:</strong> SMENA · Andén 25/26 · Salida 23:00h · Llegada San Petersburgo 06:45h · Estación Leningradsky Vokzal · En San Petersburgo: metro junto a la estación Plóshchad Vosstániya (línea roja)
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 6 — SAN PETERSBURGO · AURORA · SAN PEDRO ═══ -->
+  <section class="day-section" id="dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>San Petersburgo — Crucero Aurora · Catedral de San Pedro y San Pablo · Museo de Historia</h2>
+        <div class="day-subtitle">Domingo 15 de Agosto · Llegada en tren 06:45h · Malecón Petrogradskaya</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⚓ Malecón Petrogradskaya · Buque museo · Clase Pallada · Señal de inicio de la Revolución Rusa · 25 octubre 1917</div>
+      <h3>Crucero Aurora</h3>
+      <p>Buque protegido de la clase Pallada construido a finales del siglo XIX. Famoso por la noche del 25 de octubre de 1917: desde su cañón de proa se disparó el cañonazo de fogueo que sirvió como señal para que los bolcheviques iniciaran el asalto al Palacio de Invierno, dando inicio oficial a la Revolución Rusa. Sus cañones fueron desmontados para defender Leningrado durante el Sitio. El barco llegó a hundirse parcialmente para protegerlo de los bombardeos, fue reflotado y restaurado tras la guerra.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛪ Fortaleza de San Pedro y San Pablo · Tumba de los zares · Monolito de rodonita rosa de los Urales · 16 años de trabajo</div>
+      <h3>Catedral de San Pedro y San Pablo</h3>
+      <p>Tumba de la emperatriz María Aleksándrovna (esposa de Alejandro II): un único monolito de rodonita rosa extraído de los montes Urales. Tardaron casi 16 años en tallarlo y pulirlo por la dureza del mineral. Justo detrás: la tumba de su esposo, el zar Alejandro II.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚗 Fortaleza de San Pedro y San Pablo · Réplica Benz Velo 1896 · Primer automóvil con motor de gasolina fabricado en Rusia</div>
+      <h3>Museo de Historia de San Petersburgo · Museo Valentín Glushko</h3>
+      <p>Réplica de un <strong>Benz Velo de 1896</strong>, el primer automóvil con motor de gasolina fabricado en Rusia. En el Ravelín de San Juan: <strong>Museo de Cosmonáutica y Tecnología de Cohetes Valentín Glushko</strong>. Ver la réplica de la sonda soviética <strong>Mars 1</strong>, lanzada el 1 de noviembre de 1962 — la primera sonda interplanetaria de la historia enviada con destino específico a Marte, que realizó el primer sobrevuelo marciano en junio de 1963.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🎵 Calle Malaya nº 13 · Murió Chaikovsky el 25/10/1893 · Catedral de Kazán con 144 columnas</div>
+      <h3>Calle Malaya · Catedral de Kazán</h3>
+      <p>Las casas más antiguas de San Petersburgo al principio de la avenida. En el <strong>nº 13</strong> murió Chaikovsky el 25 de octubre de 1893. Llegar hasta la plaza Kazansky con la <strong>Catedral de Kazán</strong> (144 columnas, evoca a San Pedro del Vaticano).</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 7 — ISLAS · SANGRE DERRAMADA · NEVSKI ═══ -->
+  <section class="day-section" id="dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Islas de Petrogrado · San Salvador de la Sangre Derramada · Museo Ruso · Nevski Prospekt</h2>
+        <div class="day-subtitle">Lunes 16 de Agosto · Metro → Vladimirskaya → Krestovskiy Ostrov</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏝️ Islas Elagin · Kamenny · Krestovskiy · Palacio Elagin · Palacio Polovtsov · Iglesia San Juan Bautista</div>
+      <h3>Islas menores de Petrogrado</h3>
+      <p>Cruzar el puente a la <strong>Isla Elagin</strong> → Glavnaya alleya → derecha hacia el palacio Elagin. Cruzar a la <strong>Isla de Kamenny</strong> → Palacio Polovtsov. Bajar hasta <strong>Krestovskiy</strong> → orilla del Neva → Nabereznhaya Reki Krestovki → Palacio → Iglesia de San Juan Bautista. Cruzar el puente hasta la estación Chyornaya Rechka (línea 2).</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🧅 Canal Griboedov · Construida en 1907 donde fue asesinado Alejandro II · Mosaicos dorados</div>
+      <h3>Iglesia de San Salvador de la Sangre Derramada — Spas na Krovi</h3>
+      <p>Una de las joyas arquitectónicas de San Petersburgo. Ir por Mihaylovskaya Ulitsa → canal Griboedov → filarmónica → plaza Iskusstv (de las Artes) con la estatua de Pushkin. En la misma plaza: el palacio Mijailovsky (ahora <strong>Museo Ruso</strong>). A la derecha: Museo de Etnografía (cerrado). A la izquierda: Teatro Maly — ver si hay entradas para los días 18 o 19.</p>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌿 Campo de Marte · Jardín de Verano 8:00–22:00h · Palacio de Verano 10:30–17:00h · Palacio de Mármol (regalo de Catalina II a su amante)</div>
+      <h3>Campo de Marte · Jardín de Verano · Nevski</h3>
+      <p><strong>Campo de Marte (Marsovo Pole):</strong> monumento sobre la sepultura de 180 jefes de la Revolución; arde constantemente una llama. <strong>Jardín de Verano</strong> (8:00–22:00h): uno de los parques más famosos — destacan sus verjas. Palacio de Verano (10:30–17:00h). Bajar por la ribera del Neva → Plaza del Palacio → <strong>Palacio de Mármol</strong> (rosa y azul de Finlandia, regalado por Catalina II a su amante). <strong>Monasterio de Aleksander Nevski</strong> (10:00–19:30h): cementerio más antiguo de SP con arquitectos, músicos y el científico Lomonosov. <strong>Teatro Aleksandrinsky</strong> y <strong>calle Ulitsa Rossi</strong>, la calle más bella de San Petersburgo.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 8 — HERMITAGE · BARCOS · SMÓLNY ═══ -->
+  <section class="day-section" id="dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Museo del Hermitage · Barco por los canales · Palacio Smólny</h2>
+        <div class="day-subtitle">Martes 17 de Agosto · Metro → Ploshchad Vosstanya → trasbordo línea verde → Nevsky Prospekt · 10:00–18:00h</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🖼️ Palacio de Invierno · 10:00–18:00h · Seguir salas indicadas en la guía (p. 258–259)</div>
+      <h3>Museo del Hermitage — Palacio de Invierno</h3>
+      <p>Uno de los museos más grandes e importantes del mundo, en el Palacio de Invierno a orillas del Neva.</p>
+    </div>
+
+    <div class="transport">
+      <strong>Barco por los canales (ruta D):</strong> 200–500 RUB según ruta · Comienza cerca del Almirantazgo → Hermitage → Catedral Smólny → Hotel Okhtinskaya → Crucero Aurora → Fortaleza de Pedro y Pablo → termina junto a la Catedral de San Isaac
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏛️ Construido por la zarina Isabel como instituto femenino · Usado para reuniones del Soviet en la Revolución</div>
+      <h3>Palacio Smólny</h3>
+      <p>Metro Nevsky Prospekt (línea verde) → Ploshchad Vosstaniya → trasbordo línea roja → Chernyshevskaya · Bajar por Saltykova Scedrina → Museo Suvoro (Nº 43) → Palacio de Táuride → derecha por Snalernaja hasta el <strong>Palacio Smólny</strong>. Construido por la zarina Isabel para un instituto femenino; en la Revolución sirvió de sede de las reuniones del Soviet.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 9 — PETERHOF · BALLET ═══ -->
+  <section class="day-section" id="dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Peterhof · Ballet en el Teatro Maly</h2>
+        <div class="day-subtitle">Miércoles 18 de Agosto · Inaugurado 15 agosto 1723 · Fuentes abren 11:00h · Visita 10:30–17:00h</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>A Peterhof (2 opciones):</strong><br>
+      · <strong>Hidrofoil Meteor:</strong> 600 RUB ida · 40 min · Embarcadero frente al Hermitage · Cada 30 min desde las 10:00h · Retorno 17:00–17:30h<br>
+      · <strong>Tren:</strong> Metro → Baltiiskaya (5ª) → Estación del Báltico → apearse en Novyj Petergof → autobús 350, 351, 352, 355 o 356
+    </div>
+
+    <div class="place">
+      <div class="place-meta">⛲ 29 km al oeste de SP · Golfo de Finlandia · Inaugurado 1723 · El "Versalles ruso"</div>
+      <h3>Peterhof — El palacio de las fuentes</h3>
+      <p>Espectacular conjunto palaciego a orillas del Golfo de Finlandia con sus famosas fuentes monumentales. Inaugurado el 15 de agosto de 1723. Ver guía p. 266.</p>
+    </div>
+
+    <div class="ballet">
+      <div class="ballet-label">🩰 Teatro Maly (Mikhailovsky) · Arts Square 1 · Taquilla lun–vie 11:00–20:00h (almuerzo 15:00–16:00h) · Subir por el canal Griboedov</div>
+      <h4>El Lago de los Cisnes — Chaikovsky · 18 de Agosto · 20:00h</h4>
+      <p>Ballet en 3 actos · Música: Pyotr Chaikovsky · Coreografía: Marius Petipa y Lev Ivanov · Libreto: Begichev y Geltzer · Escenografía y vestuario: Oleg Averyanov</p>
+    </div>
+
+    <div class="ballet">
+      <div class="ballet-label">🩰 Teatro Maly (Mikhailovsky) · 19 de Agosto · 20:00h</div>
+      <h4>Espartaco — Khachaturian</h4>
+      <p>Música: Aram Khachaturian · Coreografía: Leonid Jacobson · Libreto: Nikolai · Escenografía y vestuario: Valentina Khodasevich</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 10 — KRONSTADT ═══ -->
+  <section class="day-section" id="dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>Kronstadt — La Ciudad de la Corona</h2>
+        <div class="day-subtitle">Jueves 19 de Agosto · Bus 510 desde metro Staraya Derevnya (última de la línea 4) · 30 km al oeste de SP</div>
+      </div>
+    </div>
+
+    <div class="metro">
+      <div class="metro-label">🚇 Metro · Acceso a Kronstadt</div>
+      <strong>Trasbordo en Vladimirskaya (3ª) → 5ª parada Staraya Derevnya (última de la línea 4) → Bus 510</strong><br>
+      El autobús atraviesa el enorme dique construido en 1979, donde hasta 1939 estaba la frontera finlandesa.
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🚢 Isla Kotlin · Fundada 1703–1704 por Pedro el Grande · Construida para defender y atacar a la Marina Sueca</div>
+      <h3>Kronstadt — Catedral Naval</h3>
+      <p>Isla Kotlin, a 30 km en el Golfo de Finlandia. Construida entre 1703 y 1704 por Pedro el Grande como base defensiva contra la Marina Sueca. El monumento más imponente de la ciudad: la inmensa <strong>Catedral Naval</strong>, construida entre 1908 y 1913, que representa el apogeo de la arquitectura neobizantina rusa.</p>
+    </div>
+  </section>
+
+  <!-- ═══ DÍA 11 — VUELO ═══ -->
+  <section class="day-section" id="dia11">
+    <div class="day-header">
+      <div class="day-number">11</div>
+      <div class="day-info">
+        <h2>Vuelo de regreso a Barcelona</h2>
+        <div class="day-subtitle">Viernes 20 de Agosto · Aeropuerto Púlkovo terminal 2 · 15 km · Salida hotel ~11:00h · Vuelo 14:30h → Düsseldorf 17:35h → BCN T2 19:25h · Air Berlin</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Al aeropuerto:</strong> Taxi al aeropuerto Púlkovo (15 km) · O bien: Shuttle bus nº 3 desde metro Sennaya Pl (línea 1) → terminal 2 · 27 RUB<br>
+      <strong>Vuelo Air Berlin:</strong> Púlkovo 14:30h → Düsseldorf · Conexión Düsseldorf 17:35h → Barcelona T2 19:25h
+    </div>
+
+    <div class="tip">
+      <div class="tip-label">🎉 Fin del viaje</div>
+      <p>11 días recorriendo dos de las ciudades más fascinantes del mundo: del Kremlin y la Plaza Roja de Moscú a los canales y el Hermitage de San Petersburgo, pasando por el ballet de Chaikovsky y el cañonazo del Aurora.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- VÍDEOS -->
+<div class="video-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    🎬 VÍDEOS DEL VIAJE <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="video-grid">
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">📷 FOTOS DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/7AbQSNTfzmU" title="Fotos Rusia 2010"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph1">
+          <span style="font-size:2.5rem;opacity:0.4;">▶</span>
+          <span>FOTOS DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_1</span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.5rem;">🎥 VÍDEO DEL VIAJE</div>
+      <div class="video-wrap">
+        <iframe src="https://www.youtube.com/embed/hOlFYGq9_nA" title="Vídeo Rusia 2010"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="video-placeholder-v" id="vph2">
+          <span style="font-size:2.5rem;opacity:0.4;">▶</span>
+          <span>VÍDEO DEL VIAJE</span>
+          <span style="font-size:0.65rem;opacity:0.5;margin-top:0.2rem;">Sustituir VIDEO_ID_2</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- GALERÍA -->
+<div class="gallery-section">
+  <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);font-weight:700;display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+    📷 GALERÍA DE FOTOS <span style="flex:1;height:1px;background:var(--paper-dark);display:block;"></span>
+  </div>
+  <div class="gallery-grid" id="gallery"></div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes · Rusia 2010</strong> &nbsp;·&nbsp; 10 – 20 Agosto 2010 · 11 días · Moscú + San Petersburgo</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  const photos = [
+    'fotos/1.jpg','fotos/2.jpg','fotos/3.jpg','fotos/4.jpg','fotos/5.jpg',
+    'fotos/6.jpg','fotos/7.jpg','fotos/8.jpg','fotos/9.jpg','fotos/10.jpg',
+    'fotos/11.jpg','fotos/12.jpg','fotos/13.jpg','fotos/14.jpg','fotos/15.jpg',
+    'fotos/16.jpg','fotos/17.jpg','fotos/18.jpg','fotos/19.jpg','fotos/20.jpg',
+    'fotos/21.jpg','fotos/22.jpg','fotos/23.jpg','fotos/24.jpg','fotos/25.jpg',
+    'fotos/26.jpg','fotos/27.jpg',
+  ];
+  const gallery = document.getElementById('gallery');
+  photos.forEach((src, i) => {
+    const item = document.createElement('div'); item.className = 'gallery-item'; item.onclick = () => openLightbox(i);
+    const img = document.createElement('img'); img.src = src; img.alt = `Foto Rusia 2010 ${i+1}`; img.loading = 'lazy';
+    img.onerror = function() {
+      const ph = document.createElement('div');
+      ph.style.cssText = 'width:100%;height:100%;background:var(--paper-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:600;';
+      ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto '+(i+1)+'</span>';
+      item.replaceChild(ph, this);
+    };
+    item.appendChild(img); gallery.appendChild(item);
+  });
+  document.querySelectorAll('.video-wrap').forEach(wrap => {
+    const fr = wrap.querySelector('iframe');
+    const ph = wrap.querySelector('.video-placeholder-v');
+    if (fr && ph && !fr.src.includes('VIDEO_ID')) ph.style.display = 'none';
+  });
+  let currentPhoto = 0;
+  function openLightbox(idx) { currentPhoto = idx; document.getElementById('lb-img').src = photos[idx]; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+  function changePhoto(dir) { currentPhoto = (currentPhoto + dir + photos.length) % photos.length; document.getElementById('lb-img').src = photos[currentPhoto]; }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); if (e.key === 'ArrowLeft') changePhoto(-1); if (e.key === 'ArrowRight') changePhoto(1); });
+  const sections = document.querySelectorAll('.day-section');
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { navLinks.forEach(l => l.classList.remove('active')); const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`); if (a) a.classList.add('active'); } });
+  }, { threshold: 0.25 });
+  sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
