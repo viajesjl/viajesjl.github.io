@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Egipto 2009 & 2023 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2;
+      --accent: #1565c0; --accent-light: #4a90d9; --accent-pale: #bbdefb; --muted: #4a6885;
+      --hotel-bg: #fff8e1; --hotel-border: #f9a825; --hotel-text: #6d4c00;
+      --rest-bg: #f1f8e9; --rest-border: #558b2f; --rest-text: #2e5a10;
+      --y09: #a8730f; --y09-pale: #f3e2b8;
+      --y23: #0e7490; --y23-pale: #cdeef5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero { min-height: 65vh; background: linear-gradient(160deg, rgba(10,31,61,0.82) 0%, rgba(168,115,15,0.55) 55%, rgba(10,31,61,0.88) 100%), radial-gradient(circle at 70% 30%, #e9c46a 0%, #a8730f 60%, #5a3a05 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--y09-pale); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 7vw, 5.8rem); font-weight: 900; color: white; line-height: 1; margin-bottom: 0.5rem; }
+    .hero-title em { font-style: italic; color: var(--y09-pale); }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; letter-spacing: 0.25em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.9); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .trip-tabs { position: sticky; top: 52px; z-index: 90; display: flex; justify-content: center; background: var(--ink); flex-wrap: wrap; }
+    .trip-tabs a { flex: 1; min-width: 220px; text-align: center; padding: 1rem 1.5rem; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: rgba(255,255,255,0.55); border-bottom: 3px solid transparent; transition: all 0.2s ease; }
+    .trip-tabs a.tab-09:hover, .trip-tabs a.tab-09.active { color: white; border-bottom-color: var(--y09); background: rgba(168,115,15,0.25); }
+    .trip-tabs a.tab-23:hover, .trip-tabs a.tab-23.active { color: white; border-bottom-color: var(--y23); background: rgba(14,116,144,0.25); }
+    .trip-tabs span { display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; opacity: 0.7; margin-top: 0.15rem; }
+
+    .part-header { max-width: 920px; margin: 3rem auto 0; padding: 0 2rem; text-align: center; scroll-margin-top: 110px; }
+    .part-eyebrow { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; }
+    .part-09 .part-eyebrow { color: var(--y09); }
+    .part-23 .part-eyebrow { color: var(--y23); }
+    .part-header h2 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin: 0.3rem 0 0.6rem; }
+    .part-header p { color: var(--muted); font-size: 1rem; font-weight: 500; max-width: 640px; margin: 0 auto; line-height: 1.7; }
+    .part-divider { max-width: 920px; margin: 4rem auto 0; padding: 0 2rem; }
+    .part-divider hr { border: none; height: 2px; background: linear-gradient(to right, var(--y09), var(--y23)); }
+
+    .days-nav { display: flex; gap: 0.4rem; justify-content: center; padding: 2rem 1rem 1rem; flex-wrap: wrap; }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.8rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.76rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav.nav-09 a:hover, .days-nav.nav-09 a.active { background: var(--y09); border-color: var(--y09); color: white; }
+    .days-nav.nav-23 a:hover, .days-nav.nav-23 a.active { background: var(--y23); border-color: var(--y23); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 110px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; }
+    .day-number { color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; }
+    #parte-2009 .day-header::after, #parte-2009 .day-number { background: var(--y09); }
+    #parte-2023 .day-header::after, #parte-2023 .day-number { background: var(--y23); }
+    #parte-2009 .day-subtitle { color: var(--y09); }
+    #parte-2023 .day-subtitle { color: var(--y23); }
+
+    .place { background: white; border-left: 4px solid var(--paper-dark); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place-meta { display: inline-flex; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+    .place p + p { margin-top: 0.8rem; }
+    #parte-2009 .place { border-left-color: var(--y09-pale); } #parte-2009 .place:hover { border-left-color: var(--y09); }
+    #parte-2009 .place h3, #parte-2009 .place-meta { color: var(--y09); }
+    #parte-2023 .place { border-left-color: var(--y23-pale); } #parte-2023 .place:hover { border-left-color: var(--y23); }
+    #parte-2023 .place h3, #parte-2023 .place-meta { color: var(--y23); }
+
+    .hotel { background: var(--hotel-bg); border: 1px solid var(--hotel-border); border-left: 5px solid var(--hotel-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .hotel-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--hotel-border); margin-bottom: 0.2rem; }
+    .hotel h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--hotel-text); margin-bottom: 0.2rem; }
+    .hotel p { font-size: 0.9rem; font-weight: 500; color: var(--hotel-text); line-height: 1.65; opacity: 0.85; }
+    .resto { background: var(--rest-bg); border: 1px solid var(--rest-border); border-left: 5px solid var(--rest-border); padding: 0.9rem 1.4rem; margin-bottom: 0.9rem; }
+    .resto-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; color: var(--rest-border); margin-bottom: 0.2rem; }
+    .resto h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--rest-text); margin-bottom: 0.2rem; }
+    .resto p { font-size: 0.9rem; font-weight: 500; color: var(--rest-text); line-height: 1.65; opacity: 0.85; }
+
+    .tip { padding: 1rem 1.5rem; margin-bottom: 0.9rem; border-left: 4px solid; }
+    .tip-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 700; margin-bottom: 0.3rem; }
+    .tip p { font-size: 0.95rem; font-weight: 500; color: var(--muted); line-height: 1.75; }
+    #parte-2009 .tip { background: var(--y09-pale); border-left-color: var(--y09); } #parte-2009 .tip-label { color: var(--y09); }
+    #parte-2023 .tip { background: var(--y23-pale); border-left-color: var(--y23); } #parte-2023 .tip-label { color: var(--y23); }
+
+    .transport { background: rgba(10,31,61,0.05); border: 1px dashed; padding: 0.9rem 1.3rem; margin-bottom: 0.9rem; font-size: 0.92rem; font-weight: 500; color: var(--muted); line-height: 1.85; }
+    #parte-2009 .transport { border-color: var(--y09); } #parte-2009 .transport strong { color: var(--y09); }
+    #parte-2023 .transport { border-color: var(--y23); } #parte-2023 .transport strong { color: var(--y23); }
+
+    .section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 1rem; margin: 1.8rem 0 1.2rem; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--paper-dark); }
+    #parte-2009 .section-title { color: var(--y09); } #parte-2023 .section-title { color: var(--y23); }
+
+    .end-group { margin-top: 5rem; }
+    .end-group-title { max-width: 920px; margin: 0 auto 1.5rem; padding: 0 2rem; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; }
+    .end-section-title { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 0.8rem; }
+    .video-section { max-width: 920px; margin: 0 auto 3rem; padding: 0 2rem; }
+    .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    @media (max-width: 600px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .video-placeholder-box { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1rem; color: rgba(255,255,255,0.45); font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-box .icon { font-size: 2.5rem; opacity: 0.5; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+    .foto-placeholder { width: 100%; height: 100%; background: var(--paper-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+    .gallery-empty { background: rgba(10,31,61,0.04); border: 2px dashed var(--paper-dark); padding: 2rem; text-align: center; color: var(--muted); font-size: 0.95rem; font-weight: 500; font-style: italic; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+      .trip-tabs { top: 44px; }
+      .trip-tabs a { min-width: 50%; padding: 0.8rem 0.5rem; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-africa">🌍 África</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Egipto 2009 & 2023</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">🇪🇬 Egipto · Valle del Nilo · Dos viajes</p>
+  <h1 class="hero-title">Egipto <em>2009 · 2023</em></h1>
+  <p class="hero-date">14 – 23 Agosto 2009 &nbsp;·&nbsp; 4 – 11 Septiembre 2023</p>
+  <div class="hero-pills">
+    <span class="pill">Pirámides de Giza</span>
+    <span class="pill">Sakkara · Dahshur</span>
+    <span class="pill">Luxor · Karnak</span>
+    <span class="pill">Valle de los Reyes</span>
+    <span class="pill">Crucero por el Nilo</span>
+    <span class="pill">Asuán · Philae</span>
+    <span class="pill">Abu Simbel</span>
+    <span class="pill">Khan el-Khalili</span>
+  </div>
+</header>
+
+<div class="trip-tabs">
+  <a class="tab-09" href="#parte-2009-header">Parte I<span>Egipto · Agosto 2009</span></a>
+  <a class="tab-23" href="#parte-2023-header">Parte II<span>Egipto · Septiembre 2023</span></a>
+</div>
+
+<div class="part-header part-09" id="parte-2009-header">
+  <p class="part-eyebrow">Parte I · 10 días · 14 — 23 Agosto 2009</p>
+  <h2>El primer viaje · Agosto de 2009</h2>
+  <p>Giza, Sakkara y Dahshur, la Ciudadela de El Cairo, la navegación por el Nilo de Luxor a Asuán, Abu Simbel y el zoco de Khan el-Khalili.</p>
+</div>
+
+<div class="days-nav nav-09">
+  <a href="#e09-dia1">Día 1 · Giza</a>
+  <a href="#e09-dia2">Día 2 · Sakkara</a>
+  <a href="#e09-dia3">Día 3 · Ciudadela</a>
+  <a href="#e09-dia4">Día 4 · Luxor</a>
+  <a href="#e09-dia5">Día 5 · Edfu</a>
+  <a href="#e09-dia6">Día 6 · Kom Ombo</a>
+  <a href="#e09-dia7">Día 7 · Asuán</a>
+  <a href="#e09-dia8">Día 8 · Abu Simbel</a>
+  <a href="#e09-dia9">Día 9 · Khan el-Khalili</a>
+  <a href="#e09-dia10">Día 10 · Regreso</a>
+</div>
+
+<main class="content" id="parte-2009">
+
+  <section class="day-section" id="e09-dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Giza · Primer contacto</h2>
+        <div class="day-subtitle">Viernes 14 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Giza:</strong> a 31 km del aeropuerto (Giza es la 2ª suburbia más grande del mundo). Dejar las maletas en el hotel.<br><strong>A pie:</strong> al salir del hotel seguir por la carretera a la izquierda y, al llegar a la rotonda, a la derecha… 1,5 km (30 min andando).<br><strong>Comida:</strong> buffet horrible. <strong>Taxi al centro:</strong> 45 minutos (en el centro, nº 15 de Talaat Harb).
+    </div>
+    <div class="section-title">🍽️ Cenar</div>
+    <div class="resto">
+      <div class="resto-label">🍽️ Felfela · a 200 m</div>
+      <h4>Restaurante Felfela</h4>
+      <p>Ojo: hay 3 Felfela del mismo dueño en la misma acera. Mesas fuera y en el interior. Precio económico, pero al pedir el menú degustación (50 L) al final se añaden el impuesto turístico (20%) y el servicio de mesa (10%): unas 160 L por persona. El 2º restaurante está a 100 m (comida para llevar) y el 3º en el pasadizo del nº 27 de Alexandria Road Pyramids (después de la rotonda que lleva a las pirámides). El mítico Felfela es parada obligatoria para probar la comida tradicional egipcia, especialmente el <em>taameya</em> y el <em>ful mudammas</em>.</p>
+    </div>
+    <div class="resto">
+      <div class="resto-label">🍽️ Vistas a las pirámides</div>
+      <h4>Restaurante Christo</h4>
+      <p>10 Pyramids. Pescados y terraza con vista a las Pirámides: su panorámica de la meseta es espectacular, ideal para cenar viendo el atardecer sobre las pirámides.</p>
+    </div>
+    <div class="resto">
+      <div class="resto-label">🍽️ Alternativa</div>
+      <h4>Restaurante Caviar</h4>
+      <p>En la Avenida de las Pirámides. Muy buen servicio, recomendable.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">🐪 Paseo en camello</div>
+      <p>1 hora por 30 L (precio fijado por las autoridades).</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏙️ Contexto</div>
+      <h3>Giza y el Downtown</h3>
+      <p>Giza es hoy una gigantesca gobernación adosada a El Cairo. La plaza Talaat Harb sigue siendo el corazón del Cairo histórico e intelectual: el «Downtown».</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Giza · Sakkara · Dahshur</h2>
+        <div class="day-subtitle">Sábado 15 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Pirámides con la agencia a las 7:30h</strong> (estar en la puerta a las 7:30h). Son 2 horas; luego llevan a una tienda de papiros, pero pasamos.<br><strong>Entradas a la Pirámide de Keops:</strong> decir al guía que las queremos. Valen 400 libras por persona, pero el vigilante de la puerta dejó pasar a los 4 por 300. Abren la pirámide a las 08:00h con 100 entradas y otras 100 a partir de las 13:00h. También hay para Kefrén y Mikerinos.
+    </div>
+    <div class="section-title">🔺 Meseta de Giza</div>
+    <div class="place">
+      <div class="place-meta">🔺 Keops · IV dinastía · c. 2560 a.C.</div>
+      <h3>La Gran Pirámide</h3>
+      <p>Aunque el monumento lleva el nombre del faraón Keops, el cerebro detrás de la colosal obra fue su visir y arquitecto real, Hemiunu. Su altura original era de 146,5 metros, lo que la convirtió en la estructura más alta hecha por el ser humano durante más de 3.800 años. Por la erosión y el expolio medieval de sus bloques para construir palacios y mezquitas de El Cairo, hoy mide unos 138 metros. La base cubre unos 230 metros por lado. Lo más asombroso es su orientación al norte verdadero: el error de alineación es de menos de 0,06°, una precisión casi perfecta lograda solo con la observación de las estrellas. El proyecto movilizó a un ejército de entre 20.000 y 30.000 obreros libres, ingenieros y artesanos asalariados, organizados en jerarquías eficientes y con excelente alimentación (carne y cerveza) a cargo del Estado. A diferencia de otros templos, la pirámide apenas contiene inscripciones jeroglíficas en su interior.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⛵ Entrada 150 y 180 L · 40 L · agua 2-8 L</div>
+      <h3>La Barca Solar</h3>
+      <p>Esta barca fúnebre de madera de cedro es la más antigua del mundo.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🦁 Valle de Kefrén</div>
+      <h3>La Esfinge de Giza</h3>
+      <p>La estatua monolítica más grande del mundo, tallada directamente de un solo bloque de piedra caliza de la meseta. Mide 73,5 metros de largo y unos 20 de alto. Fue tallada por orden del faraón Kefrén (hijo de Keops) y el rostro reproduce sus facciones, como guardián de su complejo funerario. La nariz fue destruida en el siglo XIV por un líder sufí radical, Muhammad Sa'im al-Dahr, enfadado porque los campesinos seguían haciéndole ofrendas para mejorar sus cosechas. En la antigüedad estaba pintada con colores vibrantes: cara y cuerpo de rojo intenso, y el tocado real (<em>nemes</em>) con líneas amarillas y azules. Entre sus patas delanteras hay una gran losa de granito colocada por Tutmosis IV, siglos después del Imperio Antiguo: siendo joven príncipe se quedó dormido a su sombra (la Esfinge estaba enterrada en la arena hasta el cuello) y la criatura se le apareció en sueños prometiéndole que si la desenterraba sería el próximo faraón. Cumplió la promesa y se coronó.</p>
+    </div>
+    <div class="section-title">🚕 Sakkara y Dahshur</div>
+    <div class="transport">
+      <strong>Taxi a Sakkara – Dahshur y vuelta (4 horas):</strong> Dahshur está a 20 km de Sakkara. Taxi: 20 L por hora.<br><strong>Entradas:</strong> Sakkara 50 L · 3 tumbas 25 L · Dahshur 25 L.<br><strong>Antes de salir, prepararse bocatas:</strong> en Dahshur prácticamente no hay comercios, es puro desierto arqueológico.
+    </div>
+    <div class="place">
+      <div class="place-meta">🏺 Imperio Antiguo · 2650 a.C. · Sakkara</div>
+      <h3>Mastabas de Sakkara</h3>
+      <p>Visitar mastabas, pasar por delante de la pirámide de Unas y pedir al taxi que nos acerque a la <strong>mastaba de Mereruka</strong>, la mejor conservada: tiene 31 salas decoradas con escenas vívidas de la vida cotidiana (caza de hipopótamos, contabilidad…) que servían para asegurar el sustento del difunto en el más allá. Enfrente, la <strong>pirámide de Teti</strong>, con un interior interesante: bajada profunda y estrecha y, al final, una cámara con sarcófago negro.<br><br>Después, volver al taxi para ir a la <strong>mastaba de Ti</strong> (a 150 m de la entrada). Mirar si el <strong>Serapeum</strong> está abierto —el cementerio subterráneo de los toros sagrados Apis, con colosales sarcófagos de granito negro de más de 60 toneladas—; si no, ir a las mastabas de <strong>Ptahhotep</strong> y <strong>Akhethotep</strong>.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🔴 Dahshur · Entrada 25 L · Taxi 2 L</div>
+      <h3>Pirámide Roja y Pirámide Acodada</h3>
+      <p>Dahshur alberga la impresionante Pirámide Acodada (o Achaparrada) y la Pirámide Roja (99 m), con un largo corredor descendente a 28 m de altura. El camino es malo (1,5 km): si no se quiere ir en taxi, se va andando. Si da tiempo, volver a Menfis para ver el coloso de Ramsés II y el museo al aire libre.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">🕌 Si queda tiempo</div>
+      <p>Ir a la Ciudadela (40 L), a la mezquita de Mohamed Alí (1824-1857) o Mezquita de Alabastro y ver su tumba. Desde la terraza de detrás, gran vista. Ver el patio de Gizeh. (Se detalla en el día siguiente).</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>La Ciudadela de El Cairo</h2>
+        <div class="day-subtitle">Domingo 16 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Ciudadela:</strong> entrada 40 L.
+    </div>
+    <div class="place">
+      <div class="place-meta">🕌 Ciudadela de Saladino · Mohamed Alí (1824-1857)</div>
+      <h3>Mezquita de Alabastro</h3>
+      <p>Coronando la Ciudadela de Saladino, esta mezquita emula el estilo otomano de Estambul (por orden de Mohamed Alí). Ver su tumba. La vista desde la terraza trasera ofrece, en días despejados, una estampa única de todo El Cairo con las siluetas de las Pirámides de Giza en el horizonte. Ver también el pozo de José.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🕰️ Patio de la Mezquita de Alabastro</div>
+      <h3>El reloj que nunca dio la hora</h3>
+      <p>El reloj de bronce que regaló Francia a cambio del obelisco no funciona. Fue colocado en una ornamentada torre de hierro calado en el patio de la mezquita, donde aún puede contemplarse. Mientras que Francia conserva y luce el espectacular obelisco egipcio de más de 3.000 años en el corazón de París, Egipto se quedó con un reloj europeo moderno de la época que jamás dio la hora.</p>
+    </div>
+    <div class="section-title">🕌 Más mezquitas</div>
+    <div class="place">
+      <div class="place-meta">🕌 S. XIV · 1318</div>
+      <h3>Mezquita Nasir Mohamed</h3>
+      <p>Después, ver el museo militar o ir directamente a la Mezquita Soliman Pachá. O dejarlo y marchar (un poco lejos). Pedirán propina por guardar las bambas (el calzado).</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🕌 Entrada 20 L · 1356-1362</div>
+      <h3>Mezquita del Sultán Hassan</h3>
+      <p>Al salir de la Ciudadela. Al lado está la de Al-Rifai, para pasar. A la Mezquita de Ibn Tulun hay 700 m saliendo desde la plaza Midan Salah al-Din; en taxi, 5 L. Abierta hasta las 17:00h.</p>
+    </div>
+    <div class="transport">
+      <strong>Final de la jornada:</strong> si queremos ir a la Torre de El Cairo en Zamalek (Burj al Qahira), mejor el último día. O bien ir al hotel (30 L, máximo 40).
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Luxor · Karnak y Luxor</h2>
+        <div class="day-subtitle">Lunes 17 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Salida a Luxor.</strong> Comida en la motonave. Por la tarde, visita a los templos de Karnak y Luxor. Cena en la motonave.
+    </div>
+    <div class="place">
+      <div class="place-meta">🏛️ Más de 80 hectáreas</div>
+      <h3>Templo de Karnak</h3>
+      <p>El complejo religioso más grande del mundo antiguo. Durante más de 2.000 años cada faraón sumó su propio «granito de arena», demoliendo o añadiendo muros, obeliscos y capillas. La <strong>Gran Sala Hipóstila</strong> es la joya de la corona: 134 columnas colosales en 16 filas; las 12 centrales miden 23 metros y tienen capiteles de papiro abierto. Con la luz de la tarde, en los capiteles laterales inferiores aún se distinguen restos de la pintura original de hace 3.300 años.<br><br>El <strong>Obelisco de la Reina Hatshepsut</strong>, tallado en una sola pieza de granito rosa de Asuán, mide casi 30 metros. Su hermano y rival, Tutmosis III, intentó ocultarlo levantando un muro a su alrededor para borrarla de la historia, lo cual, paradójicamente, protegió sus relieves de la erosión. Junto al <strong>Lago Sagrado</strong> (rituales de purificación de los sacerdotes) hay una enorme estatua de granito de un escarabajo: la tradición local dice que darle 7 vueltas en sentido contrario a las agujas del reloj atrae la buena suerte, el amor o el regreso seguro a Egipto.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏛️ Ramsés II · Monarquía divina</div>
+      <h3>Templo de Luxor</h3>
+      <p>Tenía la función de celebrar la monarquía divina y la renovación espiritual del faraón. En la entrada monumental dispuesta por Ramsés II verás dos estatuas colosales del faraón y un solo obelisco de granito: el hueco vacío a la derecha corresponde exactamente al obelisco que hoy decora la Plaza de la Concordia de París. En la zona más profunda, tras la conquista macedonia, Alejandro Magno mandó esculpir relieves de sí mismo vestido de faraón presentando ofrendas a Amón-Ra para legitimarse ante el pueblo. En el patio de Ramsés II, suspendida a varios metros de altura sobre los muros faraónicos, está la <strong>Mezquita de Abu el-Haggag</strong> (siglo XIV): cuando se construyó, el templo estaba enterrado bajo toneladas de arena y lodo del Nilo, por lo que la mezquita quedó a nivel del suelo medieval; al desenterrar el templo, se dejó intacta.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🦁 2,7 km · más de 1.000 esfinges</div>
+      <h3>La Avenida de las Esfinges</h3>
+      <p>El nexo de unión de ambos mundos: una espectacular avenida de 2,7 kilómetros escoltada por más de 1.000 esfinges con cuerpo de león y cabezas de carnero (en Karnak) o humanas (en Luxor).</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Luxor · Esna · Edfu</h2>
+        <div class="day-subtitle">Martes 18 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Mañana:</strong> Valle de los Reyes y de las Reinas. Valle de los artesanos, conocido por Deir El Medina. Parada panorámica para contemplar el templo de la reina Hatshepsut, el templo funerario de Ramsés III y los Colosos de Memnón.<br><strong>Tarde:</strong> al finalizar las visitas, salida en autocar hacia Esna para embarcar en la motonave, cruzar la esclusa y continuar a Edfu.
+    </div>
+    <div class="place">
+      <div class="place-meta">⛰️ Al-Qurn · Imperio Nuevo</div>
+      <h3>Valle de los Reyes</h3>
+      <p>Para evitar el expolio masivo que sufrieron las pirámides del Imperio Antiguo, los faraones del Imperio Nuevo excavaron sus tumbas en el corazón de una montaña caliza con forma natural de pirámide (Al-Qurn). El interior de las tumbas (Seti I, Ramsés V/VI…) es un largo pasillo descendente profusamente decorado con textos funerarios como el Libro de los Muertos. Para despistar a los ladrones, los arquitectos construían falsos pozos profundos y paredes tapiadas que simulaban el final de la tumba, ocultando la verdadera cámara del sarcófago.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">👑 KV62 · Descubierta intacta en 1922</div>
+      <h3>Tumba de Tutankamón</h3>
+      <p>La tumba más famosa del mundo porque se descubrió prácticamente intacta en 1922. Arquitectónicamente es la más pequeña, modesta y peor decorada del valle: al morir el joven faraón de forma repentina, tuvieron que improvisar y adaptar a toda prisa la tumba de un noble. Su inmenso tesoro se salvó de los saqueadores porque quedó sepultada bajo los escombros de la construcción de otra tumba posterior, la de Ramsés VI.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏛️ c. 1470 a.C. · Arquitecto Senenmut</div>
+      <h3>Templo de Hatshepsut</h3>
+      <p>Diseñado por Senenmut (se rumorea que también fue amante de la reina), su estructura de terrazas escalonadas parece más un edificio modernista del siglo XX que un templo del Imperio Nuevo. Hatshepsut fue una de las pocas mujeres que gobernó Egipto como faraón absoluto: para legitimarse ordenó que en los relieves se la esculpiera con la falda masculina de los reyes y la barba postiza ritual. En la segunda terraza hay fascinantes relieves de una expedición comercial marítima a la lejana tierra de Punt (Somalia), con barcos egipcios cargados de oro, marfil y ébano.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🗿 Más de 18 m · Amenhotep III</div>
+      <h3>Colosos de Memnón</h3>
+      <p>Dos gigantescas estatuas de Amenhotep III que hoy están solas al borde de la carretera, pero eran los guardianes de su Templo Millonario, el complejo funerario más grande jamás construido en Egipto (mayor que Karnak), destruido por un terremoto y por las inundaciones del Nilo. Tras el gran terremoto del 27 a.C., la estatua del lado norte se fracturó y, al amanecer, los viajeros griegos y romanos oían que la piedra «cantaba», como el tañido de una lira. Los griegos lo asociaron con el héroe troyano Memnón saludando a su madre, la Aurora: fue uno de los primeros destinos de turismo de masas de la historia. El «canto» se debía a la evaporación del rocío por las grietas porosas de la piedra al calentarse. Septimio Severo mandó repararla en el 199 d.C. y, al tapar las grietas, los colosos enmudecieron para siempre.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>Edfu · Kom Ombo · Asuán</h2>
+        <div class="day-subtitle">Miércoles 19 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦅 Período ptolemaico · 237-57 a.C.</div>
+      <h3>Templo de Edfu · Santuario de Horus</h3>
+      <p>Dedicado al dios halcón Horus, es el segundo templo más grande de Egipto (tras Karnak) y el mejor conservado de toda la antigüedad faraónica. Al caer la religión egipcia quedó sepultado bajo toneladas de arena y lodo del Nilo, y sobre él se construyeron casas, lo que lo protegió casi intacto hasta que el arqueólogo Auguste Mariette lo desenterró en el siglo XIX. Su fachada mide 36 metros de altura, con relieves gigantescos del faraón derrotando a sus enemigos. Antes de cruzar la puerta del patio interior te recibe la estatua monolítica de granito negro de Horus con forma de halcón y la doble corona del Alto y Bajo Egipto. En los muros de la sala hipóstila hay una pequeña habitación cubierta de jeroglíficos: las recetas exactas de los aceites sagrados, ungüentos y perfumes de los rituales diarios.</p>
+    </div>
+    <div class="transport">
+      <strong>Navegación</strong> hasta el Templo de Kom Ombo.
+    </div>
+    <div class="place">
+      <div class="place-meta">🐊 Haroeris y Sobek</div>
+      <h3>Templo de Kom Ombo</h3>
+      <p>Situado en un meandro del Nilo donde los cocodrilos solían descansar en la antigüedad, su diseño es simétrico y doble. El lado norte (izquierdo) está dedicado a Haroeris (Horus el Viejo), dios de la luz y el bien; el lado sur (derecho), a Sobek, el dios cocodrilo asociado con la fertilidad, pero también con la destrucción y el peligro. Dos entradas, dos patios, dos salas de columnas y dos santuarios gemelos.<br><br>En los muros de la zona posterior hay un grabado con las herramientas de cirugía más antiguas del mundo (bisturís, fórceps, tijeras, balanzas y espéculos): el templo funcionaba como hospital o centro de sanación. Otro relieve muestra el calendario agrícola egipcio con las tres estaciones del Nilo: inundación (<em>Akhet</em>), siembra (<em>Peret</em>) y recolección (<em>Shemu</em>). También hay un pozo circular profundo con escaleras: un <strong>nilómetro</strong>, para medir la crecida anual del río. Al salir, un pequeño museo alberga decenas de cocodrilos momificados de las necrópolis cercanas, criados en el templo, alimentados con delicias y enjoyados como encarnaciones vivientes de Sobek.</p>
+    </div>
+    <div class="transport">
+      <strong>Noche a bordo.</strong>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>Asuán · Presa, Philae y falucas</h2>
+        <div class="day-subtitle">Jueves 20 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏗️ Inaugurada en 1971</div>
+      <h3>La Presa de Asuán</h3>
+      <p>3.830 metros de longitud y 111 de altura; contiene un volumen de material equivalente a 18 veces la Gran Pirámide de Keops. Dio origen al Lago Nasser, uno de los mayores embalses artificiales del planeta, con unos 500 km de longitud. El ascenso de las aguas iba a sepultar decenas de templos milenarios, lo que obligó a la UNESCO a lanzar una campaña internacional para desmontar pieza por pieza y trasladar monumentos como los templos de Abu Simbel y Philae.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌴 Dedicado a Isis</div>
+      <h3>Templo de Philae</h3>
+      <p>Tuvo que ser rescatado piedra por piedra de las aguas del Nilo por la construcción de la Presa de Asuán.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🪨 Canteras de granito rosa · Hatshepsut</div>
+      <h3>El Obelisco Inacabado</h3>
+      <p>Ubicado en las canteras al norte de Asuán, fue encargado por la reina Hatshepsut para el Templo de Karnak. Completo habría medido unos 42 metros y pesado cerca de 1.168 toneladas: el obelisco más grande del mundo antiguo. El proyecto se abandonó de golpe por una enorme grieta estructural en la piedra. Al quedar pegado a la roca madre, permite ver el proceso de extracción: golpeaban el granito con bolas de dolerita (piedra volcánica negra extremadamente dura traída del desierto oriental) de hasta 5 kilos, pulverizando la roca centímetro a centímetro. Las marcas redondas aún se aprecian en los laterales de la fosa.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⛵ Atardecer · Isla Elefantina · Mausoleo del Agha Khan</div>
+      <h3>Paseo en falucas</h3>
+      <p>Velero tradicional que aprovecha los vientos del sur al atardecer frente a la Isla Elefantina y el Mausoleo de las tumbas de los Nobles (Agha Khan): la experiencia más relajante de todo el viaje.</p>
+    </div>
+    <div class="transport">
+      <strong>Noche a bordo.</strong>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>Abu Simbel</h2>
+        <div class="day-subtitle">Viernes 21 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Traslado a Abu Simbel</strong> por carretera (4 horas). Llegada y traslado al hotel. Por la tarde, visita a los templos. Por la noche, espectáculo de luz y sonido. Cena y alojamiento en el hotel.
+    </div>
+    <div class="place">
+      <div class="place-meta">🗿 c. 1264 a.C. · Ramsés II</div>
+      <h3>Gran Templo de Abu Simbel</h3>
+      <p>Templos colosales de Ramsés II y Nefertari tallados directamente en la roca del acantilado de Nubia, para infundir terror y respeto a los pueblos del sur que entraban en las fronteras del imperio. La fachada tiene cuatro estatuas sedentes de Ramsés II de 20 metros. La segunda empezando por la izquierda está rota: cabeza y torso cayeron al suelo por un fuerte terremoto pocos años después de la inauguración, y en la restauración del siglo XX se dejaron los pedazos exactamente donde cayeron para respetar la historia del monumento.<br><br>Dos días al año (originalmente el 21 de febrero y el 21 de octubre, cumpleaños y coronación del faraón) los rayos del sol naciente entran en línea recta por la puerta principal, recorren los 60 metros de galerías oscuras e iluminan las estatuas del santuario del fondo: Amón-Ra, Ra-Horajti y el propio Ramsés II divinizado. La estatua de Ptah (dios del inframundo y las sombras) permanece a oscuras.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">👑 Hathor y Nefertari</div>
+      <h3>Templo de Nefertari</h3>
+      <p>A unos cien metros, el templo dedicado a la diosa Hathor y a la esposa favorita del faraón, la reina Nefertari. Su fachada tiene seis estatuas colosales (cuatro de Ramsés y dos de Nefertari). Lo insólito y único en el arte egipcio es que las estatuas de la reina tienen el mismo tamaño que las del faraón: en el canon egipcio, las esposas siempre se esculpían a escala diminuta. Ramsés II dejó claro así el estatus y el inmenso poder político que daba a Nefertari.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia9">
+    <div class="day-header">
+      <div class="day-number">9</div>
+      <div class="day-info">
+        <h2>Abu Simbel · Asuán · El Cairo</h2>
+        <div class="day-subtitle">Sábado 22 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Mañana:</strong> desayuno en el hotel, traslado en carretera a Asuán y salida en avión hacia El Cairo. Traslado al hotel. Tarde libre.
+    </div>
+    <div class="place">
+      <div class="place-meta">🛍️ Fundado en 1382 · Sultán Barquq</div>
+      <h3>Khan el-Khalili</h3>
+      <p>El mercado más famoso de El Cairo comenzó como un <em>caravanserai</em> (gran hostal y centro de comercio para mercaderes internacionales) construido por el emir Jarkas al-Khalili. Es un laberinto vibrante de callejuelas empedradas, arcos de piedra medievales y miles de pequeños puestos que transportan a la Edad Media. El zoco está organizado por gremios o zonas temáticas: el Callejón de las Especias, el Barrio del Cobre y la Plata, Perfumes y Esencias, Recuerdos y Textiles.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">🤝 El arte del regateo</div>
+      <p>En Khan el-Khalili el regateo no es opcional, es una interacción social obligatoria. Regla de oro local: ofrecer inicialmente alrededor de un 30% o 40% del precio que pida el vendedor e ir subiendo lentamente hasta un punto medio donde ambos estén conformes.</p>
+    </div>
+    <div class="transport">
+      <strong>Vuelta al hotel.</strong>
+    </div>
+  </section>
+
+  <section class="day-section" id="e09-dia10">
+    <div class="day-header">
+      <div class="day-number">10</div>
+      <div class="day-info">
+        <h2>El Cairo · Regreso a España</h2>
+        <div class="day-subtitle">Domingo 23 de Agosto de 2009</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desayuno en el hotel</strong> y traslado al aeropuerto. Salida en avión hacia Barcelona. <strong>Fin del viaje.</strong>
+    </div>
+  </section>
+
+</main>
+
+<div class="part-divider"><hr></div>
+
+<div class="part-header part-23" id="parte-2023-header">
+  <p class="part-eyebrow">Parte II · 8 días · 4 — 11 Septiembre 2023</p>
+  <h2>El regreso · Septiembre de 2023</h2>
+  <p>Crucero por el Nilo de Luxor a Asuán, Abu Simbel al amanecer, el poblado nubio y las Pirámides de El Cairo.</p>
+</div>
+
+<div class="days-nav nav-23">
+  <a href="#e23-dia1">Día 1 · Luxor</a>
+  <a href="#e23-dia2">Día 2 · Edfu</a>
+  <a href="#e23-dia3">Día 3 · Asuán</a>
+  <a href="#e23-dia4">Día 4 · Abu Simbel</a>
+  <a href="#e23-dia5">Día 5 · El Cairo</a>
+  <a href="#e23-dia6">Día 6 · Pirámides</a>
+  <a href="#e23-dia7">Día 7 · Museo</a>
+  <a href="#e23-dia8">Día 8 · Regreso</a>
+</div>
+
+<main class="content" id="parte-2023">
+
+  <section class="day-section" id="e23-dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>España · Luxor</h2>
+        <div class="day-subtitle">Lunes 4 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Salida a las 10:00h</strong> hacia el aeropuerto: dejamos el coche en Viladecans y vamos en bus.<br><strong>Presentación en el aeropuerto:</strong> 3 horas antes de la salida. Embarque en vuelo con destino Luxor. Trámites de visado.
+    </div>
+    <div class="hotel">
+      <div class="hotel-label">🚢 Crucero · Cena a bordo</div>
+      <h4>Llegada y traslado al crucero</h4>
+      <p>Llegada a Luxor y traslado al crucero. Se servirá una cena en el barco. Noche a bordo.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Luxor · Edfu</h2>
+        <div class="day-subtitle">Martes 5 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Pensión completa.</strong> A la hora indicada, visita de los Templos de Karnak y Luxor, el Valle de los Reyes, el Templo de la Reina Hatshepsut y los Colosos de Memnón. Regreso al barco. Navegación hacia Esna y continuación hacia Edfu. Cena y noche a bordo.
+    </div>
+    <div class="place">
+      <div class="place-meta">🏛️ Luxor · Orilla este</div>
+      <h3>Templos de Karnak y Luxor</h3>
+      <p>Visita de los dos grandes templos de Tebas.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🦁 Zona norte de Karnak · Templo de Ptah · Tutmosis III</div>
+      <h3>La diosa Sejmet (Sekhmet)</h3>
+      <p>En la zona norte del gigantesco complejo de Karnak, en un rincón alejado de los grandes grupos de turistas, se esconde el pequeño <strong>Templo de Ptah</strong>, famoso por albergar la mística capilla y estatua de la diosa Sejmet. Es un lugar cargado de magnetismo, rituales y, para muchos viajeros espirituales, una de las zonas con mayor energía de todo el país.</p>
+      <p>Este pequeño templo fue erigido por el faraón guerrero <strong>Tutmosis III</strong> en honor al dios Ptah, el creador de Menfis, y hoy aguarda en el sanctasanctórum de la derecha la estatua de granito negro de <strong>Sejmet</strong>, la deidad con cuerpo de mujer y cabeza de leona. Cuando el sol alcanza su punto álgido, un rayo de luz vertical penetra en la penumbra e ilumina directamente el rostro leonino y el disco solar de la estatua.</p>
+      <p>Sejmet era la personificación de la fuerza devastadora del sol, la guerra y las pestes. Su nombre significa literalmente «La que es Poderosa». Este santuario es un imán para personas de todo el mundo que aseguran sentir una intensa vibración térmica o un «escaneo» espiritual al acercarse a la piedra.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⛰️ Luxor · Orilla oeste</div>
+      <h3>Valle de los Reyes, Templo de Hatshepsut y Colosos de Memnón</h3>
+      <p>Jornada completa en la necrópolis tebana.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Edfu · Kom Ombo · Asuán</h2>
+        <div class="day-subtitle">Miércoles 6 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Pensión completa.</strong> Por la mañana, visita en calesa del Templo de Horus, en Edfu. Regreso al barco y navegación hacia Kom Ombo. Almuerzo, llegada y visita del templo dedicado a los dioses Haroeris y Sobek. Navegación hacia Asuán. Cena y noche a bordo.
+    </div>
+    <div class="place">
+      <div class="place-meta">🦅 En calesa</div>
+      <h3>Templo de Horus · Edfu</h3>
+      <p>Visita matinal en calesa al santuario del dios halcón.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🐊 Dioses Haroeris y Sobek</div>
+      <h3>Templo de Kom Ombo</h3>
+      <p>Templo doble a orillas del Nilo, dedicado a Haroeris y a Sobek.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Asuán · Abu Simbel · Philae · Poblado nubio</h2>
+        <div class="day-subtitle">Jueves 7 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Pensión completa.</strong><br><strong>Abu Simbel en bus:</strong> salida sobre las 02:30h en convoy para llegar al amanecer, unas 3 horas por carretera. La visita dura aproximadamente 2 horas. Regreso a Asuán.<br><strong>Después:</strong> Templo de Philae y almuerzo.
+    </div>
+    <div class="place">
+      <div class="place-meta">🗿 Amanecer · Convoy 02:30h</div>
+      <h3>Templos de Abu Simbel</h3>
+      <p>Visita a los templos de Ramsés II y Nefertari al amanecer.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌴 Dedicado a Isis</div>
+      <h3>Templo de Philae</h3>
+      <p>Visita tras el regreso de Abu Simbel.</p>
+    </div>
+    <div class="section-title">🏘️ Por la tarde · Pueblo nubio</div>
+    <div class="place">
+      <div class="place-meta">⛵ Falucas y quads · Gharb Soheil</div>
+      <h3>Paseo en falucas y quads</h3>
+      <p>Por la tarde embarcamos en las «falucas», típicas embarcaciones pesqueras, para hacer la actividad de paseos en quads por el pueblo nubio. Desembarcaremos en las playas de arena fina a las faldas del pueblo de Gharb Soheil.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏠 Nubia · Uno de los pueblos más antiguos de África</div>
+      <h3>Una casa nubia</h3>
+      <p>Los nubios tienen su propio idioma, tradiciones y una fisionomía y calidez que los distinguen en todo Egipto. Su arquitectura utiliza azules, amarillos y rosas vívidos; el azul, en particular, para ahuyentar el mal de ojo y atraer la buena suerte. Casas de adobe con ladrillos de barro y techos abovedados de paja y caña que mantienen el interior fresco. En muchas puertas cuelgan cocodrilos disecados (símbolo de protección y poder sobre el río) y en el interior de varias casas tradicionales hay estanques con cocodrilos vivos a los que cuidan con respeto. Entraremos a una auténtica casa nubia, donde nos recibirá una familia local.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">☕ Degustación</div>
+      <p>Té de karkadé (hibisco) frío o caliente, o un aromático café local con cardamomo. Noche a bordo.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Asuán · El Cairo</h2>
+        <div class="day-subtitle">Viernes 8 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desayuno.</strong> Tiempo libre para descubrir la belleza de la ciudad de Asuán. A la hora indicada, traslado al aeropuerto de Asuán para tomar el vuelo interno hacia El Cairo. Traslado al hotel y alojamiento.
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia6">
+    <div class="day-header">
+      <div class="day-number">6</div>
+      <div class="day-info">
+        <h2>El Cairo · Las Pirámides</h2>
+        <div class="day-subtitle">Sábado 9 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desayuno.</strong> Salida para visitar el recinto de las Pirámides de Giza.
+    </div>
+    <div class="place">
+      <div class="place-meta">🔺 Keops, Kefrén y Micerinos</div>
+      <h3>Recinto de las Pirámides y la Esfinge</h3>
+      <p>Visita al recinto de las pirámides de Keops, Kefrén y Micerinos, y la Esfinge.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">🏺 Tarde libre · Opcional</div>
+      <p>Posibilidad de realizar una visita opcional a la Necrópolis de Memphis y Sakkara. Alojamiento.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia7">
+    <div class="day-header">
+      <div class="day-number">7</div>
+      <div class="day-info">
+        <h2>El Cairo · Día libre</h2>
+        <div class="day-subtitle">Domingo 10 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desayuno.</strong> Día libre. Posibilidad de visitas opcionales: Museo de Arte Egipcio, Ciudadela de Saladino, barrio Copto, Mezquita de Alabastro y Bazar de Khan el-Khalili. Alojamiento.
+    </div>
+    <div class="place">
+      <div class="place-meta">🏺 Salas de Tutankamón y sala de las momias</div>
+      <h3>Museo Egipcio de El Cairo</h3>
+      <p>Las salas de Tutankamón, donde se exponen los tesoros hallados en su tumba, y la sala de las momias, con los restos momificados de faraones importantes.</p>
+    </div>
+    <div class="tip">
+      <div class="tip-label">🕘 Horario del museo</div>
+      <p>Abre siempre a las 9:00h, pero la hora de cierre depende del día: <strong>lunes a miércoles</strong> cierra a las 19:00h · <strong>jueves y domingos</strong> a las 21:00h · <strong>viernes y sábados</strong> a las 16:00h.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="e23-dia8">
+    <div class="day-header">
+      <div class="day-number">8</div>
+      <div class="day-info">
+        <h2>El Cairo · Regreso a España</h2>
+        <div class="day-subtitle">Lunes 11 de Septiembre de 2023</div>
+      </div>
+    </div>
+
+    <div class="transport">
+      <strong>Desayuno.</strong> A la hora indicada, traslado al aeropuerto para embarcar en vuelo con destino España. <strong>Fin del viaje.</strong>
+    </div>
+  </section>
+
+</main>
+
+
+<!-- ═══════════════════════════ VÍDEOS -->
+<div class="end-group">
+  <h2 class="end-group-title">🎬 Vídeos del viaje</h2>
+
+  <div class="video-section">
+    <div class="end-section-title">Viaje 2009</div>
+    <div class="video-grid">
+      <div>
+        <div class="video-label">📸 Fotos del viaje</div>
+        <div class="video-wrap">
+          <!-- Sustituir el bloque placeholder por: <iframe src="https://www.youtube.com/embed/fXSoo-lW7O0" title="Egipto 2009 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+          <div class="video-placeholder-box"><span class="icon">▶</span><span>Fotos 2009 · pendiente</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <!-- Sustituir el bloque placeholder por: <iframe src="https://www.youtube.com/embed/ID_DEL_VIDEO" title="Egipto 2009 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+          <div class="video-placeholder-box"><span class="icon">▶</span><span>Vídeo 2009 · pendiente</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="video-section">
+    <div class="end-section-title">Viaje 2023</div>
+    <div class="video-grid">
+      <div>
+        <div class="video-label">📸 Fotos del viaje</div>
+        <div class="video-wrap">
+          <!-- Sustituir el bloque placeholder por: <iframe src="https://www.youtube.com/embed/ID_DEL_VIDEO" title="Egipto 2023 · Fotos" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+          <div class="video-placeholder-box"><span class="icon">▶</span><span>Fotos 2023 · pendiente</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <!-- Sustituir el bloque placeholder por: <iframe src="https://www.youtube.com/embed/ID_DEL_VIDEO" title="Egipto 2023 · Vídeo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> -->
+          <div class="video-placeholder-box"><span class="icon">▶</span><span>Vídeo 2023 · pendiente</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ GALERÍAS -->
+<div class="end-group">
+  <h2 class="end-group-title">📷 Galerías de fotos</h2>
+
+  <div class="gallery-section">
+    <div class="end-section-title">Viaje 2009</div>
+    <div class="gallery-grid" id="gallery-2009"></div>
+    <div class="gallery-empty" id="gallery-2009-empty">📁 Añade las fotos a la carpeta <code>fotos2009/</code> y lístalas en el array <code>photos2009</code> del script.</div>
+  </div>
+
+  <div class="gallery-section">
+    <div class="end-section-title">Viaje 2023</div>
+    <div class="gallery-grid" id="gallery-2023"></div>
+    <div class="gallery-empty" id="gallery-2023-empty">📁 Añade las fotos a la carpeta <code>fotos2023/</code> y lístalas en el array <code>photos2023</code> del script.</div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Egipto 2009 &amp; 2023</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ── FOTOS ── añade rutas, p. ej. 'fotos2009/1.jpg'
+  const photos2009 = ['fotos2009/1.jpg','fotos2009/2.jpg','fotos2009/3.jpg','fotos2009/4.jpg','fotos2009/5.jpg','fotos2009/6.jpg','fotos2009/7.jpg','fotos2009/8.jpg',
+                      'fotos2009/9.jpg','fotos2009/10.jpg','fotos2009/11.jpg','fotos2009/12.jpg','fotos2009/13.jpg','fotos2009/14.jpg','fotos2009/15.jpg','fotos2009/16.jpg',
+                      'fotos2009/17.jpg','fotos2009/18.jpg','fotos2009/19.jpg','fotos2009/20.jpg','fotos2009/21.jpg','fotos2009/22.jpg','fotos2009/23.jpg','fotos2009/24.jpg',
+                      'fotos2009/25.jpg',];
+  const photos2023 = ['fotos2023/1.jpg','fotos2023/2.jpg','fotos2023/3.jpg','fotos2023/4.jpg','fotos2023/5.jpg','fotos2023/6.jpg','fotos2023/7.jpg','fotos2023/8.jpg',
+                      'fotos2023/9.jpg','fotos2023/10.jpg','fotos2023/11.jpg','fotos2023/12.jpg','fotos2023/13.jpg','fotos2023/14.jpg','fotos2023/15.jpg','fotos2023/16.jpg',
+                      'fotos2023/17.jpg','fotos2023/18.jpg','fotos2023/19.jpg','fotos2023/20.jpg','fotos2023/21.jpg','fotos2023/22.jpg','fotos2023/23.jpg','fotos2023/24.jpg',
+                      'fotos2023/25.jpg',];
+
+  const galleries = { 'gallery-2009': photos2009, 'gallery-2023': photos2023 };
+  const labels = { 'gallery-2009': 'Egipto 2009', 'gallery-2023': 'Egipto 2023' };
+
+  Object.entries(galleries).forEach(([galleryId, photos]) => {
+    const gallery = document.getElementById(galleryId);
+    if (photos.length) document.getElementById(galleryId + '-empty').style.display = 'none';
+    photos.forEach((src, i) => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.onclick = () => openLightbox(galleryId, i);
+      const img = document.createElement('img');
+      img.src = src; img.alt = `Foto ${labels[galleryId]} ${i+1}`; img.loading = 'lazy';
+      img.onerror = function() {
+        const ph = document.createElement('div');
+        ph.className = 'foto-placeholder';
+        ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto ' + (i+1) + '</span>';
+        item.replaceChild(ph, this);
+      };
+      item.appendChild(img);
+      gallery.appendChild(item);
+    });
+  });
+
+  let currentGallery = 'gallery-2009';
+  let currentPhoto = 0;
+  function openLightbox(galleryId, idx) {
+    currentGallery = galleryId; currentPhoto = idx;
+    document.getElementById('lb-img').src = galleries[galleryId][idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    const photos = galleries[currentGallery];
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  function wireDayNav(sectionSelector, navSelector) {
+    const sections = document.querySelectorAll(sectionSelector);
+    const navLinks = document.querySelectorAll(navSelector);
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const a = document.querySelector(`${navSelector}[href="#${e.target.id}"]`);
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { threshold: 0.25 });
+    sections.forEach(s => obs.observe(s));
+  }
+  wireDayNav('#parte-2009 .day-section', '.days-nav.nav-09 a');
+  wireDayNav('#parte-2023 .day-section', '.days-nav.nav-23 a');
+
+  const tabLinks = document.querySelectorAll('.trip-tabs a');
+  const tabObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        tabLinks.forEach(l => l.classList.remove('active'));
+        const cls = e.target.id === 'parte-2009-header' ? 'tab-09' : 'tab-23';
+        document.querySelector(`.trip-tabs a.${cls}`).classList.add('active');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '-40% 0px -50% 0px' });
+  document.querySelectorAll('.part-header').forEach(s => tabObs.observe(s));
+</script>
+
+</body>
+</html>
