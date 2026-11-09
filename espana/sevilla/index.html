@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sevilla, Cádiz y Málaga 1992 · Diario de Viajes de Josep Lluis</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Barlow:wght@300;400;500;600&family=Barlow+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink: #0a1f3d; --paper: #e8f2fc; --paper-dark: #c8dff2; --accent: #b5541c; --accent-light: #e8935a; --accent-pale: #f6dcc8; --muted: #4a6885; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--paper); color: var(--ink); font-family: 'Barlow', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+    nav.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,31,61,0.96); backdrop-filter: blur(8px); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 0.8rem; flex-wrap: wrap; }
+    .nav-back { color: var(--accent-light); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; font-weight: 500; transition: color 0.2s; }
+    .nav-back:hover { color: white; }
+    .nav-sep { color: rgba(255,255,255,0.3); }
+    .nav-current { color: rgba(255,255,255,0.55); font-size: 0.78rem; letter-spacing: 0.1em; }
+
+    .hero { min-height: 65vh; background: linear-gradient(160deg, rgba(10,31,61,0.72) 0%, rgba(181,84,28,0.32) 60%, rgba(10,31,61,0.82) 100%), url('https://plus.unsplash.com/premium_photo-1702598430195-33e876b8347d?w=1800&q=80') center/cover no-repeat, #5a3a1e; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 6rem 2rem 4rem; position: relative; }
+    .hero::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to bottom, transparent, var(--paper)); }
+    .hero-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 0.8rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 1rem; }
+    .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 7vw, 5.4rem); font-weight: 900; color: white; line-height: 1.05; margin-bottom: 0.5rem; }
+    .hero-title em { font-style: italic; color: var(--accent-light); }
+    .hero-date { font-family: 'Barlow Condensed', sans-serif; font-size: 1.25rem; font-weight: bold; letter-spacing: 0.25em; color: rgba(255,255,255,0.7); text-transform: uppercase; margin-top: 1rem; }
+    .hero-pills { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .pill { background: rgba(232,147,90,0.22); border: 1px solid rgba(232,147,90,0.45); color: rgba(255,255,255,0.9); padding: 0.3rem 1rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+    .days-nav { position: sticky; top: 52px; z-index: 90; display: flex; gap: 0.4rem; justify-content: center; padding: 0.8rem 1rem; flex-wrap: wrap; background: var(--paper); border-bottom: 1px solid var(--paper-dark); }
+    .days-nav a { background: white; border: 2px solid var(--paper-dark); color: var(--ink); padding: 0.4rem 0.9rem; font-family: 'Barlow Condensed', sans-serif; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; font-weight: 600; transition: all 0.2s ease; }
+    .days-nav a:hover, .days-nav a.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+    .content { max-width: 920px; margin: 0 auto; padding: 3rem 2rem; }
+    .day-section { margin-bottom: 4.5rem; scroll-margin-top: 120px; }
+    .day-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid var(--paper-dark); position: relative; }
+    .day-header::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 3px; background: var(--accent); }
+    .day-number { background: var(--accent); color: white; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .day-info h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .day-info .day-subtitle { font-size: 0.78rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+
+    .place { background: white; border-left: 4px solid var(--accent-pale); padding: 1.2rem 1.5rem; margin-bottom: 0.9rem; transition: border-color 0.2s; }
+    .place:hover { border-left-color: var(--accent); }
+    .place-meta { display: inline-flex; gap: 0.3rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 0.4rem; }
+    .place h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent); margin-bottom: 0.4rem; }
+    .place p { font-size: 0.97rem; font-weight: 500; line-height: 1.8; color: var(--muted); }
+    .place p + p { margin-top: 0.8rem; }
+    .place.noche { background: var(--ink); border-left-color: var(--accent-light); }
+    .place.noche:hover { border-left-color: #ffd166; }
+    .place.noche .place-meta { color: #ffd166; }
+    .place.noche h3 { color: white; }
+    .place.noche p { color: rgba(255,255,255,0.82); }
+
+    .end-group { margin-top: 3rem; }
+    .end-group-title { max-width: 920px; margin: 0 auto 1.5rem; padding: 0 2rem; font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; }
+    .video-section { max-width: 920px; margin: 0 auto 3rem; padding: 0 2rem; }
+    .video-wrap { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: var(--ink); }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .video-label { font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+    @media (max-width: 600px) { .video-grid { grid-template-columns: 1fr; } }
+    .video-placeholder-box { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; text-align: center; padding: 1rem; color: rgba(255,255,255,0.45); font-family: 'Barlow Condensed', sans-serif; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; }
+    .video-placeholder-box .icon { font-size: 2.5rem; opacity: 0.5; }
+
+    .gallery-section { max-width: 1100px; margin: 0 auto 4rem; padding: 0 2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px; }
+    .gallery-item { aspect-ratio: 1; overflow: hidden; cursor: pointer; position: relative; background: var(--paper-dark); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease, filter 0.4s ease; filter: saturate(0.9); }
+    .gallery-item:hover img { transform: scale(1.08); filter: saturate(1.2); }
+    .gallery-item::after { content: '⊕'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: white; background: rgba(10,31,61,0.45); opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+    .gallery-item:hover::after { opacity: 1; }
+    .foto-placeholder { width: 100%; height: 100%; background: var(--paper-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--muted); font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; }
+    .gallery-empty { background: rgba(10,31,61,0.04); border: 2px dashed var(--paper-dark); padding: 2rem; text-align: center; color: var(--muted); font-size: 0.95rem; font-weight: 500; font-style: italic; }
+
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(10,31,61,0.97); z-index: 1000; align-items: center; justify-content: center; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; }
+    .lb-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.7; }
+    .lb-close:hover { opacity: 1; }
+    .lb-prev, .lb-next { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: white; font-size: 1.5rem; padding: 1rem 1.2rem; cursor: pointer; }
+    .lb-prev:hover, .lb-next:hover { background: rgba(255,255,255,0.2); }
+    .lb-prev { left: 1rem; } .lb-next { right: 1rem; }
+
+    footer { background: var(--ink); color: rgba(240,248,255,0.5); text-align: center; padding: 2.5rem; font-size: 0.8rem; letter-spacing: 0.1em; }
+    footer a { color: var(--accent-light); text-decoration: none; }
+    footer strong { color: var(--accent-light); font-family: 'Playfair Display', serif; font-style: italic; }
+
+    @media (max-width: 600px) {
+      .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+      .day-number { width: 50px; height: 50px; font-size: 1.2rem; }
+      .days-nav { top: 44px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="topnav">
+  <a class="nav-back" href="../../viajes.html">← Inicio</a>
+  <span class="nav-sep">/</span>
+  <a class="nav-back" href="../../viajes.html#sec-espana">🇪🇸 España</a>
+  <span class="nav-sep">/</span>
+  <span class="nav-current">Sevilla · Cádiz · Málaga 1992</span>
+</nav>
+
+<header class="hero">
+  <p class="hero-badge">🇪🇸 España · Andalucía · Expo '92</p>
+  <h1 class="hero-title">Sevilla, Cádiz <em>y Málaga</em></h1>
+  <p class="hero-date">11 – 18 Agosto 1992</p>
+  <div class="hero-pills">
+    <span class="pill">La Giralda</span>
+    <span class="pill">Catedral de Sevilla</span>
+    <span class="pill">Expo '92</span>
+    <span class="pill">Cádiz</span>
+    <span class="pill">Playa de la Barrosa</span>
+    <span class="pill">Cueva de Nerja</span>
+    <span class="pill">Balcón de Europa</span>
+  </div>
+</header>
+
+<div class="days-nav">
+  <a href="#s92-dia1">Día 1 · Sevilla</a>
+  <a href="#s92-dia2">Día 2 · Expo '92</a>
+  <a href="#s92-dia3">Día 3 · Cádiz</a>
+  <a href="#s92-dia4">Día 4 · Chiclana</a>
+  <a href="#s92-dia5">Día 5 · Nerja · Málaga</a>
+</div>
+
+<main class="content" id="viaje">
+
+  <section class="day-section" id="s92-dia1">
+    <div class="day-header">
+      <div class="day-number">1</div>
+      <div class="day-info">
+        <h2>Sevilla</h2>
+        <div class="day-subtitle">Martes 11 de Agosto de 1992</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🔔 35 rampas · Vista de 360º</div>
+      <h3>La Giralda</h3>
+      <p>Comenzamos la jornada subiendo las 35 rampas de la torre más famosa de la ciudad. Al fondo a la derecha resplandece la gran silueta blanca del flamante <strong>Puente del Alamillo</strong>, la nueva joya de la ingeniería que conecta la ciudad con el recinto de la Isla de la Cartuja. Subir es un esfuerzo que se recompensa con una vista de 360 grados que abraza tanto el pasado medieval como el futuro vanguardista de la Expo '92.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🔔 Cuerpo de Campanas</div>
+      <h3>Las 24 campanas</h3>
+      <p>Moles de bronce y madera suspendidas sobre los vanos que miran a la ciudad. Con sus 24 campanas bautizadas con nombres propios, es uno de los conjuntos eclesiásticos más ricos y complejos de España.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⛪ Desde 1401 · Sobre la antigua mezquita almohade</div>
+      <h3>Catedral de Santa María de la Sede</h3>
+      <p>El templo gótico más grande del mundo y el tercer templo cristiano de la Tierra. Sus constructores declararon la famosa intención de «hacer una iglesia tan grande que los que la vieren labrada nos tengan por locos». Al adentrarse en sus cinco naves, el visitante queda sobrecogido por la colosal altura de sus bóvedas nervadas, la luz tamizada de sus magníficas vidrieras históricas y el <strong>Retablo Mayor</strong>, una joya monumental de la talla polícroma considerada una de las obras cumbre de la cristiandad.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⚓ Arturo Mélida</div>
+      <h3>Tumba de Colón</h3>
+      <p>Detenerse ante el mausoleo de Arturo Mélida cobra un sentido único: es un monumento cargado de simbolismo que rinde tributo al navegante que unió dos mundos, fundiendo la opulencia de la historia de los reinos hispánicos con la solemnidad del arte funerario decimonónico. Los cuatro heraldos reales caminan solemnes portando el féretro en hombros. Observar los detalles de los castillos y los leones rampantes bordados en los ropajes de las figuras frontales.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏰 Fortaleza almohade · Siglo XIII</div>
+      <h3>Torre de la Plata</h3>
+      <p>Caminamos hacia el río y nos desviamos por la calle Santander. Nos subimos al adarve de la muralla para contemplar la Torre de la Plata. Tras años semioculta, luce imponente gracias a las restauraciones recientes hechas en la zona para embellecer los accesos históricos al puerto. Su planta octogonal recorta un cielo azul impecable.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🗼 Paseo de Cristóbal Colón</div>
+      <h3>Torre del Oro</h3>
+      <p>Salimos de la muralla al Paseo de Cristóbal Colón. La Torre del Oro se alza señorial con sus tres cuerpos bien diferenciados y su característico remate brillante. Un monumento albarrano que ha visto pasar la historia de la navegación.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌉 Muelle de la Sal</div>
+      <h3>Puente de San Telmo</h3>
+      <p>Nos situamos a la sombra en el Muelle de la Sal, junto a uno de los barcos fluviales turísticos amarrados. Al fondo, el Puente de San Telmo dibuja sus arcos fijos sobre el agua, uniendo el centro con los barrios al otro lado de la dársena. Aunque hoy vemos una estructura fija de hormigón, es maravilloso recordar que hasta hace unas décadas este puente se abría para dejar pasar los grandes navíos.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🎭 Inaugurado el año pasado</div>
+      <h3>Teatro de la Maestranza</h3>
+      <p>Avanzamos por el Paseo Colón hasta el impresionante Teatro de la Maestranza: la fachada clásica del antiguo Cuartel de Artillería y, por encima, la gigantesca cúpula cilíndrica moderna. Fusiona de forma brillante la herencia histórica militar de la ciudad con un diseño de vanguardia acústica.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⛲ Aníbal González · Parque de María Luisa</div>
+      <h3>Plaza de España</h3>
+      <p>Nos adentramos en el Parque de María Luisa hasta llegar a la Plaza de España. El chorro de la fuente central se eleva con fuerza y la galería de arcadas semicirculares ofrece un paseo sombreado. Obra cumbre del regionalismo de Aníbal González para la Exposición de 1929: un espacio monumental que con su abrazo semicircular resume a la perfección la esencia sevillana.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🚂 Isla de la Cartuja · Escala 1:33</div>
+      <h3>Andalucía de los Niños</h3>
+      <p>Cruzamos el Guadalquivir hacia el recinto de la Isla de la Cartuja. Al lado del Pabellón de Andalucía, nos subimos al carismático trenecito Dotto. Desde la altura de sus vagones contemplamos un viaje en miniatura por toda la comunidad: reproducciones exactas a escala de la Mezquita de Córdoba, la Alhambra y los mismos monumentos que visitamos hoy a tamaño real, todo rodeado de miles de pequeños bonsáis. Un prodigio de artesanía y paisajismo que condensa la belleza de las ocho provincias andaluzas.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="s92-dia2">
+    <div class="day-header">
+      <div class="day-number">2</div>
+      <div class="day-info">
+        <h2>Expo '92 · Isla de la Cartuja</h2>
+        <div class="day-subtitle">Miércoles 12 de Agosto de 1992</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌍 20 abril – 12 octubre 1992 · Isla de la Cartuja · 215 hectáreas</div>
+      <h3>Visita a la Exposición Universal de Sevilla 1992</h3>
+      <p>Fuimos a la Isla de la Cartuja, un antiguo terreno junto al Guadalquivir transformado en tiempo récord en la mayor obra pública de la década en Europa. En 215 hectáreas reunió más de 100 de pabellones: participaron 108 países. </p>
+      <p>Cada jornada se dedicaba a un país participante, con actos propios. Su mascota, <strong>Curro</strong>, un pájaro de pico y cresta multicolor, se convirtió en un icono de la época.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌡️ Consejos para recorrer el recinto</div>
+      <h3>Cómo organizar la visita</h3>
+      <p>El recinto se diseñó con parques y paseos sombreados, y con fuentes y surtidores que vaporizan agua, como los de la <strong>Esfera Bioclimática</strong>. Un sistema interno de transporte con monorraíl y telecabina ayuda a moverse entre zonas. </p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🇪🇸 Borde del Lago · Pabellones autonómicos</div>
+      <h3>El Lago de España y el Pabellón de España</h3>
+      <p>El centro del recinto lo ocupa el <strong>Lago de España</strong>, un gran estanque proyectado para unificar visualmente la enorme diversidad de arquitecturas de la Expo. A su borde se alzan el <strong>Pabellón de España</strong>, y los pabellones de las comunidades autónomas.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌐 Camino de los Descubrimientos · Avenidas internacionales</div>
+      <h3>Los pabellones internacionales</h3>
+      <p>Las cinco avenidas de la zona internacional desembocan en el Lago. Entre los más comentados estaban los de <strong>Canadá</strong> y <strong>Venezuela</strong>, donde las pantallas gigantes de alta resolución llevaban al visitante de viaje por paisajes y por el interior de las plantas y del cuerpo humano. Merece la pena fijarse en la arquitectura de los de <strong>Francia</strong> , <strong>Hungría</strong> y <strong>Finlandia</strong>, además de los de Marruecos, Estados Unidos y Japón.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⚓ Obra de Guillermo Vázquez Consuegra · Torre Schindler</div>
+      <h3>Pabellón de la Navegación y Torre Mirador</h3>
+      <p>Un edificio a orillas del río, dedicado a la historia de la navegación y a los grandes viajes del Descubrimiento. Fuera estaban amarradas las réplicas de las tres carabelas de Colón. Junto a él, la <strong>Torre Mirador</strong> (la Torre Schindler durante la Expo), de unos 50 metros, ofrece una vista panorámica del recinto y de la ciudad.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🔮 Plaza del Futuro · Monasterio de Santa María de las Cuevas</div>
+      <h3>Pabellón del Futuro y Pabellón del Siglo XV</h3>
+      <p>El <strong>Pabellón del Futuro</strong>, junto al Camino de los Descubrimientos, miraba hacia el mañana con la ciencia y la tecnología como protagonistas. El <strong>Pabellón del Siglo XV</strong> se instaló dentro del Monasterio de la Cartuja de Santa María de las Cuevas.</p>
+    </div>
+    <div class="place noche">
+      <div class="place-meta">🌙 Cada noche junto al Lago de España</div>
+      <h3>El Espectáculo del Lago</h3>
+      <p>El día terminó junto al Lago de España con el espectáculo nocturno: una mezcla de <strong>luz, sonido, láser y fuegos artificiales</strong>, con proyecciones sobre distintos abanicos generados con chorros de agua.</p>
+      <p>Acababa con la aparición de <strong>Curro</strong> dando la bienvenida.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="s92-dia3">
+    <div class="day-header">
+      <div class="day-number">3</div>
+      <div class="day-info">
+        <h2>Cádiz</h2>
+        <div class="day-subtitle">Jueves 13 de Agosto de 1992</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🌴 Monumento al Marqués de Comillas</div>
+      <h3>Alameda Apodaca</h3>
+      <p>Comenzamos recorriendo el señorial suelo ajedrezado de la Alameda. Nos detenemos frente al monumental conjunto escultórico dedicado a <strong>Claudio López Bru, Marqués de Comillas</strong>: la estatua del ángel alado o «Genio de la Victoria» corona con elegancia la esbelta columna de piedra, flanqueada por palmeras que traen todo el aire de ultramar al centro de Cádiz. La Alameda es el mejor balcón al Atlántico de la ciudad, y combina de forma magistral el estilo neoclásico y los jardines románticos.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">⛲ Juan Talavera y Heredia · Azulejos de Triana</div>
+      <h3>Fuente de planta estrellada</h3>
+      <p>Avanzamos unos pasos sin salir del paseo y nos topamos con una de sus hermosas fuentes bajas de planta estrellada. Este diseño regionalista tan característico fue remodelado a principios del siglo XX por el célebre arquitecto sevillano Juan Talavera y Heredia. Los azulejos polícromos que revisten la fuente vienen directamente de las míticas alfarerías de Triana.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌊 Bahía de Cádiz</div>
+      <h3>Balcón de la Bahía</h3>
+      <p>Enmarcados por las ornamentadas farolas de hierro forjado negro, clavamos la mirada en la inmensidad de la Bahía de Cádiz. Al otro lado de estas aguas atlánticas se divisan las siluetas de Rota y El Puerto de Santa María, recordándonos la importancia estratégica de esta bahía fortificada, codiciada por fenicios, romanos y corsarios.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏖️ Entre los castillos de San Sebastián y Santa Catalina · Barrio de La Viña</div>
+      <h3>Playa de la Caleta</h3>
+      <p>El corazón del barrio de La Viña. Una playa con alma fenicia y romana donde el tiempo parece detenerse cuando el cielo se tiñe de tonos rojizos al caer la tarde.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="s92-dia4">
+    <div class="day-header">
+      <div class="day-number">4</div>
+      <div class="day-info">
+        <h2>Chiclana</h2>
+        <div class="day-subtitle">Viernes 14 de Agosto de 1992</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🏖️ Bajamar · Dunas y pinares</div>
+      <h3>Playa de la Barrosa</h3>
+      <p>Nos desplazamos hacia el sur de la provincia para bañarnos en la Playa de la Barrosa. Aprovechando la bajamar, la arena mojada se convierte en un espejo perfecto. La playa se muestra salvaje y kilométrica, rodeada por su característico cordón de dunas y pinares: kilómetros de fina arena dorada donde el Atlántico rompe con fuerza.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏰 Templo de Hércules Melkart</div>
+      <h3>Castillo de Sancti Petri</h3>
+      <p>Caminando hacia el extremo de la playa vemos el místico Castillo de Sancti Petri, alzado en una pequeña isla marina justo donde la tradición sitúa el antiquísimo Templo de Hércules Melkart. Un islote fortificado flotando sobre el mar que nos recuerda que estamos pisando una de las fronteras más antiguas e históricas de Occidente.</p>
+    </div>
+  </section>
+
+  <section class="day-section" id="s92-dia5">
+    <div class="day-header">
+      <div class="day-number">5</div>
+      <div class="day-info">
+        <h2>Nerja · Torremolinos · Málaga</h2>
+        <div class="day-subtitle">Martes 18 de Agosto de 1992</div>
+      </div>
+    </div>
+
+    <div class="place">
+      <div class="place-meta">🦇 «Catedral Natural de Andalucía» · Descubierta en 1959</div>
+      <h3>Cueva de Nerja</h3>
+      <p>Cambiamos de provincia y nos adentramos en la Costa del Sol para sumergirnos en la Cueva de Nerja. Caminamos por las pasarelas turísticas habilitadas, sobrecogidos por la monumentalidad de la gruta, donde colosales formaciones de estalactitas colgantes desafían la gravedad sobre nuestras cabezas. Esta impresionante cavidad arqueológica fue descubierta por casualidad en 1959 por cinco jóvenes que buscaban murciélagos.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🏛️ Sala del Cataclismo · 5 millones de años</div>
+      <h3>La columna natural más grande del mundo</h3>
+      <p>Fruto de 5 millones de años de goteo mineral, en la Sala del Cataclismo se custodia la columna natural más grande del mundo, con 32 metros de altura y 18 metros de diámetro, que llegó a figurar en el Libro Guinness de los Récords.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🦴 Sala del Belén · Hace casi 10.000 años</div>
+      <h3>«Pepita»</h3>
+      <p>Una vitrina iluminada en el interior de la gruta alberga el esqueleto arqueológico completo de «Pepita», descubierto en 1982 durante las excavaciones científicas dirigidas por el profesor Manuel Pellicer en la Sala de la Torca. Es la pieza arqueológica más emblemática de la cueva: una mujer joven que vivió hace casi 10.000 años, en el Epipaleolítico. Los estudios revelan que tenía unos 19 años, medía 1,50 metros, sufrió una fuerte infección de oído y era zurda.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌲 Jardines exteriores · Maro</div>
+      <h3>Mirador exterior de la Cueva</h3>
+      <p>Salimos a la superficie y nos asomamos al mirador de los jardines exteriores de la gruta. Desde el borde de la carretera de acceso, rodeados de pinos, contemplamos el núcleo blanco del pueblo de Nerja y los campos salpicados por los invernaderos típicos de la región. A nuestros pies queda la pedanía de Maro.</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌅 Alfonso XII · Terremoto de 1884</div>
+      <h3>Balcón de Europa</h3>
+      <p>Llegamos al centro del pueblo y nos apoyamos en su famosa barandilla de hierro sobre el paseo semicircular para contemplar los acantilados y las calas que lo flanquean. El mirador más famoso de la Costa del Sol. Cuenta la historia que fue el propio rey Alfonso XII quien, al asomarse a este antiguo bastión defensivo tras el terremoto de 1884, exclamó que parecía el mismísimo «Balcón de Europa».</p>
+    </div>
+    <div class="place">
+      <div class="place-meta">🌙 El Bajondillo</div>
+      <h3>Paseo Marítimo de Torremolinos</h3>
+      <p>Nos desplazamos a Torremolinos para disfrutar de su ambiente nocturno. Paseamos junto al pretil del Paseo Marítimo de El Bajondillo, donde la hilera de farolas ilumina la playa. <strong>Fin del viaje.</strong></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════ VÍDEO -->
+<div class="end-group">
+  <h2 class="end-group-title">🎬 Vídeos del viaje</h2>
+  <div class="video-section">
+    <div class="video-grid">
+      <div>
+        <div class="video-label">🎬 Vídeo del viaje</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/BitSzjRbLGk" title="Sevilla, Cádiz y Málaga 1992" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+      <div>
+        <div class="video-label">🎪 Expo '92</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/IlA-AiohJzU" title="Expo 92 · Sevilla" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ GALERÍA -->
+<div class="end-group">
+  <h2 class="end-group-title">📷 Galería de fotos</h2>
+  <div class="gallery-section">
+    <div class="gallery-grid" id="gallery"></div>
+    <div class="gallery-empty" id="gallery-empty">📁 Añade las fotos a la carpeta <code>fotos1992/</code> y lístalas en el array <code>photos</code> del script.</div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-prev" onclick="changePhoto(-1)">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lb-next" onclick="changePhoto(1)">›</button>
+</div>
+
+<footer>
+  <p><strong>Diario de Viajes de Josep Lluis</strong> &nbsp;·&nbsp; Sevilla, Cádiz y Málaga 1992</p>
+  <p style="margin-top:0.5rem;"><a href="../../viajes.html">← Volver al inicio</a></p>
+</footer>
+
+<script>
+  // ── FOTOS ── añade rutas, p. ej. 'fotos1992/1.jpg'
+  const photos = ['fotos1992/foto1.jpg','fotos1992/foto2.jpg','fotos1992/foto3.jpg','fotos1992/foto4.jpg','fotos1992/foto5.jpg','fotos1992/foto7.jpg', 'fotos1992/foto8.jpg','fotos1992/foto9.jpg','fotos1992/foto10.jpg','fotos1992/foto11.jpg','fotos1992/foto12.jpg','fotos1992/foto13.jpg',
+                   'fotos1992/foto14.jpg','fotos1992/foto15.jpg','fotos1992/foto16.jpg','fotos1992/foto17.jpg',];
+
+  const gallery = document.getElementById('gallery');
+  if (photos.length) document.getElementById('gallery-empty').style.display = 'none';
+  photos.forEach((src, i) => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
+    item.onclick = () => openLightbox(i);
+    const img = document.createElement('img');
+    img.src = src; img.alt = `Foto Sevilla, Cádiz y Málaga 1992 ${i+1}`; img.loading = 'lazy';
+    img.onerror = function() {
+      const ph = document.createElement('div');
+      ph.className = 'foto-placeholder';
+      ph.innerHTML = '<span style="font-size:2rem;opacity:0.4;">📷</span><span>Foto ' + (i+1) + '</span>';
+      item.replaceChild(ph, this);
+    };
+    item.appendChild(img);
+    gallery.appendChild(item);
+  });
+
+  let currentPhoto = 0;
+  function openLightbox(idx) {
+    currentPhoto = idx;
+    document.getElementById('lb-img').src = photos[idx];
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function changePhoto(dir) {
+    currentPhoto = (currentPhoto + dir + photos.length) % photos.length;
+    document.getElementById('lb-img').src = photos[currentPhoto];
+  }
+  document.getElementById('lightbox').addEventListener('click', function(e) { if (e.target === this) closeLightbox(); });
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') changePhoto(-1);
+    if (e.key === 'ArrowRight') changePhoto(1);
+  });
+
+  const navLinks = document.querySelectorAll('.days-nav a');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const a = document.querySelector(`.days-nav a[href="#${e.target.id}"]`);
+        if (a) a.classList.add('active');
+      }
+    });
+  }, { threshold: 0.25 });
+  document.querySelectorAll('.day-section').forEach(s => obs.observe(s));
+</script>
+
+</body>
+</html>
